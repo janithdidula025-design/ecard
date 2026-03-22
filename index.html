@@ -3,84 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM Private Class Card</title>
+    <title>ADM Student Card</title>
     <link rel="manifest" href="manifest-card.json">
     <meta name="theme-color" content="#0d237d">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
-
     <style>
         :root { --primary: #50e3c2; --gold: #ffd700; --dark-blue: #0a192f; }
-        body { margin: 0; background: var(--dark-blue); color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
-        
-        /* අනිවාර්යයෙන් පේන Install පණිවිඩය */
-        #pwa-installer { 
-            display: none; width: 100%; background: #fff; color: #000; 
-            padding: 15px; position: fixed; top: 0; z-index: 9999; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-weight: bold;
-            justify-content: space-around; align-items: center;
-        }
-        #pwa-installer button { background: #007aff; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        .card { width: 85%; max-width: 360px; background: rgba(255,255,255,0.05); padding: 30px 20px; border-radius: 30px; border: 1px solid rgba(80,227,194,0.2); backdrop-filter: blur(10px); text-align: center; }
-        .p-img { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--gold); margin-bottom: 15px; }
-        .btn { width: 100%; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; margin-bottom: 12px; border: none; cursor: pointer; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #0a192f); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
+        #pwa-installer { display: none; width: 100%; background: var(--primary); color: #000; padding: 12px; position: fixed; top: 0; z-index: 1000; font-weight: bold; justify-content: space-around; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        #btn-install { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .card { width: 88%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 35px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(15px); text-align: center; }
+        .p-img { width: 125px; height: 125px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); padding: 4px; background: #0a192f; margin-bottom: 15px; }
+        .info-box { background: rgba(0,0,0,0.25); padding: 18px; border-radius: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.9rem; line-height: 1.6; }
+        .btn { width: 100%; padding: 16px; border-radius: 18px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.05rem; margin-bottom: 12px; border: none; cursor: pointer; }
         .btn-wa { background: #25D366; color: #fff; }
         .btn-save { background: #fff; color: #0a192f; }
     </style>
 </head>
 <body>
-
     <div id="pwa-installer">
-        <span>📲 පහසුව සඳහා App එකක් ලෙස එක් කරන්න</span>
+        <span>📲 ADM Student App එක එක් කරන්න?</span>
         <button id="btn-install">එක් කරන්න</button>
     </div>
-
     <div class="card">
+        <div style="color: var(--primary); font-size: 0.8rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 5px;">ADM HIGHER EDUCATION</div>
         <img id="cardLogo" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="p-img">
-        <div style="color:var(--primary); font-size: 0.8rem; letter-spacing: 2px;">ADM HIGHER EDUCATION</div>
-        <h2 style="margin:5px 0;">JANITH DIDULA</h2>
-        <div style="color:var(--gold); margin-bottom: 20px;">Organizer & Manager</div>
-        
-        <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-bottom: 25px; font-size: 0.9rem;">
-            📍 මීගමුව පාර, නාරම්මල<br>📞 071 065 8051
+        <h2>JANITH DIDULA</h2>
+        <div style="color: var(--gold); font-size: 0.95rem; margin-bottom: 20px;">Organizer / Manager</div>
+        <div class="info-box">
+            📍 මීගමුව පාර, නාරම්මල (ADM Institute)<br>
+            🎓 Individual & Group Classes<br>
+            📞 071 065 8051
         </div>
-
         <a href="https://wa.me/94710658051" class="btn btn-wa">WHATSAPP සම්බන්ධ වන්න</a>
-        <button onclick="saveContact()" class="btn btn-save">CONTACT එක SAVE කරන්න</button>
+        <button onclick="saveContact()" class="btn btn-save">👤 CONTACT එක SAVE කරන්න</button>
     </div>
-
     <script>
-        let deferredPrompt;
-        const installer = document.getElementById('pwa-installer');
-        const installBtn = document.getElementById('btn-install');
-
-        // Browser එක Install කරන්න පුළුවන් කියලා හඳුනාගත්තම
+        let defPrompt;
+        window.onload = () => {
+            let savedLogo = localStorage.getItem('adm_logo_data');
+            if (savedLogo) document.getElementById('cardLogo').src = savedLogo;
+            if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+        };
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installer.style.display = 'flex'; // Banner එක පෙන්වනවා
+            e.preventDefault(); defPrompt = e;
+            document.getElementById('pwa-installer').style.display = 'flex';
         });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    installer.style.display = 'none';
-                }
-                deferredPrompt = null;
-            }
+        document.getElementById('btn-install').addEventListener('click', async () => {
+            if (defPrompt) { defPrompt.prompt(); document.getElementById('pwa-installer').style.display = 'none'; }
         });
-
-        // Service Worker Register කිරීම
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-            .then(() => console.log("SW Registered!"))
-            .catch(err => console.log("SW Error:", err));
-        }
-
         function saveContact() {
             const v = `BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL:0710658051\nEND:VCARD`;
             const b = new Blob([v], {type:'text/vcard'});
