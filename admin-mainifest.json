@@ -1,9 +1,15 @@
 {
-  "name": "ADM Admin App",
+  "name": "ADM Admin Panel",
   "short_name": "ADM Admin",
   "start_url": "admin.html",
   "display": "standalone",
   "background_color": "#050811",
   "theme_color": "#50e3c2",
-  "icons": [{ "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg", "sizes": "512x512", "type": "image/jpeg" }]
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
 }
