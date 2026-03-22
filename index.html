@@ -4,50 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Digital Card</title>
-    <link rel="manifest" href="index-manifest.json">
+    <link rel="manifest" href="manifest-card.json">
+    <meta name="theme-color" content="#0d237d">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+
     <style>
         :root { --primary: #50e3c2; --accent: #0d237d; --dark: #050811; }
         body { 
-            margin: 0; padding: 0; font-family: sans-serif; 
-            background: linear-gradient(rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.85)), url('https://images.unsplash.com/photo-1523050335456-c98489097d3f?q=80&w=2070&auto=format&fit=crop');
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.85)), 
+                        url('https://images.unsplash.com/photo-1523050335456-c98489097d3f?q=80&w=2070&auto=format&fit=crop');
             background-size: cover; background-position: center; color: white; 
-            display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; min-height: 100vh;
         }
-        .container { width: 85%; max-width: 400px; background: rgba(255, 255, 255, 0.07); padding: 40px 20px; border-radius: 50px; border: 1px solid rgba(80, 227, 194, 0.3); backdrop-filter: blur(20px); text-align: center; }
-        .p-img { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); margin-bottom: 20px; }
-        h2 { margin: 5px 0; font-size: 1.8rem; text-transform: uppercase; }
-        .info-box { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 25px; margin-bottom: 25px; font-size: 0.95rem; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .btn { padding: 16px; border-radius: 20px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; }
-        .btn-call { background: #fff; color: var(--accent); }
-        .btn-wa { background: #25D366; color: #fff; }
-        .btn-save { background: var(--primary); color: var(--dark); width: 100%; border: none; cursor: pointer; font-size: 1rem; }
+        .container { width: 85%; max-width: 380px; background: rgba(255, 255, 255, 0.08); padding: 40px 20px; border-radius: 45px; border: 1px solid rgba(80, 227, 194, 0.3); backdrop-filter: blur(20px); text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .p-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin-bottom: 20px; }
+        h2 { margin: 5px 0; font-size: 1.8rem; letter-spacing: 1px; }
+        .info-box { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 20px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.95rem; }
+        
+        /* බොත්තම් වල සැකැස්ම */
+        .action-btns { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+        
+        .btn { padding: 16px; border-radius: 18px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.2s; border: none; cursor: pointer; }
+        .btn:active { transform: scale(0.96); }
+        
+        .btn-wa { background: #25D366; color: #fff; width: 100%; }
+        .btn-save { background: var(--primary); color: var(--dark); width: 100%; }
     </style>
 </head>
 <body>
     <div class="container">
         <img id="cardLogo" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="p-img">
-        <div style="color:var(--primary); font-weight:bold;">ADM Higher Education</div>
+        <div style="color:var(--primary); font-weight:bold; font-size: 0.9rem;">ADM Higher Education</div>
         <h2>JANITH DIDULA</h2>
-        <div style="color:var(--primary); margin-bottom:20px;">Organizer / Manager</div>
-        <div class="info-box">📍 මීගමුව පාර, නාරම්මල<br>📞 0710658051</div>
-        <div class="btn-grid">
-            <a href="tel:0710658051" class="btn btn-call">📞 CALL</a>
-            <a href="https://wa.me/94710658051" class="btn btn-wa">💬 WA</a>
+        <p style="opacity:0.7; margin-bottom:20px;">Organizer / Manager</p>
+        
+        <div class="info-box">
+            📍 මීගමුව පාර, නාරම්මල<br>
+            📞 0710658051
         </div>
-        <button onclick="saveContact()" class="btn btn-save">👤 SAVE CONTACT</button>
+
+        <div class="action-btns">
+            <a href="https://wa.me/94710658051" class="btn btn-wa">💬 WHATSAPP</a>
+            <button onclick="saveContact()" class="btn btn-save">👤 SAVE CONTACT</button>
+        </div>
     </div>
+
     <script>
-        window.onload = () => {
-            let saved = localStorage.getItem('adm_logo_data');
-            if(saved) document.getElementById('cardLogo').src = saved;
-            if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-        };
+        // Service Worker Register
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
         function saveContact() {
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL:0710658051\nEND:VCARD`;
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'Janith_ADM.vcf'; a.click();
+            const v = `BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL:0710658051\nEND:VCARD`;
+            const b = new Blob([v], {type:'text/vcard'});
+            const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='Janith_ADM.vcf'; a.click();
         }
     </script>
 </body>
