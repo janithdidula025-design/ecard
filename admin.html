@@ -5,92 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Admin Panel</title>
     <link rel="manifest" href="manifest-admin.json">
-    <meta name="theme-color" content="#50e3c2">
     <style>
-        :root { --primary: #50e3c2; --bg-dark: #050811; }
-        body { 
-            font-family: sans-serif; background: var(--bg-dark);
-            background-image: linear-gradient(rgba(5, 8, 17, 0.8), rgba(5, 8, 17, 0.8)), url('https://www.transparenttextures.com/patterns/cubes.png');
-            color: white; text-align: center; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh;
-        }
-        .card { background: rgba(18, 24, 43, 0.95); padding: 40px 25px; border-radius: 40px; border: 2px solid var(--primary); max-width: 400px; width: 90%; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { margin: 0; background: #050811; color: white; font-family: sans-serif; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
         
-        /* ලෝගෝ එක ලස්සන කරන CSS */
-        .logo-container { cursor: pointer; margin-bottom: 25px; position: relative; display: inline-block; }
-        .logo-preview { 
-            width: 130px; 
-            height: 130px; 
-            border-radius: 50%; 
-            border: 4px solid var(--primary); 
-            object-fit: cover;
-            box-shadow: 0 4px 15px rgba(80, 227, 194, 0.4); /* අලංකාර shadow එකක් */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: logo-load 0.6s ease-out forwards; /* Load වන විට animation */
-            opacity: 0;
-        }
-        @keyframes logo-load {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .logo-preview:active { transform: scale(0.95); box-shadow: 0 2px 10px rgba(80, 227, 194, 0.2); }
+        /* Install Banner */
+        #installBannerAdmin { display: none; width: 100%; background: #50e3c2; color: #000; padding: 12px; position: fixed; top: 0; z-index: 1000; font-weight: bold; justify-content: center; align-items: center; }
+        #installBtnAdmin { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 10px; margin-left: 10px; }
 
-        input[type="tel"] { width: 100%; padding: 20px; border-radius: 20px; border: 2px solid #333; background: #000; color: var(--primary); text-align: center; font-size: 2rem; font-weight: bold; outline: none; margin-bottom: 20px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 20px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .card { width: 90%; max-width: 400px; background: #111; padding: 30px; border-radius: 30px; border: 2px solid #50e3c2; }
+        input { width: 100%; padding: 20px; margin: 20px 0; border-radius: 15px; border: none; font-size: 1.5rem; text-align: center; box-sizing: border-box; background: #222; color: #50e3c2; }
+        .btn { width: 100%; padding: 18px; border-radius: 15px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; margin-bottom: 10px; }
         .btn-wa { background: #25D366; color: white; }
-        .btn-call { background: #fff; color: #000; }
-        #usageInfo { font-size:0.8rem; color:#ff4757; margin-top:20px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="logo-container" onclick="document.getElementById('fileInp').click()">
-            <img id="prev" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="logo-preview">
-        </div>
-        <input type="file" id="fileInp" accept="image/*" style="display: none;" onchange="handleImage(this)">
-        <h3>ADM ADMIN APP</h3>
-        <input type="tel" id="phone" placeholder="07XXXXXXXX" inputmode="numeric" maxlength="10">
-        <button class="btn btn-wa" onclick="send('wa')">📲 SEND CARD (WA)</button>
-        <button class="btn btn-call" onclick="send('call')">📞 CALL CUSTOMER</button>
-        <div id="usageInfo">භාවිතය: 0 / 1,000,000</div>
+    <div id="installBannerAdmin">
+        📲 Admin App එක දාගන්න? <button id="installBtnAdmin">INSTALL</button>
     </div>
-    <script>
-        window.onload = () => {
-            updateUI();
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js');
-            }
-        };
-        function handleImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    localStorage.setItem('adm_logo_data', e.target.result);
-                    document.getElementById('prev').src = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        function updateUI() {
-            let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-            let savedImg = localStorage.getItem('adm_logo_data');
-            document.getElementById('usageInfo').innerText = `භාවිතය: ${count.toLocaleString()} / 1,000,000`;
-            if(savedImg) document.getElementById('prev').src = savedImg;
-        }
-        function send(type) {
-            let n = document.getElementById('phone').value;
-            if(n.length < 10) return alert("කරුණාකර නිවැරදි අංකයක් ඇතුළත් කරන්න!");
-            
-            let cardLink = window.location.href.replace('admin.html', 'index.html');
-            let message = encodeURIComponent(`ආයුබෝවන්! මෙන්න ADM Higher Education Digital Card එක: ${cardLink}`);
 
-            if(type === 'wa') {
-                let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-                localStorage.setItem('adm_send_count', count + 1);
-                updateUI();
-                window.open(`https://wa.me/94${n.substring(1)}?text=${message}`);
-            } else if(type === 'call') {
-                window.open(`tel:${n}`);
+    <div class="card">
+        <h2 style="color:#50e3c2;">ADM ADMIN PANEL</h2>
+        <input type="tel" id="num" placeholder="07XXXXXXXX" maxlength="10">
+        <button class="btn btn-wa" onclick="sendCard()">📲 SEND CARD (WA)</button>
+    </div>
+
+    <script>
+        let defPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); defPrompt = e;
+            document.getElementById('installBannerAdmin').style.display = 'flex';
+        });
+
+        document.getElementById('installBtnAdmin').addEventListener('click', async () => {
+            if (defPrompt) {
+                defPrompt.prompt();
+                document.getElementById('installBannerAdmin').style.display = 'none';
             }
+        });
+
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+        
+        function sendCard() {
+            let n = document.getElementById('num').value;
+            if(n.length < 10) return alert("අංකය පරීක්ෂා කරන්න!");
+            let link = window.location.href.replace('admin.html', 'index.html');
+            window.open(`https://wa.me/94${n.substring(1)}?text=මෙන්න ADM Digital Card එක: ${link}`);
         }
     </script>
 </body>
