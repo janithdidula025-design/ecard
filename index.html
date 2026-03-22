@@ -3,104 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM Admin Panel</title>
-    <link rel="manifest" href="manifest-admin.json">
-    <style>
-        :root { --primary: #50e3c2; --bg: #050811; }
-        body { margin: 0; background: var(--bg); color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
-        
-        #installBannerAdmin { display: none; width: 100%; background: var(--primary); color: #000; padding: 12px; position: fixed; top: 0; z-index: 1000; font-weight: bold; justify-content: space-between; align-items: center; box-sizing: border-box; }
-        #installBtnAdmin { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+    <title>ADM Private Class Card</title>
+    <link rel="manifest" href="manifest-card.json">
+    <meta name="theme-color" content="#0d237d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
 
-        .card { width: 90%; max-width: 400px; background: #111; padding: 30px; border-radius: 40px; border: 2px solid var(--primary); text-align: center; }
-        .logo-preview { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; margin-bottom: 15px; cursor: pointer; }
+    <style>
+        :root { --primary: #50e3c2; --gold: #ffd700; --dark-blue: #0a192f; }
+        body { margin: 0; background: var(--dark-blue); color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
         
-        input { width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; border: 2px solid #333; background: #000; color: var(--primary); font-size: 1.8rem; text-align: center; font-weight: bold; box-sizing: border-box; outline: none; }
-        
-        .btn-group { display: flex; flex-direction: column; gap: 10px; }
-        .btn { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-wa { background: #25D366; color: white; }
-        .btn-call { background: #fff; color: #000; }
-        .btn-sms { background: #007aff; color: white; }
-        #usage { font-size: 0.8rem; margin-top: 15px; color: #ff4757; }
+        /* අනිවාර්යයෙන් පේන Install පණිවිඩය */
+        #pwa-installer { 
+            display: none; width: 100%; background: #fff; color: #000; 
+            padding: 15px; position: fixed; top: 0; z-index: 9999; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-weight: bold;
+            justify-content: space-around; align-items: center;
+        }
+        #pwa-installer button { background: #007aff; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        .card { width: 85%; max-width: 360px; background: rgba(255,255,255,0.05); padding: 30px 20px; border-radius: 30px; border: 1px solid rgba(80,227,194,0.2); backdrop-filter: blur(10px); text-align: center; }
+        .p-img { width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--gold); margin-bottom: 15px; }
+        .btn { width: 100%; padding: 16px; border-radius: 15px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; margin-bottom: 12px; border: none; cursor: pointer; }
+        .btn-wa { background: #25D366; color: #fff; }
+        .btn-save { background: #fff; color: #0a192f; }
     </style>
 </head>
 <body>
-    <div id="installBannerAdmin">
-        <span>📲 ADM Admin App එක දාගන්න?</span>
-        <button id="installBtnAdmin">INSTALL</button>
+
+    <div id="pwa-installer">
+        <span>📲 පහසුව සඳහා App එකක් ලෙස එක් කරන්න</span>
+        <button id="btn-install">එක් කරන්න</button>
     </div>
 
     <div class="card">
-        <img id="prev" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="logo-preview" onclick="document.getElementById('fileInp').click()">
-        <input type="file" id="fileInp" accept="image/*" style="display: none;" onchange="updateLogo(this)">
+        <img id="cardLogo" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="p-img">
+        <div style="color:var(--primary); font-size: 0.8rem; letter-spacing: 2px;">ADM HIGHER EDUCATION</div>
+        <h2 style="margin:5px 0;">JANITH DIDULA</h2>
+        <div style="color:var(--gold); margin-bottom: 20px;">Organizer & Manager</div>
         
-        <h3 style="color:var(--primary); margin:0;">ADM ADMIN PANEL</h3>
-        <input type="tel" id="num" placeholder="07XXXXXXXX" maxlength="10">
-        
-        <div class="btn-group">
-            <button class="btn btn-wa" onclick="sendAction('wa')">📲 SEND CARD (WA)</button>
-            <button class="btn btn-call" onclick="sendAction('call')">📞 CALL CUSTOMER</button>
-            <button class="btn btn-sms" onclick="sendAction('sms')">💬 SEND SMS</button>
+        <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-bottom: 25px; font-size: 0.9rem;">
+            📍 මීගමුව පාර, නාරම්මල<br>📞 071 065 8051
         </div>
-        
-        <div id="usage">භාවිතය: 0 / 1,000,000</div>
+
+        <a href="https://wa.me/94710658051" class="btn btn-wa">WHATSAPP සම්බන්ධ වන්න</a>
+        <button onclick="saveContact()" class="btn btn-save">CONTACT එක SAVE කරන්න</button>
     </div>
 
     <script>
-        let defPrompt;
+        let deferredPrompt;
+        const installer = document.getElementById('pwa-installer');
+        const installBtn = document.getElementById('btn-install');
+
+        // Browser එක Install කරන්න පුළුවන් කියලා හඳුනාගත්තම
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); defPrompt = e;
-            document.getElementById('installBannerAdmin').style.display = 'flex';
+            e.preventDefault();
+            deferredPrompt = e;
+            installer.style.display = 'flex'; // Banner එක පෙන්වනවා
         });
 
-        document.getElementById('installBtnAdmin').addEventListener('click', async () => {
-            if (defPrompt) {
-                defPrompt.prompt();
-                document.getElementById('installBannerAdmin').style.display = 'none';
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installer.style.display = 'none';
+                }
+                deferredPrompt = null;
             }
         });
 
-        function updateLogo(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    localStorage.setItem('adm_logo_data', e.target.result);
-                    document.getElementById('prev').src = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
+        // Service Worker Register කිරීම
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("SW Registered!"))
+            .catch(err => console.log("SW Error:", err));
         }
 
-        function sendAction(type) {
-            let n = document.getElementById('num').value;
-            if(n.length < 10) return alert("අංකය පරීක්ෂා කරන්න!");
-            let cardLink = window.location.href.replace('admin.html', 'index.html');
-            let msg = encodeURIComponent(`ආයුබෝවන්! මෙන්න ADM Digital Card එක: ${cardLink}`);
-
-            if(type === 'wa') {
-                let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-                localStorage.setItem('adm_send_count', count + 1);
-                updateUsage();
-                window.open(`https://wa.me/94${n.substring(1)}?text=${msg}`);
-            } else if(type === 'call') {
-                window.open(`tel:${n}`);
-            } else if(type === 'sms') {
-                window.open(`sms:${n}?body=${msg}`);
-            }
+        function saveContact() {
+            const v = `BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL:0710658051\nEND:VCARD`;
+            const b = new Blob([v], {type:'text/vcard'});
+            const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='Janith_ADM.vcf'; a.click();
         }
-
-        function updateUsage() {
-            let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-            document.getElementById('usage').innerText = `භාවිතය: ${count.toLocaleString()} / 1,000,000`;
-        }
-
-        window.onload = () => {
-            updateUsage();
-            let saved = localStorage.getItem('adm_logo_data');
-            if(saved) document.getElementById('prev').src = saved;
-            if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-        };
     </script>
 </body>
 </html>
