@@ -3,77 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM Admin Panel</title>
-    <link rel="manifest" href="admin-manifest.json">
+    <title>ADM Digital Card</title>
+    <link rel="manifest" href="manifest-card.json">
+    <meta name="theme-color" content="#0d237d">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+
     <style>
-        :root { --primary: #50e3c2; --bg-dark: #050811; }
+        :root { --primary: #50e3c2; --accent: #0d237d; --dark: #050811; }
         body { 
-            font-family: sans-serif; background: var(--bg-dark);
-            background-image: linear-gradient(rgba(5, 8, 17, 0.8), rgba(5, 8, 17, 0.8)), url('https://www.transparenttextures.com/patterns/cubes.png');
-            color: white; text-align: center; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh;
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(rgba(5, 8, 17, 0.85), rgba(5, 8, 17, 0.85)), 
+                        url('https://images.unsplash.com/photo-1523050335456-c98489097d3f?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-position: center; color: white; 
+            display: flex; align-items: center; justify-content: center; min-height: 100vh;
         }
-        .card { background: rgba(18, 24, 43, 0.95); padding: 40px 25px; border-radius: 40px; border: 2px solid var(--primary); max-width: 400px; width: 90%; position: relative; overflow: hidden; }
-        .logo-container { cursor: pointer; margin-bottom: 15px; position: relative; display: inline-block; }
-        .logo-preview { width: 130px; height: 130px; border-radius: 50%; border: 4px solid var(--primary); object-fit: cover; }
-        input[type="tel"] { width: 100%; padding: 20px; border-radius: 20px; border: 2px solid #333; background: #000; color: var(--primary); text-align: center; font-size: 2rem; font-weight: bold; outline: none; margin-bottom: 20px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 20px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-wa { background: #25D366; color: white; }
-        .btn-sms { background: #fff; color: #000; }
-        #lockScreen { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; justify-content: center; align-items: center; }
+        .container { width: 85%; max-width: 380px; background: rgba(255, 255, 255, 0.08); padding: 40px 20px; border-radius: 45px; border: 1px solid rgba(80, 227, 194, 0.3); backdrop-filter: blur(20px); text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+        .p-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); margin-bottom: 20px; }
+        h2 { margin: 5px 0; font-size: 1.8rem; letter-spacing: 1px; }
+        .info-box { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 20px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.95rem; }
+        
+        /* බොත්තම් වල සැකැස්ම */
+        .action-btns { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+        
+        .btn { padding: 16px; border-radius: 18px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1rem; transition: 0.2s; border: none; cursor: pointer; }
+        .btn:active { transform: scale(0.96); }
+        
+        .btn-wa { background: #25D366; color: #fff; width: 100%; }
+        .btn-save { background: var(--primary); color: var(--dark); width: 100%; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div id="lockScreen">
-            <h2 style="color: #ff4757;">⛔ ACCESS LOCKED</h2>
-            <p>1,000,000 සීමාව ඉක්මවා ඇත.</p>
+    <div class="container">
+        <img id="cardLogo" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="p-img">
+        <div style="color:var(--primary); font-weight:bold; font-size: 0.9rem;">ADM Higher Education</div>
+        <h2>JANITH DIDULA</h2>
+        <p style="opacity:0.7; margin-bottom:20px;">Organizer / Manager</p>
+        
+        <div class="info-box">
+            📍 මීගමුව පාර, නාරම්මල<br>
+            📞 0710658051
         </div>
-        <div class="logo-container" onclick="document.getElementById('fileInp').click()">
-            <img id="prev" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="logo-preview">
+
+        <div class="action-btns">
+            <a href="https://wa.me/94710658051" class="btn btn-wa">💬 WHATSAPP</a>
+            <button onclick="saveContact()" class="btn btn-save">👤 SAVE CONTACT</button>
         </div>
-        <input type="file" id="fileInp" accept="image/*" style="display: none;" onchange="handleImage(this)">
-        <h3>ADM ADMIN APP</h3>
-        <input type="tel" id="phone" placeholder="07XXXXXXXX" inputmode="numeric" maxlength="10">
-        <button class="btn btn-wa" onclick="send('wa')">📲 SEND WHATSAPP</button>
-        <button class="btn btn-sms" onclick="send('sms')">💬 SEND SMS</button>
-        <div style="font-size:0.8rem; color:#ff4757; margin-top:20px;" id="usageInfo">භාවිතය: 0 / 1,000,000</div>
     </div>
+
     <script>
-        const MAX_LIMIT = 1000000;
-        window.onload = () => {
-            updateUI();
-            if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-        };
-        function handleImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    localStorage.setItem('adm_logo_data', e.target.result);
-                    document.getElementById('prev').src = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
+        // Service Worker Register
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
         }
-        function updateUI() {
-            let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-            let savedImg = localStorage.getItem('adm_logo_data');
-            document.getElementById('usageInfo').innerText = `භාවිතය: ${count.toLocaleString()} / 1,000,000`;
-            if(savedImg) document.getElementById('prev').src = savedImg;
-            if(count >= MAX_LIMIT) document.getElementById('lockScreen').style.display = 'flex';
-        }
-        function send(mode) {
-            let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-            if(count >= MAX_LIMIT) return;
-            let num = document.getElementById('phone').value;
-            if(num.length < 10) return alert("අංකය පරීක්ෂා කරන්න!");
-            localStorage.setItem('adm_send_count', count + 1);
-            updateUI();
-            let link = window.location.href.replace('admin.html', 'index.html');
-            let msg = encodeURIComponent(`ආයුබෝවන්! 👋\nADM Higher Education Digital E-Card: ${link}`);
-            if(mode === 'wa') {
-                let f = num.startsWith('0') ? '94' + num.substring(1) : num;
-                window.open(`https://wa.me/${f}?text=${msg}`);
-            } else { window.open(`sms:${num}?body=${msg}`); }
+
+        function saveContact() {
+            const v = `BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL:0710658051\nEND:VCARD`;
+            const b = new Blob([v], {type:'text/vcard'});
+            const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='Janith_ADM.vcf'; a.click();
         }
     </script>
 </body>
