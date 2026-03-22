@@ -1,0 +1,9 @@
+{
+  "name": "ADM Digital Card",
+  "short_name": "ADM Card",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050811",
+  "theme_color": "#0d237d",
+  "icons": [{ "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg", "sizes": "512x512", "type": "image/jpeg" }]
+}
