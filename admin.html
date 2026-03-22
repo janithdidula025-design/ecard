@@ -6,103 +6,67 @@
     <title>ADM Admin Dashboard</title>
     <link rel="manifest" href="manifest-admin.json">
     <style>
-        :root { --primary: #50e3c2; --bg: #050811; --card-bg: #112240; }
+        :root { --primary: #50e3c2; --bg: #050811; }
         body { margin: 0; background: var(--bg); color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
-        
-        #installBannerAdmin { display: none; width: 100%; background: var(--primary); color: #000; padding: 12px; position: fixed; top: 0; z-index: 1000; font-weight: bold; justify-content: space-between; align-items: center; box-sizing: border-box; }
-        #installBtnAdmin { background: #000; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        .dashboard { width: 90%; max-width: 420px; background: var(--card-bg); padding: 30px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.3); text-align: center; }
-        .admin-logo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; margin-bottom: 15px; cursor: pointer; box-shadow: 0 0 20px rgba(80, 227, 194, 0.2); }
-        
-        .title { font-size: 1.2rem; color: var(--primary); font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-        
-        input { width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 15px; border: 2px solid #233554; background: #0a192f; color: var(--primary); font-size: 1.8rem; text-align: center; font-weight: bold; box-sizing: border-box; outline: none; }
-        input:focus { border-color: var(--primary); }
-        
-        .btn-grid { display: flex; flex-direction: column; gap: 12px; }
-        .btn { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
+        #pwa-admin-inst { display: none; width: 100%; background: #fff; color: #000; padding: 12px; position: fixed; top: 0; z-index: 1000; font-weight: bold; justify-content: space-around; align-items: center; }
+        .card { width: 90%; max-width: 400px; background: #112240; padding: 30px 20px; border-radius: 35px; border: 1px solid var(--primary); text-align: center; }
+        .admin-logo { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--primary); cursor: pointer; margin-bottom: 15px; }
+        input[type="tel"] { width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 15px; border: 2px solid #233554; background: #0a192f; color: var(--primary); font-size: 1.8rem; text-align: center; font-weight: bold; box-sizing: border-box; outline: none; }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-wa { background: #25D366; color: white; }
-        .btn-call { background: #ccd6f6; color: #0a192f; }
+        .btn-call { background: #fff; color: #000; }
         .btn-sms { background: #007aff; color: white; }
-        .btn:active { transform: scale(0.96); }
-        
-        #usage { font-size: 0.8rem; margin-top: 20px; color: #8892b0; padding: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
-    <div id="installBannerAdmin">
-        <span>📲 ADM Admin App එක Install කරගන්න</span>
-        <button id="installBtnAdmin">INSTALL</button>
+    <div id="pwa-admin-inst">
+        <span>📲 ADM Admin App එක එක් කරන්න?</span>
+        <button onclick="installAdmin()" style="background:#000;color:#fff;padding:8px;border-radius:8px;border:none;">INSTALL</button>
     </div>
-
-    <div class="dashboard">
+    <div class="card">
         <img id="prev" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="admin-logo" onclick="document.getElementById('fileInp').click()">
         <input type="file" id="fileInp" accept="image/*" style="display: none;" onchange="updateLogo(this)">
-        
-        <div class="title">Class Management Panel</div>
-        
+        <div style="color:var(--primary); font-weight:bold; margin-bottom:15px;">ADMIN MANAGEMENT</div>
         <input type="tel" id="num" placeholder="07XXXXXXXX" maxlength="10">
-        
-        <div class="btn-grid">
+        <div class="btn-group">
             <button class="btn btn-wa" onclick="sendAction('wa')">📲 SEND CARD (WA)</button>
             <button class="btn btn-call" onclick="sendAction('call')">📞 CALL STUDENT</button>
             <button class="btn btn-sms" onclick="sendAction('sms')">💬 SEND SMS</button>
         </div>
-        
-        <div id="usage">SYSTEM READY | Usage: 0 / 1,000,000</div>
     </div>
-
     <script>
-        let defPrompt;
+        let adminPrompt;
+        window.onload = () => {
+            let saved = localStorage.getItem('adm_logo_data');
+            if(saved) document.getElementById('prev').src = saved;
+            if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+        };
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); defPrompt = e;
-            document.getElementById('installBannerAdmin').style.display = 'flex';
+            e.preventDefault(); adminPrompt = e;
+            document.getElementById('pwa-admin-inst').style.display = 'flex';
         });
-        document.getElementById('installBtnAdmin').addEventListener('click', async () => {
-            if (defPrompt) { defPrompt.prompt(); document.getElementById('installBannerAdmin').style.display = 'none'; }
-        });
-
+        function installAdmin() { if(adminPrompt) adminPrompt.prompt(); }
         function updateLogo(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     localStorage.setItem('adm_logo_data', e.target.result);
                     document.getElementById('prev').src = e.target.result;
+                    alert("ලෝගෝ එක වෙනස් වුණා! Index එක Refresh කරලා බලන්න.");
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
         function sendAction(type) {
             let n = document.getElementById('num').value;
             if(n.length < 10) return alert("අංකය පරීක්ෂා කරන්න!");
-            let cardLink = window.location.href.replace('admin.html', 'index.html');
-            let msg = encodeURIComponent(`ආයුබෝවන්! ADM පෞද්ගලික පන්ති මාලාවේ තොරතුරු මෙතැනින් ලබාගන්න: ${cardLink}`);
-
-            if(type === 'wa') {
-                let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-                localStorage.setItem('adm_send_count', count + 1);
-                updateUsage();
-                window.open(`https://wa.me/94${n.substring(1)}?text=${msg}`);
-            } else if(type === 'call') {
-                window.open(`tel:${n}`);
-            } else if(type === 'sms') {
-                window.open(`sms:${n}?body=${msg}`);
-            }
+            let link = window.location.href.replace('admin.html', 'index.html');
+            let msg = encodeURIComponent(`ආයුබෝවන්! ADM පන්ති විස්තර මෙතැනින්: ${link}`);
+            if(type==='wa') window.open(`https://wa.me/94${n.substring(1)}?text=${msg}`);
+            else if(type==='call') window.open(`tel:${n}`);
+            else if(type==='sms') window.open(`sms:${n}?body=${msg}`);
         }
-
-        function updateUsage() {
-            let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
-            document.getElementById('usage').innerText = `SYSTEM ACTIVE | Usage: ${count.toLocaleString()} / 1,000,000`;
-        }
-
-        window.onload = () => {
-            updateUsage();
-            let saved = localStorage.getItem('adm_logo_data');
-            if(saved) document.getElementById('prev').src = saved;
-            if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-        };
     </script>
 </body>
 </html>
