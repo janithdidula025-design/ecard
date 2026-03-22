@@ -7,27 +7,94 @@
     <link rel="manifest" href="manifest-admin.json">
     <meta name="theme-color" content="#50e3c2">
     <style>
-        body { margin: 0; background: #050811; color: white; font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .card { width: 90%; max-width: 400px; background: #111; padding: 30px; border-radius: 30px; border: 2px solid #50e3c2; text-align: center; }
-        input { width: 100%; padding: 20px; margin: 20px 0; border-radius: 15px; border: none; font-size: 1.5rem; text-align: center; box-sizing: border-box; }
-        .btn { width: 100%; padding: 18px; border-radius: 15px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; margin-bottom: 10px; }
+        :root { --primary: #50e3c2; --bg-dark: #050811; }
+        body { 
+            margin: 0; background: var(--bg-dark); color: white; 
+            font-family: 'Segoe UI', sans-serif; display: flex; 
+            align-items: center; justify-content: center; min-height: 100vh;
+        }
+        .card { 
+            width: 90%; max-width: 400px; background: #111; 
+            padding: 30px; border-radius: 40px; border: 2px solid var(--primary); 
+            text-align: center; box-shadow: 0 10px 30px rgba(80, 227, 194, 0.2);
+        }
+        .logo-preview { 
+            width: 100px; height: 100px; border-radius: 50%; 
+            border: 3px solid var(--primary); margin-bottom: 15px; cursor: pointer;
+        }
+        input { 
+            width: 100%; padding: 18px; margin: 20px 0; border-radius: 15px; 
+            border: 2px solid #333; background: #000; color: var(--primary); 
+            font-size: 1.8rem; text-align: center; font-weight: bold; box-sizing: border-box; 
+        }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; }
+        .btn { 
+            width: 100%; padding: 16px; border-radius: 15px; border: none; 
+            font-weight: bold; font-size: 1rem; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
         .btn-wa { background: #25D366; color: white; }
+        .btn-call { background: #fff; color: #000; }
+        .btn-sms { background: #007aff; color: white; }
+        
+        #usage { font-size: 0.8rem; margin-top: 15px; color: #555; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2 style="color:#50e3c2;">ADM ADMIN</h2>
+        <img id="prev" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="logo-preview" onclick="document.getElementById('fileInp').click()">
+        <input type="file" id="fileInp" accept="image/*" style="display: none;" onchange="updateLogo(this)">
+        
+        <h2 style="color:var(--primary); margin:0;">ADM ADMIN</h2>
+        <p style="font-size: 0.8rem; opacity: 0.6;">පාරිභෝගික අංකය ඇතුළත් කරන්න</p>
+        
         <input type="tel" id="num" placeholder="07XXXXXXXX" maxlength="10">
-        <button class="btn btn-wa" onclick="sendCard()">📲 SEND VIA WHATSAPP</button>
+        
+        <div class="btn-group">
+            <button class="btn btn-wa" onclick="sendAction('wa')">📲 SEND CARD (WA)</button>
+            
+            <button class="btn btn-call" onclick="sendAction('call')">📞 CALL CUSTOMER</button>
+            
+            <button class="btn btn-sms" onclick="sendAction('sms')">💬 SEND SMS</button>
+        </div>
+        
+        <div id="usage">ADM Digital Card Management</div>
     </div>
+
     <script>
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-        function sendCard() {
-            let n = document.getElementById('num').value;
-            if(n.length < 10) return alert("අංකය වැරදියි!");
-            let link = window.location.href.replace('admin.html', 'index.html');
-            window.open(`https://wa.me/94${n.substring(1)}?text=මෙන්න ADM Digital Card එක: ${link}`);
+
+        function updateLogo(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    localStorage.setItem('adm_logo_data', e.target.result);
+                    document.getElementById('prev').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
+
+        function sendAction(type) {
+            let n = document.getElementById('num').value;
+            if(n.length < 10) return alert("කරුණාකර නිවැරදි අංකයක් ඇතුළත් කරන්න!");
+            
+            let cardLink = window.location.href.replace('admin.html', 'index.html');
+            let message = encodeURIComponent(`ආයුබෝවන්! මෙන්න ADM Higher Education Digital Card එක: ${cardLink}`);
+
+            if(type === 'wa') {
+                window.open(`https://wa.me/94${n.substring(1)}?text=${message}`);
+            } else if(type === 'call') {
+                window.open(`tel:${n}`);
+            } else if(type === 'sms') {
+                window.open(`sms:${n}?body=${message}`);
+            }
+        }
+
+        window.onload = () => {
+            let saved = localStorage.getItem('adm_logo_data');
+            if(saved) document.getElementById('prev').src = saved;
+        };
     </script>
 </body>
 </html>
