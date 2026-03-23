@@ -51,6 +51,7 @@
 
     <div class="card">
         <div style="color: var(--primary); font-size: 0.75rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">ADM HIGHER EDUCATION</div>
+        
         <img id="profile-pic" 
              src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" 
              class="p-img" 
@@ -81,27 +82,43 @@
     <script>
         let deferredPrompt;
 
-        // Service Worker ලියාපදිංචිය
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+        // පින්තූරය Load කිරීමේ විශේෂ කොටස
+        function loadSharedLogo() {
+            const savedLogo = localStorage.getItem('adm_shared_logo');
+            if (savedLogo) {
+                document.getElementById('profile-pic').src = savedLogo;
+            }
+        }
+
+        // Service Worker ලියාපදිංචිය සහ Logo Load කිරීම
+        window.addEventListener('load', () => {
+            loadSharedLogo(); // පිටුව ආ ගමන් logo එක update කරන්න
+            
+            if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js')
                 .then(() => console.log("Service Worker Active"))
                 .catch(err => console.log("SW Error", err));
-            });
-        }
+            }
+        });
 
         async function saveVCard() {
-            const imgUrl = "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg";
+            // vCard එකටත් අලුත් logo එකම ගන්නවා
+            const currentImg = document.getElementById('profile-pic').src;
             let base64Img = "";
+            
             try {
-                const response = await fetch(imgUrl);
-                const blob = await response.blob();
-                const reader = new FileReader();
-                base64Img = await new Promise((resolve) => {
-                    reader.onloadend = () => resolve(reader.result.split(',')[1]);
-                    reader.readAsDataURL(blob);
-                });
-            } catch (e) { console.log("Photo failed to load for vCard"); }
+                if (currentImg.startsWith('data:image')) {
+                    base64Img = currentImg.split(',')[1];
+                } else {
+                    const response = await fetch(currentImg);
+                    const blob = await response.blob();
+                    const reader = new FileReader();
+                    base64Img = await new Promise((resolve) => {
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                        reader.readAsDataURL(blob);
+                    });
+                }
+            } catch (e) { console.log("vCard photo error"); }
 
             const vcard = 
                 "BEGIN:VCARD\n" +
@@ -129,11 +146,9 @@
             document.getElementById('actionGrid').style.display = 'grid';
         }
 
-        window.onload = () => {
-            if(localStorage.getItem('contact_saved') === 'true') {
-                showActions();
-            }
-        };
+        if(localStorage.getItem('contact_saved') === 'true') {
+            window.addEventListener('DOMContentLoaded', showActions);
+        }
 
         // PWA Install Logic
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -146,7 +161,6 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response: ${outcome}`);
                 deferredPrompt = null;
                 document.getElementById('pwa-installer').style.display = 'none';
             }
