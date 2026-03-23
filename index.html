@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Student Card</title>
 
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBFIGNhcmQiLAogICJzaG9ydF9uYW1lIjogIkFETUVjYXJkIiwKICAic3RhcnRfdXJsIjogIi4vaW5kZXguaHRtbCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGExOTJmIiwKICAidGhlbWVfY29sb3IiOiAiIzUwZTNjMiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qYW5pdGZkaWR1bGEwMjUtZGVzaWduL2FkbS12Y2FyZC9tYWluL2xvZ28uanBnIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWෑdlL2pwZyIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBFIGNhcmQiLAogICJzaG9ydF9uYW1lIjogIkFETUVjYXJkIiwKICAic3RhcnRfdXJsIjogImluZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBhMTkyZiIsCiAgInRoZW1lX2NvbG9yIjogIiM1MGUzYzIiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9hZG0tdmNhcmQvbWFpbi9sb2dvLmpwZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvanBnIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ==">
 
     <meta name="theme-color" content="#0a192f">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #000000); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #000000); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; overflow-x: hidden; }
         
-        /* Install Bar */
+        /* PWA Install Bar */
         #pwa-installer { 
             display: none; width: 100%; background: var(--primary); color: #000; 
             padding: 12px; position: fixed; top: 0; z-index: 1000; 
@@ -23,10 +27,11 @@
         }
         #btn-install { background: #000; color: #fff; border: none; padding: 8px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
-        .card { width: 88%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 40px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(15px); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-top: 60px; }
-        .p-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); margin-bottom: 15px; }
+        .card { width: 88%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 40px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(15px); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-top: 60px; position: relative; }
+        .p-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); margin-bottom: 15px; transition: 0.5s ease; }
         
         .info-box { background: rgba(0,0,0,0.3); padding: 18px; border-radius: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.85rem; line-height: 1.6; }
+
         .btn { width: 100%; padding: 16px; border-radius: 18px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.3s; box-sizing: border-box; }
         .btn-save { background: #fff; color: #0a192f; }
         
@@ -41,7 +46,7 @@
 
     <div id="pwa-installer">
         <span>📲 ADM Card එක App එකක් ලෙස එක් කරන්න?</span>
-        <button id="btn-install">Install</button>
+        <button id="btn-install">එක් කරන්න</button>
     </div>
 
     <div class="card">
@@ -52,7 +57,7 @@
              class="p-img" 
              onerror="this.src='https://via.placeholder.com/150?text=ADM'">
              
-        <h2 style="margin: 5px 0;">JANITH DIDULA</h2>
+        <h2 style="margin: 5px 0; color: white;">JANITH DIDULA</h2>
         <div style="color: var(--gold); font-size: 0.95rem; margin-bottom: 20px;">Organizer / Manager</div>
         
         <div class="info-box">
@@ -67,7 +72,7 @@
         </button>
 
         <div id="actionGrid" class="action-grid">
-            <a href="https://wa.me/94710658051" class="btn btn-action btn-wa">WA</a>
+            <a href="https://wa.me/94710658051" class="btn btn-action btn-wa">WhatsApp</a>
             <a href="tel:0710658051" class="btn btn-action btn-call">Call</a>
             <a href="sms:0710658051" class="btn btn-action btn-sms">SMS</a>
         </div>
@@ -76,31 +81,24 @@
     <script>
         let deferredPrompt;
 
-        // Admin එකෙන් වෙනස් කරපු Logo එක Load කරන Function එක
-        function updateLogo() {
+        // Admin එකෙන් එවන Logo එක Sync කිරීම
+        function syncLogo() {
             const savedLogo = localStorage.getItem('adm_shared_logo');
             if (savedLogo) {
                 document.getElementById('profile-pic').src = savedLogo;
-                console.log("Logo Updated from LocalStorage");
             }
         }
 
-        // පිටුව Load වන විට ක්‍රියාත්මක වන කොටස
         window.addEventListener('DOMContentLoaded', () => {
-            updateLogo(); // Logo එක update කරන්න
-
-            if (localStorage.getItem('contact_saved') === 'true') {
-                showActions();
-            }
+            syncLogo();
+            if(localStorage.getItem('contact_saved') === 'true') showActions();
 
             // Service Worker Register
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log("SW Registered"));
+                navigator.serviceWorker.register('./sw.js').then(() => console.log("SW Active"));
             }
         });
 
-        // vCard Save කිරීමේ පහසුකම
         async function saveVCard() {
             const currentImg = document.getElementById('profile-pic').src;
             let base64Img = "";
@@ -117,9 +115,13 @@
                         reader.readAsDataURL(blob);
                     });
                 }
-            } catch (e) { console.log("vCard Photo Error"); }
+            } catch (e) { console.log("vCard Photo Sync Error"); }
 
-            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Ed\nTEL;TYPE=CELL:0710658051\n" + (base64Img ? "PHOTO;ENCODING=b;TYPE=JPEG:" + base64Img + "\n" : "") + "END:VCARD";
+            const vcard = 
+                "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\n" +
+                (base64Img ? "PHOTO;ENCODING=b;TYPE=JPEG:" + base64Img + "\n" : "") +
+                "END:VCARD";
+
             const blob = new Blob([vcard], {type:'text/vcard'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -136,7 +138,7 @@
             document.getElementById('actionGrid').style.display = 'grid';
         }
 
-        // PWA Installation Logic
+        // PWA Install Logic
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
