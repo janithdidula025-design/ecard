@@ -3,50 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM E-Card</title>
+    <title>ADM Student Card</title>
+
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBFIGNhcmQiLAogICJzaG9ydF9uYW1lIjogIkFETUVjYXJkIiwKICAic3RhcnRfdXJsIjogIi4vaW5kZXguaHRtbCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGExOTJmIiwKICAidGhlbWVfY29sb3IiOiAiIzUwZTNjMiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qYW5pdGZkaWR1bGEwMjUtZGVzaWduL2FkbS12Y2FyZC9tYWluL2xvZ28uanBnIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWෑdlL2pwZyIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
 
     <meta name="theme-color" content="#0a192f">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
-
-    <link rel="manifest" href='data:application/json,{"name":"ADM E-Card","short_name":"ADMCard","start_url":"index.html","display":"standalone","background_color":"#0a192f","theme_color":"#50e3c2","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg","sizes":"512x512","type":"image/jpg","purpose":"any maskable"}]}'>
-
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #000000); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
         
+        /* Install Bar */
         #pwa-installer { 
             display: none; width: 100%; background: var(--primary); color: #000; 
             padding: 12px; position: fixed; top: 0; z-index: 1000; 
             font-weight: bold; justify-content: space-around; align-items: center; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
         }
-
         #btn-install { background: #000; color: #fff; border: none; padding: 8px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
         .card { width: 88%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 40px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(15px); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-top: 60px; }
         .p-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); margin-bottom: 15px; }
         
         .info-box { background: rgba(0,0,0,0.3); padding: 18px; border-radius: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.85rem; line-height: 1.6; }
-
         .btn { width: 100%; padding: 16px; border-radius: 18px; text-decoration: none; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.3s; box-sizing: border-box; }
         .btn-save { background: #fff; color: #0a192f; }
         
         .action-grid { display: none; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
-        .btn-action { flex-direction: column; padding: 12px 5px; font-size: 0.75rem; border-radius: 15px; text-decoration: none; display: flex; align-items: center; }
-        .btn-wa { background: #25D366; color: white; }
-        .btn-call { background: #3498db; color: white; }
-        .btn-sms { background: #f39c12; color: white; }
+        .btn-action { flex-direction: column; padding: 12px 5px; font-size: 0.75rem; border-radius: 15px; text-decoration: none; display: flex; align-items: center; color: white; }
+        .btn-wa { background: #25D366; }
+        .btn-call { background: #3498db; }
+        .btn-sms { background: #f39c12; }
     </style>
 </head>
 <body>
 
     <div id="pwa-installer">
         <span>📲 ADM Card එක App එකක් ලෙස එක් කරන්න?</span>
-        <button id="btn-install">එක් කරන්න</button>
+        <button id="btn-install">Install</button>
     </div>
 
     <div class="card">
@@ -55,7 +50,6 @@
         <img id="profile-pic" 
              src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" 
              class="p-img" 
-             crossorigin="anonymous"
              onerror="this.src='https://via.placeholder.com/150?text=ADM'">
              
         <h2 style="margin: 5px 0;">JANITH DIDULA</h2>
@@ -73,7 +67,7 @@
         </button>
 
         <div id="actionGrid" class="action-grid">
-            <a href="https://wa.me/94710658051" class="btn btn-action btn-wa">WhatsApp</a>
+            <a href="https://wa.me/94710658051" class="btn btn-action btn-wa">WA</a>
             <a href="tel:0710658051" class="btn btn-action btn-call">Call</a>
             <a href="sms:0710658051" class="btn btn-action btn-sms">SMS</a>
         </div>
@@ -82,27 +76,32 @@
     <script>
         let deferredPrompt;
 
-        // පින්තූරය Load කිරීමේ විශේෂ කොටස
-        function loadSharedLogo() {
+        // Admin එකෙන් වෙනස් කරපු Logo එක Load කරන Function එක
+        function updateLogo() {
             const savedLogo = localStorage.getItem('adm_shared_logo');
             if (savedLogo) {
                 document.getElementById('profile-pic').src = savedLogo;
+                console.log("Logo Updated from LocalStorage");
             }
         }
 
-        // Service Worker ලියාපදිංචිය සහ Logo Load කිරීම
-        window.addEventListener('load', () => {
-            loadSharedLogo(); // පිටුව ආ ගමන් logo එක update කරන්න
-            
+        // පිටුව Load වන විට ක්‍රියාත්මක වන කොටස
+        window.addEventListener('DOMContentLoaded', () => {
+            updateLogo(); // Logo එක update කරන්න
+
+            if (localStorage.getItem('contact_saved') === 'true') {
+                showActions();
+            }
+
+            // Service Worker Register
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log("Service Worker Active"))
-                .catch(err => console.log("SW Error", err));
+                .then(() => console.log("SW Registered"));
             }
         });
 
+        // vCard Save කිරීමේ පහසුකම
         async function saveVCard() {
-            // vCard එකටත් අලුත් logo එකම ගන්නවා
             const currentImg = document.getElementById('profile-pic').src;
             let base64Img = "";
             
@@ -118,18 +117,9 @@
                         reader.readAsDataURL(blob);
                     });
                 }
-            } catch (e) { console.log("vCard photo error"); }
+            } catch (e) { console.log("vCard Photo Error"); }
 
-            const vcard = 
-                "BEGIN:VCARD\n" +
-                "VERSION:3.0\n" +
-                "FN:Janith Didula (ADM)\n" +
-                "ORG:ADM Higher Education\n" +
-                "TEL;TYPE=CELL:0710658051\n" +
-                "EMAIL:janithdidula@gmail.com\n" +
-                (base64Img ? "PHOTO;ENCODING=b;TYPE=JPEG:" + base64Img + "\n" : "") +
-                "END:VCARD";
-
+            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Ed\nTEL;TYPE=CELL:0710658051\n" + (base64Img ? "PHOTO;ENCODING=b;TYPE=JPEG:" + base64Img + "\n" : "") + "END:VCARD";
             const blob = new Blob([vcard], {type:'text/vcard'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -146,11 +136,7 @@
             document.getElementById('actionGrid').style.display = 'grid';
         }
 
-        if(localStorage.getItem('contact_saved') === 'true') {
-            window.addEventListener('DOMContentLoaded', showActions);
-        }
-
-        // PWA Install Logic
+        // PWA Installation Logic
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -160,14 +146,9 @@
         document.getElementById('btn-install').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
                 document.getElementById('pwa-installer').style.display = 'none';
             }
-        });
-
-        window.addEventListener('appinstalled', () => {
-            document.getElementById('pwa-installer').style.display = 'none';
         });
     </script>
 </body>
