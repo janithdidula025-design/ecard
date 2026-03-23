@@ -1,10 +1,11 @@
-const CACHE_NAME = 'adm-vcard-v3';
-const assets = ['./', './index.html', './admin.html', './manifest-card.json', './manifest-admin.json'];
-
-self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(assets)));
-});
-
-self.addEventListener('fetch', (e) => {
-  e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)));
-});
+{
+  "name": "ADM Student Card",
+  "short_name": "ADM Card",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0a192f",
+  "theme_color": "#0d237d",
+  "icons": [
+    { "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg", "sizes": "192x192", "type": "image/jpeg" }
+  ]
+}
