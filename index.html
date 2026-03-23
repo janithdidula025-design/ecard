@@ -4,8 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Student Card</title>
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQURNIFN0dWRlbnQgQ2FyZCIsInNob3J0X25hbWUiOiJBRE0gQ2FyZCIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjMGQyMzdkIiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qYW5pdGZkaWR1bGEwMjUtZGVzaWduL2FkbS12Y2FyZC9tYWluL2xvZ28uanBnIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL2pwZWcifV19">
-<style>
+<link rel="manifest" href="manifest-card.json">
+
+<div id="install-container" style="display: none; padding: 15px; background: #50e3c2; text-align: center; position: fixed; top: 0; width: 100%; z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+    <span style="color: #000; font-weight: bold; margin-right: 15px;">ADM App එක පෝන් එකට ගන්න 📲</span>
+    <button id="btn-install-now" style="background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer;">INSTALL</button>
+</div>
+
+<script>
+    let deferredPrompt;
+    const installContainer = document.getElementById('install-container');
+    const installBtn = document.getElementById('btn-install-now');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // බ්‍රවුසර් එකේ default prompt එක නවත්තනවා
+        e.preventDefault();
+        deferredPrompt = e;
+        // අපේ Install Button එක පෙන්වනවා
+        installContainer.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+            installContainer.style.display = 'none';
+        }
+    });
+
+    // App එක Install වුණාම Button එක හංගන්න
+    window.addEventListener('appinstalled', () => {
+        installContainer.style.display = 'none';
+        deferredPrompt = null;
+    });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+</script>
+    <style>
     <meta name="theme-color" content="#0d237d">
     <style>
         :root { --primary: #50e3c2; --gold: #ffd700; --dark-blue: #0a192f; }
