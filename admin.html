@@ -85,7 +85,7 @@
         function execute(type) {
             const num = document.getElementById('phone').value;
             if (num.length < 10) return alert("අංකය වැරදියි!");
-            const link = "https://janithdidula025-design.github.io/index.html";
+            const link = "https://janithdidula025-design.github.io/ecard/index.html";
             const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`);
             if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
             if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
