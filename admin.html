@@ -4,46 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Admin Dashboard</title>
-<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBFIGNhcmQiLAogICJzaG9ydF9uYW1lIjogIkFETUVjYXJkIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDAwMDAwIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmY2MwMCIsCiAgImljb25zIjogW3sgInNyYyI6ICJodHRwczovL2ltZy5pY29uczguY29tL2ZsdWVuY3kvNTEyL21hbmFnZXIucG5nIiwgInNpemVzIjogIjUxMng1MTIiLCAidHlwZSI6ICJodHRwczovL2ltZy5pY29uczguY29tL2ZsdWVuY3kvNTEyL21hbmFnZXIucG5nIn1dCn0=">
 
-<style>
-  #install-banner {
-    display: none; /* මුලින් පේන්නේ නැහැ, පස්සේ දිස්වෙයි */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: #4ade80; /* ලස්සන කොළ පාට */
-    color: black;
-    padding: 10px 15px;
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bold;
-    z-index: 10000;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    justify-content: space-between;
-    align-items: center;
-    display: none; /* Default hidden */
-  }
-  #install-button {
-    background: black;
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 8px;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-  }
-</style>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBFIGNhcmQiLAogICJzaG9ydF9uYW1lIjogIkFETUVjYXJkIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDAwMDAwIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmY2MwMCIsCiAgImljb25zIjogW3sgInNyYyI6ICJodHRwczovL2ltZy5pY29uczguY29tL2ZsdWVuY3kvNTEyL21hbmFnZXIucG5nIiwgInNpemVzIjogIjUxMng1MTIiLCAidHlwZSI6ICJpbWFnZS9wbmciIH1dCn0=">
+
     <style>
         :root { --primary: #50e3c2; --bg: #050811; --card: #112240; }
         body { margin: 0; background: var(--bg); color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; }
-        
-        #pwa-admin-inst { display: none; width: 100%; background: #fff; color: #000; padding: 12px; position: fixed; top: 0; z-index: 1000; font-weight: bold; justify-content: space-around; align-items: center; }
-        
-        .dashboard { width: 90%; max-width: 400px; background: var(--card); padding: 30px 20px; border-radius: 40px; border: 1px solid var(--primary); text-align: center; box-shadow: 0 10px 40px rgba(80, 227, 194, 0.1); }
+
+        /* Install Banner එකේ පෙනුම */
+        #install-banner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #4ade80;
+            color: black;
+            padding: 10px 15px;
+            text-align: center;
+            font-weight: bold;
+            z-index: 10000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        #install-button {
+            background: black;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Dashboard එකේ පෙනුම */
+        .dashboard { width: 90%; max-width: 400px; background: var(--card); padding: 30px 20px; border-radius: 40px; border: 1px solid var(--primary); text-align: center; box-shadow: 0 10px 40px rgba(80, 227, 194, 0.1); margin-top: 60px; }
         .logo-box { position: relative; display: inline-block; cursor: pointer; margin-bottom: 15px; }
         .admin-logo { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; box-shadow: 0 0 20px rgba(80,227,194,0.2); }
         .edit-badge { position: absolute; bottom: 5px; right: 5px; background: var(--primary); color: #000; font-size: 10px; padding: 4px; border-radius: 50%; font-weight: bold; }
@@ -58,10 +57,11 @@
     </style>
 </head>
 <body>
-    <div id="install-banner" style="display: none; display: flex;">
-  <span>📲 ADM Admin App Install ?</span>
-  <button id="install-button>Install </button>
-</div>
+
+    <div id="install-banner">
+        <span>📲 ADM Admin App Install?</span>
+        <button id="install-button">එක් කරන්න</button>
+    </div>
    
     <div class="dashboard">
         <div class="logo-box" onclick="document.getElementById('fileInp').click()">
@@ -80,70 +80,69 @@
             <button class="btn btn-call" onclick="sendAction('call')">📞 CALL STUDENT</button>
         </div>
     </div>
-    <script>
-let deferredPrompt;
-const installBanner = document.getElementById('install-banner');
-const installButton = document.getElementById('install-button');
-
-// මුලින්ම බැනර් එක හංගලා තියමු
-installBanner.style.display = 'none';
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Browser එකේ default එක නවත්වන්න
-  e.preventDefault();
-  deferredPrompt = e;
-  // දැන් අපේ බැනර් එක පෙන්වන්න
-  installBanner.style.display = 'flex';
-});
-
-installButton.addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      console.log('App එක Install කළා');
-    }
-    deferredPrompt = null;
-    installBanner.style.display = 'none';
-  }
-});
-        
-    </script>
 
     <script>
-        let adminPrompt;
-        window.onload = () => {
-            let saved = localStorage.getItem('adm_logo_data');
-            if(saved) document.getElementById('prev').src = saved;
-            if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-        };
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const installButton = document.getElementById('install-button');
+
+        // Service Worker Register කිරීම
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Service Worker Registered"));
+        }
+
+        // Install කිරීමේ හැකියාව ඇති විට බැනර් එක පෙන්වීම
         window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); adminPrompt = e;
-            document.getElementById('pwa-admin-inst').style.display = 'flex';
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.style.display = 'flex';
         });
-        function installAdmin() { if(adminPrompt) adminPrompt.prompt(); }
 
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted install');
+                }
+                deferredPrompt = null;
+                installBanner.style.display = 'none';
+            }
+        });
+
+        // Logo එක Update කිරීම
         function updateLogo(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     localStorage.setItem('adm_logo_data', e.target.result);
                     document.getElementById('prev').src = e.target.result;
-                    alert("Logo Updated! Index එක Refresh කරලා බලන්න.");
+                    alert("Logo Updated!");
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
+        // Action Buttons (WhatsApp, SMS, Call)
         function sendAction(type) {
             let n = document.getElementById('num').value;
             if(n.length < 10) return alert("අංකය පරීක්ෂා කරන්න!");
-            let link = window.location.href.replace('admin.html', 'index.html');
+            
+            // index.html එකේ link එක (GitHub Pages වලට ගැලපෙන ලෙස)
+            let link = window.location.href.split('admin.html')[0] + 'index.html';
             let msg = encodeURIComponent(`ආයුබෝවන්! ADM පන්ති විස්තර මෙතැනින් ලබාගන්න: ${link}`);
+            
             if(type==='wa') window.open(`https://wa.me/94${n.substring(1)}?text=${msg}`);
             else if(type==='call') window.open(`tel:${n}`);
             else if(type==='sms') window.open(`sms:${n}?body=${msg}`);
         }
+
+        // පිටුව Load වෙද්දී Saved Logo එක ගැනීම
+        window.onload = () => {
+            let saved = localStorage.getItem('adm_logo_data');
+            if(saved) document.getElementById('prev').src = saved;
+        };
     </script>
 </body>
 </html>
