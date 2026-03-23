@@ -3,216 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM Central | Control Panel</title>
+    <title>ADM Admin Panel</title>
 
+    <meta name="theme-color" content="#0a192f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
 
-    <link rel="manifest" href='data:application/json,{
-      "name": "ADM Central Admin",
-      "short_name": "ADM Admin",
-      "start_url": "./admin.html", 
-      "display": "standalone",
-      "background_color": "#0a192f",
-      "theme_color": "#64ffda",
-      "icons": [
-        {
-          "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg",
-          "sizes": "192x192",
-          "type": "image/jpg",
-          "purpose": "any maskable"
-        },
-        {
-          "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg",
-          "sizes": "512x512",
-          "type": "image/jpg",
-          "purpose": "any maskable"
-        }
-      ]
-    }'>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBBZG1pbiIsCiAgInNob3J0X25hbWUiOiAiQURNIEFkbWluIiwKICAic3RhcnRfdXJsIjogIi4vYWRtaW4uaHRtbCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGExOTJmIiwKICAidGhlbWVfY29sb3IiOiAiIzY0ZmZkYSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qYW5pdGhkaWR1bGEwMjUtZGVzaWduL2FkbS12Y2FyZC9tYWluL2xvZ28uanBnIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWAGEvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfQogIF0KfQ==">
 
     <style>
-        :root {
-            --accent: #64ffda; 
-            --bg-dark: #0a192f; 
-            --card-bg: #112240; 
-            --text-main: #ccd6f6;
-            --text-dim: #8892b0;
-            --white: #ffffff;
-        }
+        :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
+        body { margin: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-top: 80px; }
 
-        body {
-            margin: 0;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding-top: 70px;
-        }
-
-        /* මුලින් සඟවා තබන්න */
         #install-prompt {
-            display: none; 
-            position: fixed;
-            top: 0;
-            left: 0;
-            background: var(--accent);
-            color: #020c1b;
-            padding: 12px 0;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            z-index: 10000;
-            align-items: center;
-            width: 100%;
-            justify-content: space-around;
+            display: none; position: fixed; top: 0; left: 0; background: var(--accent); color: #020c1b;
+            padding: 15px; font-weight: bold; width: 100%; z-index: 10000; justify-content: space-around; align-items: center;
         }
 
-        #install-prompt button {
-            background: #020c1b;
-            color: var(--accent);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        #install-prompt button { background: #020c1b; color: var(--accent); border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        header { width: 100%; padding: 20px 0; text-align: center; }
-        .profile-section { position: relative; width: 110px; height: 110px; margin: 0 auto 15px; }
-        .profile-section img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); padding: 4px; background: var(--card-bg); }
-        .upload-btn { position: absolute; bottom: 2px; right: 2px; background: var(--accent); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg-dark); }
-        h2 { margin: 10px 0 0; color: var(--white); font-size: 1.4rem; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
-        p { color: var(--accent); font-size: 0.8rem; margin-top: 5px; font-weight: 500; opacity: 0.8; }
+        .profile-section { position: relative; width: 110px; height: 110px; margin-bottom: 20px; }
+        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; }
 
-        .main-card {
-            width: 85%;
-            max-width: 380px;
-            background: var(--card-bg);
-            padding: 30px 20px;
-            border-radius: 28px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(100, 255, 218, 0.05);
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .main-card { width: 85%; max-width: 380px; background: var(--card-bg); padding: 30px 20px; border-radius: 28px; text-align: center; }
 
-        input[type="tel"] {
-            width: 100%;
-            background: #020c1b;
-            border: 2px solid #233554;
-            border-radius: 16px;
-            padding: 18px;
-            color: var(--accent);
-            font-size: 1.6rem;
-            text-align: center;
-            font-weight: bold;
-            box-sizing: border-box;
-            outline: none;
-            margin-bottom: 20px;
-        }
+        input { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 16px; padding: 18px; color: var(--accent); font-size: 1.5rem; text-align: center; margin-bottom: 20px; outline: none; box-sizing: border-box; }
 
-        .actions { display: grid; gap: 12px; }
-        .btn { padding: 16px; border-radius: 14px; border: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
-        .btn-call { background: var(--text-main); color: var(--bg-dark); }
-        .footer-tag { font-size: 0.7rem; color: var(--text-dim); padding-bottom: 20px; }
+        .btn-call { background: #fff; color: #000; }
     </style>
 </head>
 <body>
 
     <div id="install-prompt">
-        <span>Admin App එක එක් කරන්න?</span>
-        <button onclick="installApp()">එක් කරන්න</button>
+        <span>ADM Admin App එක එක් කරන්න?</span>
+        <button id="btn-install">එක් කරන්න</button>
     </div>
 
-    <header>
-        <div class="profile-section">
-            <img id="logo-preview" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" alt="Logo">
-            <label for="file-upload" class="upload-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#020c1b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-            </label>
-            <input type="file" id="file-upload" accept="image/*" style="display:none" onchange="previewLogo(this)">
-        </div>
-        <h2>ADM CENTRAL</h2>
-        <p>MANAGEMENT & DISPATCH</p>
-    </header>
+    <div class="profile-section">
+        <img id="logo-preview" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+    </div>
 
     <div class="main-card">
         <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-        <div class="actions">
-            <button class="btn btn-wa" onclick="execute('wa')">WhatsApp Card</button>
-            <button class="btn btn-sms" onclick="execute('sms')">Direct SMS</button>
-            <button class="btn btn-call" onclick="execute('call')">Call Student</button>
-        </div>
+        <button class="btn btn-wa" onclick="execute('wa')">WhatsApp Link Send</button>
+        <button class="btn btn-sms" onclick="execute('sms')">SMS Send</button>
+        <button class="btn btn-call" onclick="execute('call')">Call Now</button>
     </div>
-
-    <div class="footer-tag">SYSTEM v2.0 • SECURE ACCESS</div>
 
     <script>
         let deferredPrompt;
 
-        // Browser එකට Install කළ හැකි බව හඳුනා ගත් විට Prompt එක පෙන්වයි
+        // Service Worker එක Register කිරීම (Install වීමට මෙය අත්‍යවශ්‍යයි)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('SW Registered');
+                }).catch(err => console.log('SW Failed', err));
+            });
+        }
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             document.getElementById('install-prompt').style.display = 'flex';
         });
 
-        async function installApp() {
+        document.getElementById('btn-install').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('Admin App installed');
-                }
                 deferredPrompt = null;
                 document.getElementById('install-prompt').style.display = 'none';
             }
-        }
-
-        // දැනටමත් install වී ඇත්නම් බැනරය සඟවන්න
-        window.addEventListener('appinstalled', () => {
-            document.getElementById('install-prompt').style.display = 'none';
         });
-
-        function previewLogo(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.getElementById('logo-preview').src = e.target.result;
-                    localStorage.setItem('adm_custom_logo', e.target.result);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
 
         function execute(type) {
             const num = document.getElementById('phone').value;
-            if (num.length < 10) return alert("කරුණාකර අංකය ඇතුළත් කරන්න.");
+            if (num.length < 10) return alert("අංකය නිවැරදිව ඇතුළත් කරන්න.");
 
-            // Student App එකේ ලිපිනය - මෙය නිවැරදිව තැබිය යුතුයි
             let cardUrl = "https://janithdidula025-design.github.io/index.html";
-            const savedLogo = localStorage.getItem('adm_custom_logo');
-            
-            if (savedLogo) {
-                cardUrl += "?img=" + encodeURIComponent(savedLogo);
-            }
-
-            const msg = encodeURIComponent(`ඔබේ ADM Digital Card එක මෙතැනින් ලබාගන්න: ${cardUrl}`);
+            const msg = encodeURIComponent(`ඔබේ ADM Digital Card එක ලබාගන්න: ${cardUrl}`);
 
             if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
             if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
             if(type === 'call') window.open(`tel:${num}`);
         }
-
-        window.onload = () => {
-            const savedLogo = localStorage.getItem('adm_custom_logo');
-            if (savedLogo) document.getElementById('logo-preview').src = savedLogo;
-        };
     </script>
 </body>
 </html>
