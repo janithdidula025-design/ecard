@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM Student Card</title>
+    <title>ADM E-Card</title>
 
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBFIGNhcmQiLAogICJzaG9ydF9uYW1lIjogIkFETUVjYXJkIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDAwMDAwIiwKICAidGhlbWVfY29sb3IiOiAiI2ZmY2MwMCIsCiAgImljb25zIjogW3sgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi80ODMvNDgzNDk3LnBuZyIsICJzaXplcyI6ICI1MTJ4NTEyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIiB9XQp9">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBFIGNhcmQiLAogICJzaG9ydF9uYW1lIjogIkFETUVjYXJkIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAib3JpZW50YXRpb24iOiAicG9ydHJhaXQiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYTE5MmYiLAogICJ0aGVtZV9jb2xvciI6ICIjNTBlM2MyIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnMtcG5nLmZsYXRpY29uLmNvbS81MTIvNDgzLzQ4MzQ5Ny5wbmciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0KICBdCn0=">
+
     <style>
         :root { --primary: #50e3c2; --gold: #ffd700; --dark-blue: #0a192f; }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #0a192f); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; overflow-x: hidden; }
@@ -24,6 +25,7 @@
             justify-content: space-around; 
             align-items: center; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            box-sizing: border-box;
         }
         #btn-install { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
@@ -56,7 +58,8 @@
         <div class="info-box">
             📍 මීගමුව පාර, නාරම්මල (ADM Institute)<br>
             🎓 Hall Class <br>
-            📞 071 065 8051
+            📞 071 065 8051 <br>
+            Email :janithdidula025@gmail
         </div>
 
         <a href="https://wa.me/94710658051" class="btn btn-wa">
@@ -70,14 +73,14 @@
         let deferredPrompt;
 
         window.onload = () => {
-            // Admin එකෙන් වෙනස් කළ Logo එක පෙන්වීමට
+            // Admin එකෙන් සේව් කළ Logo එක පෙන්වීම
             let savedLogo = localStorage.getItem('adm_logo_data');
             if (savedLogo) document.getElementById('cardLogo').src = savedLogo;
             
-            // Service Worker Register කිරීම
+            // Service Worker Register කිරීම (PWA සඳහා අත්‍යවශ්‍යයි)
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js')
-                .then(() => console.log("Service Worker Registered"));
+                .then(() => console.log("Service Worker Registered Success"));
             }
         };
 
@@ -85,7 +88,6 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Install Banner එක පෙන්වනවා
             document.getElementById('pwa-installer').style.display = 'flex';
         });
 
@@ -94,9 +96,10 @@
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    document.getElementById('pwa-installer').style.display = 'none';
+                    console.log('App Installed');
                 }
                 deferredPrompt = null;
+                document.getElementById('pwa-installer').style.display = 'none';
             }
         });
 
