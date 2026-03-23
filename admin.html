@@ -9,9 +9,9 @@
     <link rel="icon" type="image/png" sizes="192x192" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
 
     <link rel="manifest" href='data:application/json,{
-      "name": "ADM Central Control",
+      "name": "ADM Central Admin",
       "short_name": "ADM Admin",
-      "start_url": "admin.html",
+      "start_url": "./admin.html", 
       "display": "standalone",
       "background_color": "#0a192f",
       "theme_color": "#64ffda",
@@ -53,8 +53,9 @@
             padding-top: 70px;
         }
 
+        /* මුලින් සඟවා තබන්න */
         #install-prompt {
-            display: flex;
+            display: none; 
             position: fixed;
             top: 0;
             left: 0;
@@ -79,44 +80,10 @@
             font-weight: bold;
         }
 
-        header {
-            width: 100%;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        .profile-section {
-            position: relative;
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 15px;
-        }
-
-        .profile-section img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent);
-            padding: 4px;
-            background: var(--card-bg);
-        }
-
-        .upload-btn {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            background: var(--accent);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px solid var(--bg-dark);
-        }
-
+        header { width: 100%; padding: 20px 0; text-align: center; }
+        .profile-section { position: relative; width: 110px; height: 110px; margin: 0 auto 15px; }
+        .profile-section img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); padding: 4px; background: var(--card-bg); }
+        .upload-btn { position: absolute; bottom: 2px; right: 2px; background: var(--accent); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg-dark); }
         h2 { margin: 10px 0 0; color: var(--white); font-size: 1.4rem; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
         p { color: var(--accent); font-size: 0.8rem; margin-top: 5px; font-weight: 500; opacity: 0.8; }
 
@@ -148,24 +115,10 @@
         }
 
         .actions { display: grid; gap: 12px; }
-
-        .btn {
-            padding: 16px;
-            border-radius: 14px;
-            border: none;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
+        .btn { padding: 16px; border-radius: 14px; border: none; font-weight: bold; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
         .btn-call { background: var(--text-main); color: var(--bg-dark); }
-
         .footer-tag { font-size: 0.7rem; color: var(--text-dim); padding-bottom: 20px; }
     </style>
 </head>
@@ -202,6 +155,7 @@
     <script>
         let deferredPrompt;
 
+        // Browser එකට Install කළ හැකි බව හඳුනා ගත් විට Prompt එක පෙන්වයි
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -211,18 +165,25 @@
         async function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                await deferredPrompt.userChoice;
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Admin App installed');
+                }
                 deferredPrompt = null;
                 document.getElementById('install-prompt').style.display = 'none';
             }
         }
+
+        // දැනටමත් install වී ඇත්නම් බැනරය සඟවන්න
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('install-prompt').style.display = 'none';
+        });
 
         function previewLogo(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     document.getElementById('logo-preview').src = e.target.result;
-                    // මෙතනදී අපි image data එක localStorage එකේ සේව් කරනවා
                     localStorage.setItem('adm_custom_logo', e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);
@@ -233,14 +194,11 @@
             const num = document.getElementById('phone').value;
             if (num.length < 10) return alert("කරුණාකර අංකය ඇතුළත් කරන්න.");
 
+            // Student App එකේ ලිපිනය - මෙය නිවැරදිව තැබිය යුතුයි
             let cardUrl = "https://janithdidula025-design.github.io/index.html";
-            
-            // වැදගත්: සේව් කර ඇති ලෝගෝ එක URL එකට එකතු කිරීම
             const savedLogo = localStorage.getItem('adm_custom_logo');
+            
             if (savedLogo) {
-                // රූපය URL එකක් ලෙස යැවීමට නම් එය encode කළ යුතුයි
-                // සටහන: Image data එක ඉතා විශාල නම් URL එක වැඩ නොකරන්න ඉඩ ඇත.
-                // එවිට GitHub link එකක් භාවිතා කිරීම වඩාත් සුදුසුයි.
                 cardUrl += "?img=" + encodeURIComponent(savedLogo);
             }
 
