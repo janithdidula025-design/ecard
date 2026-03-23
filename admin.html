@@ -5,13 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Central | Control Panel</title>
 
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBDZW50cmFsIiwKICAic2hvcnRfbmFtZSI6ICJBRE1DZW50cmFsIiwKICAic3RhcnRfdXJsIjogImFkbWluLmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIzBhMTkyZiIsCiAgInRoZW1lX2NvbG9yIjogIiM2NGZmZGEiLAogICJpY29ucyI6IFt7ICJzcmMiOiAiaHR0cHM6Ly9pbWcuaWNvbnM4LmNvbS9mbHVlbmN5LzUxMi9hZG1pbi1zZXR0aW5ncy5wbmciLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3BuZyIgfV0KfQ==">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+
+    <link rel="manifest" href='data:application/json,{
+      "name": "ADM Central Control",
+      "short_name": "ADM Admin",
+      "start_url": "admin.html",
+      "display": "standalone",
+      "background_color": "#0a192f",
+      "theme_color": "#64ffda",
+      "icons": [
+        {
+          "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg",
+          "sizes": "192x192",
+          "type": "image/jpg",
+          "purpose": "any maskable"
+        },
+        {
+          "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg",
+          "sizes": "512x512",
+          "type": "image/jpg",
+          "purpose": "any maskable"
+        }
+      ]
+    }'>
 
     <style>
         :root {
-            --accent: #64ffda; /* Neon Green */
-            --bg-dark: #0a192f; /* Deep Navy */
-            --card-bg: #112240; /* Lighter Navy */
+            --accent: #64ffda; 
+            --bg-dark: #0a192f; 
+            --card-bg: #112240; 
             --text-main: #ccd6f6;
             --text-dim: #8892b0;
             --white: #ffffff;
@@ -26,46 +50,38 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            padding-top: 70px;
         }
 
-        /* Install Banner */
         #install-prompt {
-            display: none;
+            display: flex;
             position: fixed;
-            top: 20px;
+            top: 0;
+            left: 0;
             background: var(--accent);
             color: #020c1b;
-            padding: 10px 20px;
-            border-radius: 12px;
+            padding: 12px 0;
             font-weight: bold;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            z-index: 10000;
             align-items: center;
-            gap: 15px;
-            width: 85%;
-            max-width: 350px;
-            justify-content: space-between;
-            animation: slideDown 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100px); }
-            to { transform: translateY(0); }
+            width: 100%;
+            justify-content: space-around;
         }
 
         #install-prompt button {
             background: #020c1b;
             color: var(--accent);
             border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
+            padding: 8px 20px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
         }
 
         header {
             width: 100%;
-            padding: 50px 0 30px;
+            padding: 20px 0;
             text-align: center;
         }
 
@@ -98,19 +114,10 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             border: 2px solid var(--bg-dark);
         }
 
-        h2 { 
-            margin: 10px 0 0; 
-            color: var(--white); 
-            font-size: 1.4rem; 
-            letter-spacing: 3px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-        
+        h2 { margin: 10px 0 0; color: var(--white); font-size: 1.4rem; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
         p { color: var(--accent); font-size: 0.8rem; margin-top: 5px; font-weight: 500; opacity: 0.8; }
 
         .main-card {
@@ -122,6 +129,7 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(100, 255, 218, 0.05);
             text-align: center;
+            margin-bottom: 30px;
         }
 
         input[type="tel"] {
@@ -136,13 +144,7 @@
             font-weight: bold;
             box-sizing: border-box;
             outline: none;
-            transition: 0.3s;
             margin-bottom: 20px;
-        }
-
-        input[type="tel"]:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(100, 255, 218, 0.1);
         }
 
         .actions { display: grid; gap: 12px; }
@@ -158,27 +160,19 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: transform 0.2s, opacity 0.2s;
         }
-
-        .btn:active { transform: scale(0.97); }
 
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
         .btn-call { background: var(--text-main); color: var(--bg-dark); }
 
-        .footer-tag {
-            margin-top: 30px;
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            letter-spacing: 1px;
-        }
+        .footer-tag { font-size: 0.7rem; color: var(--text-dim); padding-bottom: 20px; }
     </style>
 </head>
 <body>
 
     <div id="install-prompt">
-        <span>Admin App එක Install කරන්නද?</span>
+        <span>Admin App එක එක් කරන්න?</span>
         <button onclick="installApp()">එක් කරන්න</button>
     </div>
 
@@ -196,20 +190,10 @@
 
     <div class="main-card">
         <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-
         <div class="actions">
-            <button class="btn btn-wa" onclick="execute('wa')">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                WhatsApp Card
-            </button>
-            <button class="btn btn-sms" onclick="execute('sms')">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                Direct SMS
-            </button>
-            <button class="btn btn-call" onclick="execute('call')">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                Call Student
-            </button>
+            <button class="btn btn-wa" onclick="execute('wa')">WhatsApp Card</button>
+            <button class="btn btn-sms" onclick="execute('sms')">Direct SMS</button>
+            <button class="btn btn-call" onclick="execute('call')">Call Student</button>
         </div>
     </div>
 
@@ -236,36 +220,40 @@
         function previewLogo(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e) => {
                     document.getElementById('logo-preview').src = e.target.result;
+                    // මෙතනදී අපි image data එක localStorage එකේ සේව් කරනවා
                     localStorage.setItem('adm_custom_logo', e.target.result);
-                }
+                };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
         function execute(type) {
             const num = document.getElementById('phone').value;
-            if (num.length < 10) return alert("කරුණාකර නිවැරදි අංකය ඇතුළත් කරන්න.");
+            if (num.length < 10) return alert("කරුණාකර අංකය ඇතුළත් කරන්න.");
 
-            const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
-            const logoLink = "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg";
-            const cardUrl = `${baseUrl}/index.html?logo=${encodeURIComponent(logoLink)}`;
+            let cardUrl = "https://janithdidula025-design.github.io/index.html";
             
-            const message = encodeURIComponent(`ආයුබෝවන්! ADM පන්ති විස්තර ඇතුළත් ඔබේ ඩිජිටල් කාඩ්පත මෙතැනින් ලබාගන්න: ${cardUrl}`);
+            // වැදගත්: සේව් කර ඇති ලෝගෝ එක URL එකට එකතු කිරීම
+            const savedLogo = localStorage.getItem('adm_custom_logo');
+            if (savedLogo) {
+                // රූපය URL එකක් ලෙස යැවීමට නම් එය encode කළ යුතුයි
+                // සටහන: Image data එක ඉතා විශාල නම් URL එක වැඩ නොකරන්න ඉඩ ඇත.
+                // එවිට GitHub link එකක් භාවිතා කිරීම වඩාත් සුදුසුයි.
+                cardUrl += "?img=" + encodeURIComponent(savedLogo);
+            }
 
-            if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${message}`);
-            if(type === 'sms') window.open(`sms:${num}?body=${message}`);
+            const msg = encodeURIComponent(`ඔබේ ADM Digital Card එක මෙතැනින් ලබාගන්න: ${cardUrl}`);
+
+            if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
+            if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
             if(type === 'call') window.open(`tel:${num}`);
         }
 
         window.onload = () => {
             const savedLogo = localStorage.getItem('adm_custom_logo');
             if (savedLogo) document.getElementById('logo-preview').src = savedLogo;
-            
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(console.error);
-            }
         };
     </script>
 </body>
