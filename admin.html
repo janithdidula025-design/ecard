@@ -10,9 +10,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
+    <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg">
 
-    <link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","start_url":"./admin.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg","sizes":"512x512","type":"image/jpg","purpose":"any maskable"}]}'>
+    <link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","start_url":"index.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg","sizes":"512x512","type":"image/jpg"}]}'>
 
     <style>
         :root {
@@ -31,10 +31,9 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding-top: 80px;
+            padding-top: 50px;
         }
 
-        /* Install Banner */
         #install-prompt {
             display: none; 
             position: fixed;
@@ -61,15 +60,15 @@
             cursor: pointer;
         }
 
-        .profile-section { width: 110px; height: 110px; margin-bottom: 20px; }
+        .profile-section { width: 120px; height: 120px; margin-bottom: 20px; }
         .profile-section img { 
             width: 100%; height: 100%; border-radius: 50%; 
             border: 3px solid var(--accent); object-fit: cover; 
-            background: var(--card-bg); padding: 3px;
+            background: var(--card-bg);
         }
 
-        h2 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; color: #fff; }
-        p { color: var(--accent); font-size: 0.8rem; margin-bottom: 25px; opacity: 0.8; }
+        h2 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; color: #fff; text-shadow: 0 2px 10px rgba(100,255,218,0.3); }
+        p { color: var(--accent); font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8; font-weight: 500; }
 
         .main-card {
             width: 85%;
@@ -97,7 +96,7 @@
             transition: 0.3s;
         }
 
-        input:focus { border-color: var(--accent); }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(100,255,218,0.2); }
 
         .btn { 
             width: 100%; padding: 16px; border-radius: 14px; border: none; 
@@ -109,7 +108,7 @@
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
         .btn-call { background: #ffffff; color: #0a192f; }
-        .btn:active { transform: scale(0.98); }
+        .btn:active { transform: scale(0.96); }
 
     </style>
 </head>
@@ -121,8 +120,9 @@
     </div>
 
     <div class="profile-section">
-        <img src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" alt="Logo">
+        <img src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" alt="ADM Logo" onerror="this.src='https://via.placeholder.com/150?text=ADM'">
     </div>
+    
     <h2>ADM CENTRAL</h2>
     <p>MANAGEMENT & DISPATCH</p>
 
@@ -138,16 +138,15 @@
     <script>
         let deferredPrompt;
 
-        // Service Worker Registration (App එකක් ලෙස වැඩ කිරීමට මෙය අත්‍යවශ්‍යයි)
+        // Service Worker ලියාපදිංචිය
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('SW Registered'))
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker Registered'))
                 .catch(err => console.log('SW Registration Failed', err));
             });
         }
 
-        // Install Prompt එක පෙන්වීම
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -158,21 +157,23 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
                 deferredPrompt = null;
                 document.getElementById('install-prompt').style.display = 'none';
             }
         });
 
-        // App එක දැනටමත් install කර ඇත්නම් බැනරය සඟවන්න
         window.addEventListener('appinstalled', () => {
             document.getElementById('install-prompt').style.display = 'none';
+            alert("ADM Admin App එක සාර්ථකව ස්ථාපනය කළා!");
         });
 
         function execute(type) {
             const num = document.getElementById('phone').value;
             if (num.length < 10) return alert("කරුණාකර නිවැරදි දුරකථන අංකයක් ඇතුළත් කරන්න.");
 
-            // ශිෂ්‍යයාගේ Digital Card එක ඇති URL එක
             const cardUrl = "https://janithdidula025-design.github.io/index.html";
             const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${cardUrl}`);
 
