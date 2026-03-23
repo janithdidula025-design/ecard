@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Central | Control Panel</title>
 
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBDZW50cmFsIiwKICAic2hvcnRf_uYW1lIjogIkFETUNlbnRyYWwiLAogICJzdGFydF91cmwiOiAiYWRtaW4uaHRtbCIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBhMTkyZiIsCiAgInRoZW1lX2NvbG9yIjogIiM2NGZmZGEiLAogICJpY29ucyI6IFt7ICJzcmMiOiAiaHR0cHM6Ly9pbWcuaWNvbnM4LmNvbS9mbHVlbmN5LzUxMi9hZG1pbi1zZXR0aW5ncy5wbmciLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3BuZyIgfV0KfQ==">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFETSBDZW50cmFsIiwKICAic2hvcnRfbmFtZSI6ICJBRE1DZW50cmFsIiwKICAic3RhcnRfdXJsIjogImFkbWluLmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIzBhMTkyZiIsCiAgInRoZW1lX2NvbG9yIjogIiM2NGZmZGEiLAogICJpY29ucyI6IFt7ICJzcmMiOiAiaHR0cHM6Ly9pbWcuaWNvbnM4LmNvbS9mbHVlbmN5LzUxMi9hZG1pbi1zZXR0aW5ncy5wbmciLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3BuZyIgfV0KfQ==">
 
     <style>
         :root {
@@ -57,7 +57,6 @@
             cursor: pointer;
         }
 
-        /* Header Area */
         header {
             width: 100%;
             padding: 40px 0 20px;
@@ -75,7 +74,6 @@
             text-align: center;
         }
 
-        /* Image Upload Section */
         .profile-section {
             position: relative;
             width: 120px;
@@ -104,17 +102,10 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         h2 { margin: 0; color: var(--accent); font-size: 1.5rem; letter-spacing: 2px; }
         p { color: var(--text-dim); font-size: 0.9rem; margin-top: 5px; }
-
-        /* Form Styling */
-        .input-group {
-            margin-top: 30px;
-            position: relative;
-        }
 
         input[type="tel"] {
             width: 100%;
@@ -126,23 +117,11 @@
             font-size: 1.5rem;
             text-align: center;
             font-weight: bold;
-            letter-spacing: 3px;
             box-sizing: border-box;
-            transition: 0.3s;
-        }
-
-        input[type="tel"]:focus {
-            border-color: var(--accent);
             outline: none;
-            box-shadow: 0 0 15px rgba(100, 255, 218, 0.1);
         }
 
-        /* Action Buttons */
-        .actions {
-            display: grid;
-            gap: 15px;
-            margin-top: 25px;
-        }
+        .actions { display: grid; gap: 15px; margin-top: 25px; }
 
         .btn {
             padding: 16px;
@@ -155,21 +134,11 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            transition: transform 0.2s;
         }
-
-        .btn:active { transform: scale(0.98); }
 
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #007aff; color: white; }
         .btn-call { background: #ccd6f6; color: #0a192f; }
-
-        footer {
-            margin-top: auto;
-            padding: 30px;
-            font-size: 0.8rem;
-            color: var(--text-dim);
-        }
     </style>
 </head>
 <body>
@@ -192,31 +161,19 @@
     </header>
 
     <div class="main-card">
-        <div class="input-group">
-            <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-        </div>
+        <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
 
         <div class="actions">
-            <button class="btn btn-wa" onclick="execute('wa')">
-                <span>WhatsApp Card</span>
-            </button>
-            <button class="btn btn-sms" onclick="execute('sms')">
-                <span>Direct SMS</span>
-            </button>
-            <button class="btn btn-call" onclick="execute('call')">
-                <span>Call Student</span>
-            </button>
+            <button class="btn btn-wa" onclick="execute('wa')">WhatsApp Card</button>
+            <button class="btn btn-sms" onclick="execute('sms')">Direct SMS</button>
+            <button class="btn btn-call" onclick="execute('call')">Call Student</button>
         </div>
     </div>
-
-    <footer>
-        &copy; 2026 ADM Education Unit
-    </footer>
 
     <script>
         let deferredPrompt;
 
-        // PWA Installation Logic
+        // Install Logic
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -226,7 +183,7 @@
         async function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
+                await deferredPrompt.userChoice;
                 deferredPrompt = null;
                 document.getElementById('install-prompt').style.display = 'none';
             }
@@ -238,42 +195,39 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('logo-preview').src = e.target.result;
+                    // මෙහිදී Custom Logo එක URL එකක් ලෙස නැතිව Base64 ලෙස සේව් වේ
                     localStorage.setItem('adm_custom_logo', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // Core Functions
+        // Execute Function (With Logo Transfer)
         function execute(type) {
             const num = document.getElementById('phone').value;
-            if (num.length < 10) return alert("කරුණාකර නිවැරදි අංකයක් ඇතුළත් කරන්න.");
+            if (num.length < 10) return alert("අංකය පරීක්ෂා කරන්න.");
 
-            // GitHub Pages හෝ Local URL එක ස්වයංක්‍රීයව හඳුනාගනී
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
-            const cardUrl = `${baseUrl}/index.html`;
+            
+            // ලෝගෝ එක ස්ථිර ලින්ක් එකක් ලෙස යැවීම වඩාත් සුදුසුයි
+            const logoLink = "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg";
+            
+            // ශිෂ්‍යයාට යන URL එකට Logo එක Parameter එකක් ලෙස එකතු කිරීම
+            const cardUrl = `${baseUrl}/index.html?logo=${encodeURIComponent(logoLink)}`;
+            
             const message = encodeURIComponent(`ආයුබෝවන්! ADM පන්ති විස්තර ඇතුළත් ඔබේ ඩිජිටල් කාඩ්පත මෙතැනින් ලබාගන්න: ${cardUrl}`);
 
-            switch(type) {
-                case 'wa':
-                    window.open(`https://wa.me/94${num.substring(1)}?text=${message}`, '_blank');
-                    break;
-                case 'sms':
-                    window.open(`sms:${num}?body=${message}`);
-                    break;
-                case 'call':
-                    window.open(`tel:${num}`);
-                    break;
-            }
+            if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${message}`);
+            if(type === 'sms') window.open(`sms:${num}?body=${message}`);
+            if(type === 'call') window.open(`tel:${num}`);
         }
 
-        // Initialize
         window.onload = () => {
             const savedLogo = localStorage.getItem('adm_custom_logo');
             if (savedLogo) document.getElementById('logo-preview').src = savedLogo;
             
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+                navigator.serviceWorker.register('sw.js').catch(console.error);
             }
         };
     </script>
