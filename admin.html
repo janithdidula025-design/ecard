@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Admin Panel</title>
-   <meta name="theme-color" content="#64ffda">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <meta name="theme-color" content="#64ffda">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="ADM Admin">
 
-<link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","description":"ADM Management System","start_url":"admin.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","orientation":"portrait","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
-
-<link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
-<link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
-<link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","description":"ADM Management System","start_url":"admin.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","orientation":"portrait","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png">
+    
+    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
 
     <style>
         :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
@@ -24,18 +24,18 @@
         #install-prompt { display: none; position: fixed; top: 0; background: var(--accent); color: #020c1b; padding: 15px; width: 100%; z-index: 10000; justify-content: space-around; align-items: center; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         #install-prompt button { background: #020c1b; color: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        .profile-section { width: 120px; height: 120px; margin-bottom: 20px; position: relative; cursor: pointer; }
-        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); transition: 0.3s; }
-        .edit-badge { position: absolute; bottom: 5px; right: 5px; background: var(--accent); color: #000; font-size: 10px; padding: 3px 6px; border-radius: 10px; font-weight: bold; }
+        .profile-section { width: 120px; height: 120px; margin-bottom: 20px; position: relative; }
+        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); box-shadow: 0 0 15px rgba(100, 255, 218, 0.3); }
 
         .main-card { width: 85%; max-width: 380px; background: var(--card-bg); padding: 30px 20px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         input { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 16px; padding: 15px; color: var(--accent); font-size: 1.5rem; text-align: center; margin-bottom: 20px; outline: none; box-sizing: border-box; }
+        
         .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 12px; transition: 0.3s; font-size: 1rem; }
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
         .btn-call { background: #ffffff; color: #0a192f; }
         
-        .status-msg { font-size: 12px; margin-top: 5px; color: var(--accent); display: none; font-weight: bold; }
+        h2 { margin: 10px 0 5px 0; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -45,12 +45,9 @@
         <button id="btn-install">එක් කරන්න</button>
     </div>
 
-    <div class="profile-section" onclick="document.getElementById('logo-input').click()">
-        <img id="admin-logo" src="https://via.placeholder.com/150">
-        <div class="edit-badge">EDIT</div>
-        <input type="file" id="logo-input" hidden accept="image/*" onchange="updateLogo(this)">
+    <div class="profile-section">
+        <img id="admin-logo" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" alt="ADM Logo">
     </div>
-    <div id="upload-status" class="status-msg">ගොනුව යාවත්කාලීන වේ...</div>
     
     <h2>ADM CENTRAL</h2>
     <p style="color:var(--accent); margin-top: -10px; font-size: 0.9rem; letter-spacing: 1px;">MANAGEMENT & DISPATCH</p>
@@ -63,81 +60,16 @@
     </div>
 
     <script>
-        // Supabase Configuration
-        const SUPABASE_URL = 'https://umejsutemzolhytxshcs.supabase.co';
-        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY'; // මෙතැනට ඔබේ Key එක ලබා දෙන්න
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        // පේජ් එක Load වන විට ලෝගෝ එක ලබා ගැනීම
-        window.onload = async () => {
-            const { data, error } = await supabase
-                .from('settings')
-                .select('logo_url')
-                .eq('id', 1)
-                .single();
-
-            if (data && data.logo_url) {
-                document.getElementById('admin-logo').src = data.logo_url;
-            }
-            
+        window.onload = () => {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log("SW Error:", err));
+                navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", (e) => {});');
             }
         };
 
-        // Logo එක Upload කර Database එක Update කිරීම
-        async function updateLogo(input) {
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                const logoImg = document.getElementById('admin-logo');
-                const status = document.getElementById('upload-status');
-                
-                logoImg.style.opacity = "0.3";
-                status.style.display = "block";
-
-                const fileName = `logo_${Date.now()}.png`;
-
-                try {
-                    // 1. Storage එකට Upload කිරීම
-                    const { error: uploadError } = await supabase.storage
-                        .from('logos')
-                        .upload(fileName, file);
-
-                    if (uploadError) throw uploadError;
-
-                    // 2. Public URL එක ලබා ගැනීම
-                    const { data: urlData } = supabase.storage
-                        .from('logos')
-                        .getPublicUrl(fileName);
-
-                    const publicUrl = urlData.publicUrl;
-
-                    // 3. Database එක Update කිරීම
-                    const { error: dbError } = await supabase
-                        .from('settings')
-                        .update({ logo_url: publicUrl })
-                        .eq('id', 1);
-
-                    if (dbError) throw dbError;
-
-                    logoImg.src = publicUrl;
-                    alert("Logo එක සාර්ථකව Update වුණා!");
-
-                } catch (error) {
-                    alert("වැරදීමක් සිදුවුණා: " + error.message);
-                } finally {
-                    logoImg.style.opacity = "1";
-                    status.style.display = "none";
-                }
-            }
-        }
-
-        // Dispatch logic
         function execute(type) {
             const num = document.getElementById('phone').value;
             if (num.length < 10) return alert("අංකය වැරදියි!");
             
-            // Student පේජ් එකේ ලින්ක් එක (GitHub Pages URL එක පාවිච්චි කරන්න)
             const link = "https://janithdidula025-design.github.io/ecard/index.html";
             const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`);
             
@@ -146,7 +78,6 @@
             if(type === 'call') window.open(`tel:${num}`);
         }
 
-        // PWA Installation Logic
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
@@ -161,12 +92,6 @@
                 document.getElementById('install-prompt').style.display = 'none';
             }
         });
-        <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", (e) => {});');
-  }
-        
-</script>
     </script>
 </body>
 </html>
