@@ -154,6 +154,12 @@
                 document.getElementById('install-prompt').style.display = 'none';
             }
         });
+        <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", (e) => {});');
+  }
+        
+</script>
     </script>
 </body>
 </html>
