@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM E-Card </title>
+    <title>ADM E-Card</title>
     
-<link rel="manifest" href='data:application/json,{"name":"ADM E-Card","short_name":"ADM E-CARD","start_url":"index.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpg","sizes":"512x512","type":"image/jpg"}]}'>
+    <link rel="manifest" href='data:application/json,{"name":"ADM E-Card","short_name":"ADM","start_url":"index.html","display":"standalone","background_color":"#0a192f","theme_color":"#50e3c2","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpg","sizes":"512x512","type":"image/jpg"}]}'>
+    <meta name="theme-color" content="#0a192f">
 
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #000); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; overflow-x: hidden; }
         
+        .lang-switch { margin-bottom: 15px; display: flex; gap: 8px; }
+        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 5px 12px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; }
+        .lang-btn.active { background: var(--primary); color: #000; }
+
         #pwa-installer { 
             display: none; width: 100%; background: var(--primary); color: #000; 
             padding: 15px; position: fixed; top: 0; z-index: 9999; 
@@ -32,29 +37,39 @@
         .btn-wa { background: #25D366; }
         .btn-call { background: #3498db; }
         .btn-sms { background: #f39c12; }
+
+        /* Footer Style */
+        .footer-credit { margin-top: 25px; font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; }
+        .footer-credit b { color: var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="pwa-installer">
-        <span>📲 ADM Card එක App එකක් ලෙස එක් කරන්න?</span>
-        <button id="btn-install">Install</button>
+        <span id="txt-pwa">📲 ADM Card එක App එකක් ලෙස එක් කරන්න?</span>
+        <button id="btn-install">එක් කරන්න</button>
+    </div>
+
+    <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
+        <button class="lang-btn" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
     </div>
 
     <div class="card">
         <div style="color: var(--primary); font-size: 0.75rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">ADM HIGHER EDUCATION</div>
         
         <img id="profile-pic" 
-             src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg" 
+             src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpg" 
              class="p-img" 
              onerror="this.src='https://via.placeholder.com/150?text=ADM'">
              
-        <h2 style="margin: 5px 0; color: white;">G.A.Janith Didula Gamlath </h2>
-        <div style="color: var(--gold); font-size: 0.95rem; margin-bottom: 20px;">Organizer / Manager</div>
+        <h2 style="margin: 5px 0; color: white;">Janith Didula</h2>
+        <div id="txt-role" style="color: var(--gold); font-size: 0.95rem; margin-bottom: 20px;">සංවිධායක / කළමනාකරු</div>
         
-        <div class="info-box">
-            📍 මීගමුව පාර, නාරම්මල (ADM Institute)<br>
-            🎓 Hall Class (ADM Campus)<br>
+        <div class="info-box" id="info-box">
+            📍 මීගමුව පාර, නාරම්මල (ADM ආයතනය)<br>
+            🎓 ශාලා පන්ති (ADM Campus)<br>
             📞 071 065 8051<br>
             📧 janithdidula@gmail.com
         </div>
@@ -68,29 +83,68 @@
             <a href="tel:0710658051" class="btn btn-action btn-call">Call</a>
             <a href="sms:0710658051" class="btn btn-action btn-sms">SMS</a>
         </div>
+
+        <div class="footer-credit" id="footer-credit">
+            Created by <b>Janith Didula</b>
+        </div>
     </div>
 
     <script>
-        let deferredPrompt;
-
-        // පේජ් එක ලෝඩ් වන විට පරීක්ෂා කිරීම
-        window.addEventListener('DOMContentLoaded', () => {
-            if(localStorage.getItem('contact_saved') === 'true') {
-                showActions();
+        const translations = {
+            si: {
+                role: "සංවිධායක / කළමනාකරු",
+                info: "📍 මීගමුව පාර, නාරම්මල (ADM ආයතනය)<br>🎓 ශාලා පන්ති (ADM Campus)<br>📞 071 065 8051<br>📧 janithdidula@gmail.com",
+                save: "👤 CONTACT එක SAVE කරන්න",
+                pwa: "📲 ADM Card එක App එකක් ලෙස එක් කරන්න?",
+                install: "එක් කරන්න",
+                credit: "නිර්මාණය කළේ <b>Janith Didula</b>"
+            },
+            en: {
+                role: "Organizer / Manager",
+                info: "📍 Negombo Road, Narammala (ADM Institute)<br>🎓 Hall Classes (ADM Campus)<br>📞 071 065 8051<br>📧 janithdidula@gmail.com",
+                save: "👤 SAVE CONTACT",
+                pwa: "📲 Add ADM Card as an App?",
+                install: "Install",
+                credit: "Created by <b>Janith Didula</b>"
+            },
+            ta: {
+                role: "ஏற்பாட்டாளர் / முகாமையாளர்",
+                info: "📍 நீர்கொழும்பு வீதி, நாரம்மல (ADM நிறுவனம்)<br>🎓 மண்டப வகுப்புகள் (ADM Campus)<br>📞 071 065 8051<br>📧 janithdidula@gmail.com",
+                save: "👤 தொடர்பைச் சேமிக்கவும்",
+                pwa: "📲 ADM கார்டை செயலியில் சேர்க்கவா?",
+                install: "சேர்க்கவும்",
+                credit: "உருவாக்கியவர் <b>Janith Didula</b>"
             }
+        };
 
+        function setLanguage(lang) {
+            document.getElementById('txt-role').innerText = translations[lang].role;
+            document.getElementById('info-box').innerHTML = translations[lang].info;
+            document.getElementById('mainSaveBtn').innerText = translations[lang].save;
+            document.getElementById('txt-pwa').innerText = translations[lang].pwa;
+            document.getElementById('btn-install').innerText = translations[lang].install;
+            document.getElementById('footer-credit').innerHTML = translations[lang].credit;
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase().includes(lang === 'si' ? 'සිංහල' : lang === 'ta' ? 'தமிழ்' : 'english')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        let deferredPrompt;
+        window.addEventListener('DOMContentLoaded', () => {
+            if(localStorage.getItem('contact_saved') === 'true') showActions();
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js').catch(e => console.log("SW Error"));
             }
         });
 
-        // vCard Save Logic
         async function saveVCard() {
             const currentImg = document.getElementById('profile-pic').src;
             let base64Img = "";
-            
             try {
-                // පින්තූරය vCard එකට ඇතුළත් කිරීම සඳහා Fetch කිරීම
                 const response = await fetch(currentImg);
                 const blob = await response.blob();
                 const reader = new FileReader();
@@ -98,22 +152,15 @@
                     reader.onloadend = () => resolve(reader.result.split(',')[1]);
                     reader.readAsDataURL(blob);
                 });
-            } catch (e) { console.log("Photo encoding skipped due to CORS or Error"); }
+            } catch (e) { console.log("Photo encoding skipped"); }
 
-            const vcard = 
-                "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\n" +
-                "EMAIL:janithdidula@gmail.com\n" +
-                "ADR:;;Meegamuwa Road;Narammala;;;Sri Lanka\n" +
-                (base64Img ? "PHOTO;ENCODING=b;TYPE=JPEG:" + base64Img + "\n" : "") +
-                "END:VCARD";
-
+            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\nEMAIL:janithdidula@gmail.com\nADR:;;Meegamuwa Road;Narammala;;;Sri Lanka\n" + (base64Img ? "PHOTO;ENCODING=b;TYPE=JPEG:" + base64Img + "\n" : "") + "END:VCARD";
             const blob = new Blob([vcard], {type:'text/vcard'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = 'Janith_ADM.vcf';
             a.click();
-
             showActions();
             localStorage.setItem('contact_saved', 'true');
         }
@@ -123,18 +170,22 @@
             document.getElementById('actionGrid').style.display = 'grid';
         }
 
-        // PWA Install Prompt
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById('pwa-installer').style.display = 'flex';
+            setTimeout(() => {
+                if (!window.matchMedia('(display-mode: standalone)').matches) {
+                    document.getElementById('pwa-installer').style.display = 'flex';
+                }
+            }, 2000);
         });
 
         document.getElementById('btn-install').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') document.getElementById('pwa-installer').style.display = 'none';
                 deferredPrompt = null;
-                document.getElementById('pwa-installer').style.display = 'none';
             }
         });
     </script>
