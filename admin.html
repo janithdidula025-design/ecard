@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Admin Panel</title>
     
-    <meta name="theme-color" content="#64ffda">
+    <meta name="theme-color" content="#0a192f">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="ADM Admin">
 
-    <link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","description":"ADM Management System","start_url":"admin.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","orientation":"portrait","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png">
+    <link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","description":"ADM Management System","start_url":"admin.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","orientation":"portrait","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}'>
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png">
     
-    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
-    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
-    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
 
     <style>
         :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
@@ -25,7 +25,7 @@
         #install-prompt button { background: #020c1b; color: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
         .profile-section { width: 120px; height: 120px; margin-bottom: 20px; position: relative; }
-        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); box-shadow: 0 0 15px rgba(100, 255, 218, 0.3); }
+        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); box-shadow: 0 0 20px rgba(100, 255, 218, 0.2); }
 
         .main-card { width: 85%; max-width: 380px; background: var(--card-bg); padding: 30px 20px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         input { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 16px; padding: 15px; color: var(--accent); font-size: 1.5rem; text-align: center; margin-bottom: 20px; outline: none; box-sizing: border-box; }
@@ -35,7 +35,7 @@
         .btn-sms { background: #1d9bf0; color: white; }
         .btn-call { background: #ffffff; color: #0a192f; }
         
-        h2 { margin: 10px 0 5px 0; letter-spacing: 2px; }
+        h2 { margin: 10px 0 5px 0; letter-spacing: 2px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -46,11 +46,11 @@
     </div>
 
     <div class="profile-section">
-        <img id="admin-logo" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.png" alt="ADM Logo">
+        <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" alt="ADM Logo">
     </div>
     
     <h2>ADM CENTRAL</h2>
-    <p style="color:var(--accent); margin-top: -10px; font-size: 0.9rem; letter-spacing: 1px;">MANAGEMENT & DISPATCH</p>
+    <p style="color:var(--accent); margin-top: -10px; font-size: 0.85rem; letter-spacing: 1px; font-weight: bold;">MANAGEMENT & DISPATCH</p>
 
     <div class="main-card">
         <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
@@ -68,8 +68,9 @@
 
         function execute(type) {
             const num = document.getElementById('phone').value;
-            if (num.length < 10) return alert("අංකය වැරදියි!");
+            if (num.length < 10) return alert("කරුණාකර නිවැරදි අංකය ඇතුළත් කරන්න!");
             
+            // Link fixed to 'ecard'
             const link = "https://janithdidula025-design.github.io/ecard/index.html";
             const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`);
             
