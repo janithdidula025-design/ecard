@@ -14,9 +14,6 @@
         .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: 0.3s; }
         .lang-btn.active { background: var(--accent); color: #020c1b; font-weight: bold; }
 
-        #install-prompt { display: none; position: fixed; top: 0; background: var(--accent); color: #020c1b; padding: 15px; width: 100%; z-index: 10000; justify-content: space-around; align-items: center; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        #install-prompt button { background: #020c1b; color: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
         .profile-section { width: 90px; height: 90px; margin-bottom: 15px; }
         .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); }
 
@@ -25,21 +22,16 @@
         input { font-size: 1.2rem; text-align: center; }
         textarea { height: 90px; resize: none; }
         
-        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; font-size: 0.95rem; }
+        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; font-size: 0.95rem; text-transform: uppercase; }
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
         .btn-notif { background: var(--accent); color: #020c1b; margin-top: 5px; }
         
-        h2 { margin: 5px 0; letter-spacing: 1px; font-size: 1.4rem; text-transform: uppercase; }
+        h2 { margin: 5px 0; letter-spacing: 1px; font-size: 1.4rem; }
         .footer-credit { margin-top: 20px; font-size: 0.75rem; opacity: 0.6; }
     </style>
 </head>
 <body>
-
-    <div id="install-prompt">
-        <span id="txt-install-msg">📲 ADM Admin App එක එක් කරන්න?</span>
-        <button id="btn-install">Install</button>
-    </div>
 
     <div class="lang-bar">
         <button class="lang-btn active" onclick="changeLang('si')">සිංහල</button>
@@ -70,51 +62,9 @@
 
     <script>
         const translations = {
-            si: {
-                install: "📲 ADM Admin App එක එක් කරන්න?",
-                title: "ADM CENTRAL",
-                subtitle: "MANAGEMENT & DISPATCH",
-                phonePh: "07XXXXXXXX",
-                btnWa: "WhatsApp Link Send",
-                btnSms: "Direct SMS Send",
-                notifLabel: "සිසුන්ට දැනුම්දීමක් යැවීමට (Global Notice)",
-                notifPh: "දැනුම්දීම මෙහි ටයිප් කරන්න...",
-                btnNotif: "🔔 Send Notification",
-                alertNum: "කරුණාකර නිවැරදි අංකය ඇතුළත් කරන්න!",
-                alertSuccess: "Notification එක සාර්ථකයි!",
-                alertEmpty: "කරුණාකර පණිවිඩයක් ඇතුළත් කරන්න!",
-                alertError: "දෝෂයකි! නැවත උත්සාහ කරන්න."
-            },
-            en: {
-                install: "📲 Add ADM Admin App?",
-                title: "ADM CENTRAL",
-                subtitle: "MANAGEMENT & DISPATCH",
-                phonePh: "07XXXXXXXX",
-                btnWa: "Send WhatsApp Link",
-                btnSms: "Send Direct SMS",
-                notifLabel: "Send Global Notice to Students",
-                notifPh: "Type your notification here...",
-                btnNotif: "🔔 Send Notification",
-                alertNum: "Please enter a valid number!",
-                alertSuccess: "Notification sent successfully!",
-                alertEmpty: "Please enter a message!",
-                alertError: "Error! Please try again."
-            },
-            ta: {
-                install: "📲 ADM நிர்வாக செயலியைச் சேர்க்கவா?",
-                title: "ADM மத்திய நிலையம்",
-                subtitle: "நிர்வாகம் மற்றும் அனுப்புதல்",
-                phonePh: "07XXXXXXXX",
-                btnWa: "வாட்ஸ்அப் லிங்க் அனுப்பவும்",
-                btnSms: "எஸ்எம்எஸ் அனுப்பவும்",
-                notifLabel: "மாணவர்களுக்கு அறிவிப்பு அனுப்ப (Global Notice)",
-                notifPh: "அறிவிப்பை இங்கே தட்டச்சு செய்யவும்...",
-                btnNotif: "🔔 அறிவிப்பை அனுப்பு",
-                alertNum: "சரியான எண்ணை உள்ளிடவும்!",
-                alertSuccess: "அறிவிப்பு அனுப்பப்பட்டது!",
-                alertEmpty: "செய்தியை உள்ளிடவும்!",
-                alertError: "பிழை! மீண்டும் முயற்சிக்கவும்."
-            }
+            si: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "WhatsApp Link Send", btnSms: "Direct SMS Send", notifLabel: "සිසුන්ට දැනුම්දීමක් යැවීමට (Global Notice)", notifPh: "දැනුම්දීම මෙහි ටයිප් කරන්න...", btnNotif: "🔔 Send Notification", alertNum: "අංකය වැරදියි!", alertSuccess: "Notification එක යැවුවා!", alertEmpty: "පණිවිඩයක් ලියන්න!", alertError: "Internet Error හෝ API Error එකකි!" },
+            en: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "Send WhatsApp Link", btnSms: "Send Direct SMS", notifLabel: "Send Global Notice to Students", notifPh: "Type notice here...", btnNotif: "🔔 Send Notification", alertNum: "Invalid Number!", alertSuccess: "Notification Sent!", alertEmpty: "Type a message!", alertError: "Internet or API Error!" },
+            ta: { title: "ADM மத்திய நிலையம்", subtitle: "நிர்வாகம் மற்றும் அனுப்புதல்", phonePh: "07XXXXXXXX", btnWa: "வாட்ஸ்அப் லிங்க்", btnSms: "எஸ்எம்எஸ் அனுப்ப", notifLabel: "மாணவர்களுக்கு அறிவிப்பு அனுப்ப", notifPh: "அறிவிப்பை ටයිප් කරන්න...", btnNotif: "🔔 அறிவிப்பை அனுப்பு", alertNum: "தவறான எண்!", alertSuccess: "அறிவிப்பு அனுப்பப்பட்டது!", alertEmpty: "செய்தியை உள்ளிடவும்!", alertError: "இணைய பிழை!" }
         };
 
         let currentLang = 'si';
@@ -122,7 +72,6 @@
         function changeLang(lang) {
             currentLang = lang;
             const t = translations[lang];
-            document.getElementById('txt-install-msg').innerText = t.install;
             document.getElementById('txt-title').innerText = t.title;
             document.getElementById('txt-subtitle').innerText = t.subtitle;
             document.getElementById('phone').placeholder = t.phonePh;
@@ -131,40 +80,28 @@
             document.getElementById('txt-notif-label').innerText = t.notifLabel;
             document.getElementById('notif-text').placeholder = t.notifPh;
             document.getElementById('btn-notif').innerText = t.btnNotif;
-
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if(btn.innerText.toLowerCase().includes(lang === 'si' ? 'සිංහල' : lang === 'en' ? 'english' : 'தமிழ்')) {
-                    btn.classList.add('active');
-                }
-            });
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
         }
-
-        window.onload = () => {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./sw.js?v=2');
-            }
-        };
 
         function execute(type) {
             const num = document.getElementById('phone').value;
             if (num.length < 10) return alert(translations[currentLang].alertNum);
-            const link = "https://janithdidula025-design.github.io/ecard/index.html";
-            const msg = encodeURIComponent(`ADM Digital Student Card: ${link}`);
+            const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: https://janithdidula025-design.github.io/ecard/index.html`);
             if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
             if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
         }
 
-        // --- OneSignal Notification Function ---
         async function sendNotification() {
             const text = document.getElementById('notif-text').value;
-            
-            const APP_ID = "72eccb3d-dffb-4364-885f-354403389066";
-            const REST_KEY = "os_v2_app_olwmwpo77nbwjcc7gvcagoeqm3v7r3hqgkwe6emzkbyoktibmevj34i32efljrjkapdcqp7s3fylhr4t4lteays3azyrgubt7yoelia"; 
-
             if (!text) return alert(translations[currentLang].alertEmpty);
 
+            const APP_ID = "72eccb3d-dffb-4364-885f-354403389066";
+            const REST_KEY = "os_v2_app_olwmwpo77nbwjcc7gvcagoeqm3v7r3hqgkwe6emzkbyoktibmevj34i32efljrjkapdcqp7s3fylhr4t4lteays3azyrgubt7yoelia";
+
             try {
+                // සටහන: Browser එකෙන් කෙලින්ම OneSignal API එකට යැවීමේදී CORS Error එකක් එනවා නම් 
+                // පහත fetch එකේ headers නිවැරදිව තිබිය යුතුයි.
                 const response = await fetch("https://onesignal.com/api/v1/notifications", {
                     method: "POST",
                     headers: {
@@ -173,7 +110,7 @@
                     },
                     body: JSON.stringify({
                         app_id: APP_ID,
-                        included_segments: ["Total Subscriptions"], 
+                        included_segments: ["Total Subscriptions"],
                         headings: { "en": "ADM Digital Card Notice" },
                         contents: { "en": text },
                         url: "https://janithdidula025-design.github.io/ecard/index.html"
@@ -184,27 +121,15 @@
                     alert(translations[currentLang].alertSuccess);
                     document.getElementById('notif-text').value = "";
                 } else {
+                    const err = await response.json();
+                    console.error("OneSignal Error:", err);
                     alert(translations[currentLang].alertError);
                 }
-            } catch (error) {
-                alert("Internet Error!");
+            } catch (e) {
+                console.error("Fetch Error:", e);
+                alert("Network Error! Please check your internet or API settings.");
             }
         }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); 
-            deferredPrompt = e;
-            document.getElementById('install-prompt').style.display = 'flex';
-        });
-
-        document.getElementById('btn-install').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt = null;
-                document.getElementById('install-prompt').style.display = 'none';
-            }
-        });
     </script>
 </body>
 </html>
