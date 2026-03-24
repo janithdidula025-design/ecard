@@ -8,31 +8,29 @@
 
     <style>
         :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
-        body { margin: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 30px 15px; box-sizing: border-box; }
+        body { margin: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 40px 15px; box-sizing: border-box; }
         
-        #install-prompt { display: none; position: fixed; top: 0; background: var(--accent); color: #020c1b; padding: 15px; width: 100%; z-index: 10000; justify-content: space-around; align-items: center; font-weight: bold; font-size: 0.9rem; }
+        #install-prompt { display: none; position: fixed; top: 0; background: var(--accent); color: #020c1b; padding: 15px; width: 100%; z-index: 10000; justify-content: space-around; align-items: center; font-weight: bold; }
         #install-prompt button { background: #020c1b; color: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
 
-        .lang-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
-        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; transition: 0.3s; }
+        .lang-bar { display: flex; gap: 8px; margin-bottom: 25px; }
+        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: 0.3s; }
         .lang-btn.active { background: var(--accent); color: #020c1b; font-weight: bold; }
 
-        .profile-section { width: 100px; height: 100px; margin-bottom: 15px; }
-        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); }
+        .profile-section { width: 110px; height: 110px; margin-bottom: 20px; }
+        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); box-shadow: 0 0 20px rgba(100, 255, 218, 0.2); }
 
-        .main-card { width: 100%; max-width: 380px; background: var(--card-bg); padding: 25px 20px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
+        .main-card { width: 100%; max-width: 380px; background: var(--card-bg); padding: 35px 20px; border-radius: 30px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
         
-        input, textarea { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 16px; padding: 15px; color: var(--accent); font-size: 1.2rem; text-align: center; margin-bottom: 15px; outline: none; box-sizing: border-box; font-family: inherit; }
-        textarea { height: 85px; font-size: 1rem; resize: none; }
+        input { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 18px; padding: 18px; color: var(--accent); font-size: 1.6rem; text-align: center; margin-bottom: 25px; outline: none; box-sizing: border-box; font-family: inherit; }
         
-        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; font-size: 0.95rem; text-transform: uppercase; }
+        .btn { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 12px; transition: 0.3s; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
-        .btn-notif { background: var(--accent); color: #020c1b; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn:active { transform: scale(0.97); }
         
-        h2 { margin: 10px 0 5px 0; letter-spacing: 2px; text-transform: uppercase; font-size: 1.4rem; }
-        .footer-credit { margin-top: 20px; font-size: 0.8rem; opacity: 0.6; }
+        h2 { margin: 10px 0 5px 0; letter-spacing: 2px; text-transform: uppercase; font-size: 1.6rem; }
+        .footer-credit { margin-top: auto; padding: 20px; font-size: 0.8rem; opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -53,17 +51,12 @@
     </div>
     
     <h2 id="txt-title">ADM CENTRAL</h2>
-    <p id="txt-subtitle" style="color:var(--accent); margin-top: -10px; font-size: 0.8rem; letter-spacing: 1px; font-weight: bold;">MANAGEMENT & DISPATCH</p>
+    <p id="txt-subtitle" style="color:var(--accent); margin-top: -10px; font-size: 0.85rem; letter-spacing: 2px; font-weight: bold;">MANAGEMENT & DISPATCH</p>
 
     <div class="main-card">
         <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-        <button class="btn btn-wa" id="btn-wa">WhatsApp Link Send</button>
-        <button class="btn btn-sms" id="btn-sms">Direct SMS Send</button>
-
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
-
-        <textarea id="notif-text" placeholder="දැනුම්දීම මෙහි ටයිප් කරන්න..."></textarea>
-        <button class="btn btn-notif" id="btn-notif" onclick="execute('notif')">🔔 Send Global Notice</button>
+        <button class="btn btn-wa" id="btn-wa" onclick="execute('wa')">WhatsApp Link Send</button>
+        <button class="btn btn-sms" id="btn-sms" onclick="execute('sms')">Direct SMS Send</button>
     </div>
 
     <div class="footer-credit">
@@ -71,21 +64,7 @@
     </div>
 
     <script>
-        // --- Tokens ---
-        const G_TOKEN = "ඔයාගේ_GITHUB_TOKEN_එක";
-        const OS_APP_ID = "ඔයාගේ_ONESIGNAL_APP_ID_එක";
-        const OS_REST_API_KEY = "ඔයාගේ_REST_API_KEY_එක";
-        
-        const USER = "janithdidula025-design";
-        const REPO = "ecard";
-        const FILE = "data.json";
-
-        const translations = {
-            si: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "WhatsApp Link Send", btnSms: "Direct SMS Send", notifPh: "දැනුම්දීම මෙහි ටයිප් කරන්න...", btnNotif: "🔔 Send Global Notice", alertNum: "අංකය වැරදියි!", alertEmpty: "පණිවිඩයක් ලියන්න!", alertSent: "දැනුම්දීම යැව්වා!", install: "📲 ADM Admin App එක එක් කරන්න?", btnIns: "Install" },
-            en: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "Send WhatsApp Link", btnSms: "Send Direct SMS", notifPh: "Type notice here...", btnNotif: "🔔 Send Global Notice", alertNum: "Invalid Number!", alertEmpty: "Type a message!", alertSent: "Notification Sent!", install: "📲 Add ADM Admin App?", btnIns: "Install" },
-            ta: { title: "ADM CENTRAL", subtitle: "நிர்வாகம் மற்றும் அனுப்புதல்", phonePh: "07XXXXXXXX", btnWa: "WhatsApp இணைப்பு அனுப்பு", btnSms: "நேரடி SMS அனுப்பு", notifPh: "அறிவிப்பை இங்கே தட்டச்சு செய்யவும்...", btnNotif: "🔔 உலகளாவிய அறிவிப்பு", alertNum: "தவறான எண்!", alertEmpty: "செய்தியை தட்டச்சு செய்யவும்!", alertSent: "அறிவிப்பு அனுப்பப்பட்டது!", install: "📲 ADM Admin செயலியைச் சேர்க்கவா?", btnIns: "நிறுவவும்" }
-        };
-
+      
         let currentLang = 'si';
         let fileSha = "";
 
@@ -97,98 +76,34 @@
             document.getElementById('phone').placeholder = t.phonePh;
             document.getElementById('btn-wa').innerText = t.btnWa;
             document.getElementById('btn-sms').innerText = t.btnSms;
-            document.getElementById('notif-text').placeholder = t.notifPh;
-            document.getElementById('btn-notif').innerText = t.btnNotif;
             document.getElementById('txt-install').innerText = t.install;
             document.getElementById('btn-install').innerText = t.btnIns;
             
-            // Buttons logic
-            document.getElementById('btn-wa').onclick = () => execute('wa');
-            document.getElementById('btn-sms').onclick = () => execute('sms');
-
             document.querySelectorAll('.lang-btn').forEach(b => {
-                b.classList.toggle('active', b.innerText.toLowerCase().includes(lang === 'ta' ? 'தமிழ்' : lang === 'en' ? 'english' : 'සිංහල'));
+                const btnTxt = b.innerText.toLowerCase();
+                b.classList.toggle('active', 
+                    (lang === 'si' && btnTxt.includes('සිංහල')) || 
+                    (lang === 'en' && btnTxt.includes('english')) || 
+                    (lang === 'ta' && btnTxt.includes('தமிழ்'))
+                );
             });
-        }
-
-        async function fetchSha() {
-            try {
-                const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`, {
-                    headers: { "Authorization": `token ${G_TOKEN}` }
-                });
-                const data = await res.json();
-                fileSha = data.sha;
-                return JSON.parse(atob(data.content));
-            } catch (e) { return null; }
-        }
+ 
 
         async function execute(type) {
             const num = document.getElementById('phone').value;
+            if (num.length < 10) return alert(translations[currentLang].alertNum);
+
             const link = "https://janithdidula025-design.github.io/ecard/index.html";
             const msgBody = `ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`;
 
-            if (type === 'wa' || type === 'sms') {
-                if (num.length < 10) return alert(translations[currentLang].alertNum);
-                
-                let data = await fetchSha();
-                if (type === 'wa') {
-                    data.wa += 1;
-                    window.open(`https://wa.me/94${num.substring(1)}?text=${encodeURIComponent(msgBody)}`);
-                } else {
-                    data.sms += 1;
-                    window.open(`sms:${num}?body=${encodeURIComponent(msgBody)}`);
-                }
-                
-                if(data) {
-                    await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`, {
-                        method: "PUT",
-                        headers: { "Authorization": `token ${G_TOKEN}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "Update Count", content: btoa(JSON.stringify(data)), sha: fileSha })
-                    });
-                }
-            } 
-            else if (type === 'notif') {
-                const text = document.getElementById('notif-text').value;
-                if (!text) return alert(translations[currentLang].alertEmpty);
-                
-                const btn = document.getElementById('btn-notif');
-                btn.disabled = true;
-
-                try {
-                    const osRes = await fetch("https://corsproxy.io/?" + encodeURIComponent("https://onesignal.com/api/v1/notifications"), {
-                        method: "POST",
-                        headers: { 
-                            "Content-Type": "application/json", 
-                            "Authorization": `Basic ${OS_REST_API_KEY}` 
-                        },
-                        body: JSON.stringify({ 
-                            app_id: OS_APP_ID, 
-                            included_segments: ["Total Subscriptions"], 
-                            contents: { "en": text }, 
-                            url: link 
-                        })
-                    });
-
-                    if (osRes.ok) {
-                        let data = await fetchSha();
-                        if(data) {
-                            data.notif += 1;
-                            await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`, {
-                                method: "PUT",
-                                headers: { "Authorization": `token ${G_TOKEN}`, "Content-Type": "application/json" },
-                                body: JSON.stringify({ message: "Update Notif", content: btoa(JSON.stringify(data)), sha: fileSha })
-                            });
-                        }
-                        alert(translations[currentLang].alertSent);
-                        document.getElementById('notif-text').value = "";
-                    }
-                } catch(e) { console.error(e); }
-                btn.disabled = false;
+            if (type === 'wa') {
+                window.open(`https://wa.me/94${num.substring(1)}?text=${encodeURIComponent(msgBody)}`);
+            } else if (type === 'sms') {
+                window.open(`sms:${num}?body=${encodeURIComponent(msgBody)}`);
             }
-        }
+
 
         window.onload = () => {
-            changeLang('si'); // Default load Sinhala
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", (e) => {});');
             }
