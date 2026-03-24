@@ -3,71 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM Admin Panel</title>
+    <title>ADM Admin</title>
     <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImFkbWluLmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
-
     <style>
-        :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
-        body { margin: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 30px 10px; box-sizing: border-box; }
+        :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; --error: #ff4d4d; }
+        body { margin: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px 10px; box-sizing: border-box; }
+        
+        #lock-screen { display: none; position: fixed; inset: 0; background: var(--bg-dark); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; border: 4px solid var(--error); }
         
         .lang-bar { display: flex; gap: 10px; margin-bottom: 20px; }
-        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: 0.3s; }
+        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; }
         .lang-btn.active { background: var(--accent); color: #020c1b; font-weight: bold; }
 
-        .profile-section { width: 90px; height: 90px; margin-bottom: 15px; }
-        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); }
+        .profile-img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--accent); margin-bottom: 10px; object-fit: cover; }
 
-        .main-card { width: 100%; max-width: 380px; background: var(--card-bg); padding: 25px 20px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
-        input, textarea { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 14px; padding: 15px; color: var(--accent); font-size: 1rem; margin-bottom: 15px; outline: none; box-sizing: border-box; font-family: inherit; }
-        input { font-size: 1.2rem; text-align: center; }
-        textarea { height: 90px; resize: none; }
+        .main-card { width: 100%; max-width: 380px; background: var(--card-bg); padding: 25px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; font-size: 0.95rem; text-transform: uppercase; }
+        .limit-info { font-size: 0.7rem; color: var(--accent); margin-bottom: 15px; display: flex; justify-content: space-around; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px; }
+        
+        input, textarea { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 14px; padding: 15px; color: var(--accent); font-size: 1rem; margin-bottom: 12px; outline: none; box-sizing: border-box; font-family: inherit; }
+        input { text-align: center; font-size: 1.1rem; }
+        
+        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; text-transform: uppercase; transition: 0.3s; }
         .btn-wa { background: #25D366; color: white; }
-        .btn-sms { background: #1d9bf0; color: white; }
-        .btn-notif { background: var(--accent); color: #020c1b; margin-top: 5px; }
-        
-        h2 { margin: 5px 0; letter-spacing: 1px; font-size: 1.4rem; }
-        .footer-credit { margin-top: 20px; font-size: 0.75rem; opacity: 0.6; }
+        .btn-notif { background: var(--accent); color: #020c1b; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .status { font-size: 0.65rem; opacity: 0.5; margin-top: 10px; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <div class="lang-bar">
-        <button class="lang-btn active" onclick="changeLang('si')">සිංහල</button>
-        <button class="lang-btn" onclick="changeLang('en')">English</button>
-        <button class="lang-btn" onclick="changeLang('ta')">தமிழ்</button>
+    <div id="lock-screen">
+        <h1 style="color: var(--error);">LIMIT EXCEEDED!</h1>
+        <p>Global usage limit has been reached.</p>
+        <p style="font-size: 0.8rem; opacity: 0.6;">Contact Janith Didula to Reset.</p>
     </div>
 
-    <div class="profile-section">
-        <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" alt="ADM Logo">
+    <div id="admin-ui" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <div class="lang-bar">
+            <button class="lang-btn active" onclick="changeLang('si')">සිංහල</button>
+            <button class="lang-btn" onclick="changeLang('en')">English</button>
+            <button class="lang-btn" onclick="changeLang('ta')">தமிழ்</button>
+        </div>
+
+        <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" class="profile-img" alt="Logo">
+        <h2 id="txt-title" style="margin: 0;">ADM CENTRAL</h2>
+        <p id="txt-subtitle" style="color:var(--accent); font-size: 0.75rem; font-weight: bold; margin-bottom: 15px;">MANAGEMENT & DISPATCH</p>
+
+        <div class="main-card">
+            <div class="limit-info">
+                <span>WA: <b id="wa-count">...</b> / 100,000</span>
+                <span>NOTIF: <b id="notif-count">...</b> / 1,000</span>
+            </div>
+
+            <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
+            <button class="btn btn-wa" id="btn-wa" onclick="executeAction('wa')">WhatsApp Link Send</button>
+
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+
+            <p id="txt-notif-label" style="font-size: 0.8rem; margin-bottom: 10px; color: var(--accent);">Global Notice to Students</p>
+            <textarea id="notif-text" placeholder="Type message here..."></textarea>
+            <button class="btn btn-notif" id="btn-notif" onclick="executeAction('notif')">🔔 Send Notification</button>
+
+            <div id="sync-status" class="status">SYNCING WITH GITHUB...</div>
+        </div>
+        <div style="margin-top: 15px; font-size: 0.7rem; opacity: 0.5;">Created by Janith Didula</div>
     </div>
-    
-    <h2 id="txt-title">ADM CENTRAL</h2>
-    <p id="txt-subtitle" style="color:var(--accent); margin-top: -5px; font-size: 0.75rem; letter-spacing: 1px; font-weight: bold; margin-bottom: 20px;">MANAGEMENT & DISPATCH</p>
-
-    <div class="main-card">
-        <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-        <button class="btn btn-wa" id="btn-wa" onclick="execute('wa')">WhatsApp Link Send</button>
-        <button class="btn btn-sms" id="btn-sms" onclick="execute('sms')">Direct SMS Send</button>
-
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
-
-        <p id="txt-notif-label" style="font-size: 0.8rem; margin-bottom: 10px; color: var(--accent);">සිසුන්ට දැනුම්දීමක් යැවීමට (Global Notice)</p>
-        <textarea id="notif-text" placeholder="දැනුම්දීම මෙහි ටයිප් කරන්න..."></textarea>
-        <button class="btn btn-notif" id="btn-notif" onclick="sendNotification()">🔔 Send Notification</button>
-    </div>
-
-    <div class="footer-credit">Created by <b>Janith Didula</b></div>
 
     <script>
+        // CONFIG
+        const G_TOKEN = "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";
+        const USER = "janithdidula025-design";
+        const REPO = "ecard";
+        const FILE = "data.json";
+
+        const LIMIT_WA = 100000;
+        const LIMIT_NOTIF = 1000;
+
         const translations = {
-            si: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "WhatsApp Link Send", btnSms: "Direct SMS Send", notifLabel: "සිසුන්ට දැනුම්දීමක් යැවීමට (Global Notice)", notifPh: "දැනුම්දීම මෙහි ටයිප් කරන්න...", btnNotif: "🔔 Send Notification", alertNum: "අංකය වැරදියි!", alertSuccess: "Notification එක යැවුවා!", alertEmpty: "පණිවිඩයක් ලියන්න!", alertError: "Internet Error හෝ API Error එකකි!" },
-            en: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "Send WhatsApp Link", btnSms: "Send Direct SMS", notifLabel: "Send Global Notice to Students", notifPh: "Type notice here...", btnNotif: "🔔 Send Notification", alertNum: "Invalid Number!", alertSuccess: "Notification Sent!", alertEmpty: "Type a message!", alertError: "Internet or API Error!" },
-            ta: { title: "ADM மத்திய நிலையம்", subtitle: "நிர்வாகம் மற்றும் அனுப்புதல்", phonePh: "07XXXXXXXX", btnWa: "வாட்ஸ்அப் லிங்க்", btnSms: "எஸ்எம்எஸ் அனுப்ப", notifLabel: "மாணவர்களுக்கு அறிவிப்பு அனுப்ப", notifPh: "அறிவிப்பை ටයිප් කරන්න...", btnNotif: "🔔 அறிவிப்பை அனுப்பு", alertNum: "தவறான எண்!", alertSuccess: "அறிவிப்பு அனுப்பப்பட்டது!", alertEmpty: "செய்தியை உள்ளிடவும்!", alertError: "இணைய பிழை!" }
+            si: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "WhatsApp Link Send", notifLabel: "සිසුන්ට දැනුම්දීමක් යැවීමට (Global Notice)", notifPh: "දැනුම්දීම මෙහි ටයිප් කරන්න...", btnNotif: "🔔 Send Notification", alertNum: "අංකය වැරදියි!", alertEmpty: "පණිවිඩයක් ලියන්න!" },
+            en: { title: "ADM CENTRAL", subtitle: "MANAGEMENT & DISPATCH", phonePh: "07XXXXXXXX", btnWa: "Send WhatsApp Link", notifLabel: "Send Global Notice to Students", notifPh: "Type notice here...", btnNotif: "🔔 Send Notification", alertNum: "Invalid Number!", alertEmpty: "Type a message!" },
+            ta: { title: "ADM மத்திய நிலையம்", subtitle: "நிர்வாகம் மற்றும் அனுப்புதல்", phonePh: "07XXXXXXXX", btnWa: "வாટ્સஅப் லிங்க்", notifLabel: "மாணவர்களுக்கு அறிவிப்பு அனுப்ப", notifPh: "அறிவிப்பை ටයිප් කරන්න...", btnNotif: "🔔 அறிவிப்பை அனுப்பு", alertNum: "தவறான எண்!", alertEmpty: "செய்தியை உள்ளிடவும்!" }
         };
 
         let currentLang = 'si';
+        let fileSha = "";
 
         function changeLang(lang) {
             currentLang = lang;
@@ -76,60 +97,75 @@
             document.getElementById('txt-subtitle').innerText = t.subtitle;
             document.getElementById('phone').placeholder = t.phonePh;
             document.getElementById('btn-wa').innerText = t.btnWa;
-            document.getElementById('btn-sms').innerText = t.btnSms;
             document.getElementById('txt-notif-label').innerText = t.notifLabel;
             document.getElementById('notif-text').placeholder = t.notifPh;
             document.getElementById('btn-notif').innerText = t.btnNotif;
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.innerText.includes(lang === 'si' ? 'සිංහල' : lang === 'en' ? 'English' : 'தமிழ்')));
         }
 
-        function execute(type) {
-            const num = document.getElementById('phone').value;
-            if (num.length < 10) return alert(translations[currentLang].alertNum);
-            const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: https://janithdidula025-design.github.io/ecard/index.html`);
-            if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
-            if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
-        }
-
-        async function sendNotification() {
-            const text = document.getElementById('notif-text').value;
-            if (!text) return alert(translations[currentLang].alertEmpty);
-
-            const APP_ID = "72eccb3d-dffb-4364-885f-354403389066";
-            const REST_KEY = "os_v2_app_olwmwpo77nbwjcc7gvcagoeqm3v7r3hqgkwe6emzkbyoktibmevj34i32efljrjkapdcqp7s3fylhr4t4lteays3azyrgubt7yoelia";
-
+        async function fetchOnlineData() {
             try {
-                // සටහන: Browser එකෙන් කෙලින්ම OneSignal API එකට යැවීමේදී CORS Error එකක් එනවා නම් 
-                // පහත fetch එකේ headers නිවැරදිව තිබිය යුතුයි.
-                const response = await fetch("https://onesignal.com/api/v1/notifications", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                        "Authorization": "Basic " + REST_KEY
-                    },
-                    body: JSON.stringify({
-                        app_id: APP_ID,
-                        included_segments: ["Total Subscriptions"],
-                        headings: { "en": "ADM Digital Card Notice" },
-                        contents: { "en": text },
-                        url: "https://janithdidula025-design.github.io/ecard/index.html"
-                    })
+                const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`, {
+                    headers: { "Authorization": `token ${G_TOKEN}` }
                 });
-
-                if (response.ok) {
-                    alert(translations[currentLang].alertSuccess);
-                    document.getElementById('notif-text').value = "";
-                } else {
-                    const err = await response.json();
-                    console.error("OneSignal Error:", err);
-                    alert(translations[currentLang].alertError);
+                const data = await res.json();
+                fileSha = data.sha;
+                const content = JSON.parse(atob(data.content));
+                document.getElementById('wa-count').innerText = content.wa.toLocaleString();
+                document.getElementById('notif-count').innerText = content.notif.toLocaleString();
+                if (content.wa >= LIMIT_WA || content.notif >= LIMIT_NOTIF) {
+                    document.getElementById('admin-ui').style.display = 'none';
+                    document.getElementById('lock-screen').style.display = 'flex';
                 }
-            } catch (e) {
-                console.error("Fetch Error:", e);
-                alert("Network Error! Please check your internet or API settings.");
-            }
+                return content;
+            } catch (e) { return null; }
         }
+
+        async function updateOnlineData(newData) {
+            await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`, {
+                method: "PUT",
+                headers: { "Authorization": `token ${G_TOKEN}`, "Content-Type": "application/json" },
+                body: JSON.stringify({ message: "Usage Update", content: btoa(JSON.stringify(newData)), sha: fileSha })
+            });
+        }
+
+        async function executeAction(type) {
+            const status = document.getElementById('sync-status');
+            status.innerText = "CONNECTING...";
+            const data = await fetchOnlineData();
+            if(!data) return alert("Sync Error!");
+
+            if (type === 'wa') {
+                const num = document.getElementById('phone').value;
+                if (num.length < 10) return alert(translations[currentLang].alertNum);
+                data.wa += 1;
+                await updateOnlineData(data);
+                const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: https://janithdidula025-design.github.io/ecard/index.html`);
+                window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
+            } else if (type === 'notif') {
+                const text = document.getElementById('notif-text').value;
+                if (!text) return alert(translations[currentLang].alertEmpty);
+                const btn = document.getElementById('btn-notif');
+                btn.disabled = true;
+                const osRes = await fetch("https://corsproxy.io/?" + encodeURIComponent("https://onesignal.com/api/v1/notifications"), {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": "Basic os_v2_app_olwmwpo77nbwjcc7gvcagoeqm3v7r3hqgkwe6emzkbyoktibmevj34i32efljrjkapdcqp7s3fylhr4t4lteays3azyrgubt7yoelia" },
+                    body: JSON.stringify({ app_id: "72eccb3d-dffb-4364-885f-354403389066", included_segments: ["Total Subscriptions"], contents: { "en": text }, url: "https://janithdidula025-design.github.io/ecard/index.html" })
+                });
+                if (osRes.ok) {
+                    data.notif += 1;
+                    await updateOnlineData(data);
+                    alert("Notification Sent!");
+                    document.getElementById('notif-text').value = "";
+                }
+                btn.disabled = false;
+            }
+            fetchOnlineData();
+            status.innerText = "SYSTEM ONLINE";
+        }
+
+        fetchOnlineData();
+        setInterval(fetchOnlineData, 30000);
     </script>
 </body>
 </html>
