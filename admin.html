@@ -4,70 +4,169 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Admin Panel</title>
-<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImFkbWluLmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImFkbWluLmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
 
-    <style>     :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
-        body { margin: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-top: 50px; }
+    <style>
+        :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
+        body { margin: 0; background-color: var(--bg-dark); color: var(--text-main); font-family: sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 30px 10px; box-sizing: border-box; }
         
+        /* Language Switcher */
+        .lang-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem; transition: 0.3s; }
+        .lang-btn.active { background: var(--accent); color: #020c1b; font-weight: bold; }
+
         #install-prompt { display: none; position: fixed; top: 0; background: var(--accent); color: #020c1b; padding: 15px; width: 100%; z-index: 10000; justify-content: space-around; align-items: center; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         #install-prompt button { background: #020c1b; color: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        .profile-section { width: 120px; height: 120px; margin-bottom: 20px; position: relative; }
-        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); box-shadow: 0 0 20px rgba(100, 255, 218, 0.2); }
+        .profile-section { width: 90px; height: 90px; margin-bottom: 15px; }
+        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); }
 
-        .main-card { width: 85%; max-width: 380px; background: var(--card-bg); padding: 30px 20px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 16px; padding: 15px; color: var(--accent); font-size: 1.5rem; text-align: center; margin-bottom: 20px; outline: none; box-sizing: border-box; }
+        .main-card { width: 100%; max-width: 380px; background: var(--card-bg); padding: 25px 20px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); box-sizing: border-box; }
+        input, textarea { width: 100%; background: #020c1b; border: 2px solid #233554; border-radius: 14px; padding: 15px; color: var(--accent); font-size: 1rem; margin-bottom: 15px; outline: none; box-sizing: border-box; font-family: inherit; }
+        input { font-size: 1.2rem; text-align: center; }
+        textarea { height: 90px; resize: none; }
         
-        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 12px; transition: 0.3s; font-size: 1rem; }
+        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; font-size: 0.95rem; }
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
-        .btn-call { background: #ffffff; color: #0a192f; }
+        .btn-notif { background: var(--accent); color: #020c1b; margin-top: 5px; }
         
-        h2 { margin: 10px 0 5px 0; letter-spacing: 2px; text-transform: uppercase; }
+        h2 { margin: 5px 0; letter-spacing: 1px; font-size: 1.4rem; text-transform: uppercase; }
+        .footer-credit { margin-top: 20px; font-size: 0.75rem; opacity: 0.6; }
     </style>
 </head>
 <body>
 
     <div id="install-prompt">
-        <span>📲 ADM Admin App එක එක් කරන්න?</span>
+        <span id="txt-install-msg">📲 ADM Admin App එක එක් කරන්න?</span>
         <button id="btn-install">Install</button>
+    </div>
+
+    <div class="lang-bar">
+        <button class="lang-btn active" onclick="changeLang('si')">සිංහල</button>
+        <button class="lang-btn" onclick="changeLang('en')">English</button>
+        <button class="lang-btn" onclick="changeLang('ta')">தமிழ்</button>
     </div>
 
     <div class="profile-section">
         <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" alt="ADM Logo">
     </div>
     
-    <h2>ADM CENTRAL</h2>
-    <p style="color:var(--accent); margin-top: -10px; font-size: 0.85rem; letter-spacing: 1px; font-weight: bold;">MANAGEMENT & DISPATCH</p>
+    <h2 id="txt-title">ADM CENTRAL</h2>
+    <p id="txt-subtitle" style="color:var(--accent); margin-top: -5px; font-size: 0.75rem; letter-spacing: 1px; font-weight: bold; margin-bottom: 20px;">MANAGEMENT & DISPATCH</p>
 
     <div class="main-card">
         <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-        <button class="btn btn-wa" onclick="execute('wa')">WhatsApp Link Send</button>
-        <button class="btn btn-sms" onclick="execute('sms')">Direct SMS Send</button>
-        <button class="btn btn-call" onclick="execute('call')">Call Student</button>
+        <button class="btn btn-wa" id="btn-wa" onclick="execute('wa')">WhatsApp Link Send</button>
+        <button class="btn btn-sms" id="btn-sms" onclick="execute('sms')">Direct SMS Send</button>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+
+        <p id="txt-notif-label" style="font-size: 0.8rem; margin-bottom: 10px; color: var(--accent);">සිසුන්ට දැනුම්දීමක් යැවීමට (Global Notice)</p>
+        <textarea id="notif-text" placeholder="දැනුම්දීම මෙහි ටයිප් කරන්න..."></textarea>
+        <button class="btn btn-notif" id="btn-notif" onclick="sendNotification()">🔔 Send Notification</button>
     </div>
-    <div class="footer-credit" id="footer-credit">
-            Created by <b>Janith Didula</b>
-        </div>
+
+    <div class="footer-credit">Created by <b>Janith Didula</b></div>
 
     <script>
+        const translations = {
+            si: {
+                install: "📲 ADM Admin App එක එක් කරන්න?",
+                title: "ADM CENTRAL",
+                subtitle: "MANAGEMENT & DISPATCH",
+                phonePh: "07XXXXXXXX",
+                btnWa: "WhatsApp Link Send",
+                btnSms: "Direct SMS Send",
+                notifLabel: "සිසුන්ට දැනුම්දීමක් යැවීමට (Global Notice)",
+                notifPh: "දැනුම්දීම මෙහි ටයිප් කරන්න...",
+                btnNotif: "🔔 Send Notification",
+                alertNum: "කරුණාකර නිවැරදි අංකය ඇතුළත් කරන්න!",
+                alertSuccess: "Notification එක සාර්ථකයි!",
+                alertEmpty: "කරුණාකර පණිවිඩයක් ඇතුළත් කරන්න!"
+            },
+            en: {
+                install: "📲 Add ADM Admin App?",
+                title: "ADM CENTRAL",
+                subtitle: "MANAGEMENT & DISPATCH",
+                phonePh: "07XXXXXXXX",
+                btnWa: "Send WhatsApp Link",
+                btnSms: "Send Direct SMS",
+                notifLabel: "Send Global Notice to Students",
+                notifPh: "Type your notification here...",
+                btnNotif: "🔔 Send Notification",
+                alertNum: "Please enter a valid number!",
+                alertSuccess: "Notification sent successfully!",
+                alertEmpty: "Please enter a message!"
+            },
+            ta: {
+                install: "📲 ADM நிர்வாக செயலியைச் சேர்க்கவா?",
+                title: "ADM மத்திய நிலையம்",
+                subtitle: "நிர்வாகம் மற்றும் அனுப்புதல்",
+                phonePh: "07XXXXXXXX",
+                btnWa: "வாட்ஸ்அப் லிங்க் அனுப்பவும்",
+                btnSms: "எஸ்எம்எஸ் அனுப்பவும்",
+                notifLabel: "மாணவர்களுக்கு அறிவிப்பு அனுப்ப (Global Notice)",
+                notifPh: "அறிவிப்பை இங்கே தட்டச்சு செய்யவும்...",
+                btnNotif: "🔔 அறிவிப்பை அனுப்பு",
+                alertNum: "சரியான எண்ணை உள்ளிடவும்!",
+                alertSuccess: "அறிவிப்பு அனுப்பப்பட்டது!",
+                alertEmpty: "செய்தியை உள்ளிடவும்!"
+            }
+        };
+
+        let currentLang = 'si';
+
+        function changeLang(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // Update Text
+            document.getElementById('txt-install-msg').innerText = t.install;
+            document.getElementById('txt-title').innerText = t.title;
+            document.getElementById('txt-subtitle').innerText = t.subtitle;
+            document.getElementById('phone').placeholder = t.phonePh;
+            document.getElementById('btn-wa').innerText = t.btnWa;
+            document.getElementById('btn-sms').innerText = t.btnSms;
+            document.getElementById('txt-notif-label').innerText = t.notifLabel;
+            document.getElementById('notif-text').placeholder = t.notifPh;
+            document.getElementById('btn-notif').innerText = t.btnNotif;
+
+            // Update Active Button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase().includes(lang === 'si' ? 'සිංහල' : lang === 'en' ? 'english' : 'தமிழ்')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
         window.onload = () => {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", (e) => {});');
+                navigator.serviceWorker.register('./sw.js?v=2');
             }
         };
 
         function execute(type) {
             const num = document.getElementById('phone').value;
-            if (num.length < 10) return alert("කරුණාකර නිවැරදි අංකය ඇතුළත් කරන්න!");
+            if (num.length < 10) return alert(translations[currentLang].alertNum);
             
-            // Link fixed to 'ecard'
             const link = "https://janithdidula025-design.github.io/ecard/index.html";
-            const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`);
+            const msg = encodeURIComponent(`ADM Digital Student Card: ${link}`);
             
             if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
             if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
-            if(type === 'call') window.open(`tel:${num}`);
+        }
+
+        function sendNotification() {
+            const text = document.getElementById('notif-text').value;
+            if (!text) return alert(translations[currentLang].alertEmpty);
+
+            localStorage.setItem('adm_global_msg', text);
+            localStorage.setItem('adm_msg_id', Date.now());
+            
+            alert(translations[currentLang].alertSuccess);
+            document.getElementById('notif-text').value = "";
         }
 
         let deferredPrompt;
