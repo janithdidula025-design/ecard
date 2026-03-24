@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM Admin Panel</title>
     <meta name="theme-color" content="#0a192f">
-    <link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","start_url":"admin.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg","sizes":"512x512","type":"image/jpg"}]}'>
+     <link rel="manifest" href='data:application/json,{"name":"ADM Admin","short_name":"ADM Admin","start_url":"admin.html","display":"standalone","background_color":"#0a192f","theme_color":"#64ffda","icons":[{"src":"https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg","sizes":"512x512","type":"image/jpg"}]}'> 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root { --accent: #64ffda; --bg-dark: #0a192f; --card-bg: #112240; --text-main: #ccd6f6; }
@@ -15,7 +16,7 @@
         #install-prompt button { background: #020c1b; color: var(--accent); border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
 
         .profile-section { width: 120px; height: 120px; margin-bottom: 20px; position: relative; cursor: pointer; }
-        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); }
+        .profile-section img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; background: var(--card-bg); transition: 0.3s; }
         .edit-badge { position: absolute; bottom: 5px; right: 5px; background: var(--accent); color: #000; font-size: 10px; padding: 3px 6px; border-radius: 10px; font-weight: bold; }
 
         .main-card { width: 85%; max-width: 380px; background: var(--card-bg); padding: 30px 20px; border-radius: 28px; border: 1px solid rgba(100, 255, 218, 0.1); text-align: center; }
@@ -24,6 +25,8 @@
         .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #1d9bf0; color: white; }
         .btn-call { background: #ffffff; color: #0a192f; }
+        
+        .status-msg { font-size: 12px; margin-top: 5px; color: var(--accent); display: none; }
     </style>
 </head>
 <body>
@@ -38,6 +41,7 @@
         <div class="edit-badge">EDIT</div>
         <input type="file" id="logo-input" hidden accept="image/*" onchange="updateLogo(this)">
     </div>
+    <div id="upload-status" class="status-msg">Uploading... Please wait.</div>
     
     <h2>ADM CENTRAL</h2>
     <p style="color:var(--accent)">MANAGEMENT & DISPATCH</p>
@@ -50,24 +54,86 @@
     </div>
 
     <script>
-        function updateLogo(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64 = e.target.result;
-                    document.getElementById('admin-logo').src = base64;
-                    localStorage.setItem('adm_shared_logo', base64);
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+        // Supabase සම්බන්ධතාවය (ඔබේ දත්ත ඇතුළත් කරන්න)
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        window.onload = () => {
-            const saved = localStorage.getItem('adm_shared_logo');
-            if (saved) document.getElementById('admin-logo').src = saved;
+        // පේජ් එක Load වන විට Database එකෙන් ලෝගෝ එක ලබා ගැනීම
+        window.onload = async () => {
+            const { data, error } = await supabase
+                .from('settings')
+                .select('logo_url')
+                .eq('id', 1)
+                .single();
+
+            if (data && data.logo_url) {
+                document.getElementById('admin-logo').src = data.logo_url;
+            }
+            
             if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
         };
 
+        // ලෝගෝ එක Upload කර ලින්ක් එක Database එකට යැවීම
+        async function updateLogo(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const logoImg = document.getElementById('admin-logo');
+                const status = document.getElementById('upload-status');
+                
+                logoImg.style.opacity = "0.3";
+                status.style.display = "block";
+
+                const fileName = `logo_${Date.now()}.${file.name.split('.').pop()}`;
+
+                try {
+                    // 1. Storage එකට Upload කිරීම (Bucket එක 'logos' විය යුතුය)
+                    const { error: uploadError } = await supabase.storage
+                        .from('logos')
+                        .upload(fileName, file);
+
+                    if (uploadError) throw uploadError;
+
+                    // 2. Public URL එක ලබා ගැනීම
+                    const { data: urlData } = supabase.storage
+                        .from('logos')
+                        .getPublicUrl(fileName);
+
+                    const publicUrl = urlData.publicUrl;
+
+                    // 3. Database Table එකේ Update කිරීම
+                    const { error: dbError } = await supabase
+                        .from('settings')
+                        .update({ logo_url: publicUrl })
+                        .eq('id', 1);
+
+                    if (dbError) throw dbError;
+
+                    // සාර්ථක නම් පින්තූරය මාරු කිරීම
+                    logoImg.src = publicUrl;
+                    alert("Logo එක සාර්ථකව Update වුණා!");
+
+                } catch (error) {
+                    alert("වැරදීමක් සිදුවුණා: " + error.message);
+                } finally {
+                    logoImg.style.opacity = "1";
+                    status.style.display = "none";
+                }
+            }
+        }
+
+        // Action Buttons
+        function execute(type) {
+            const num = document.getElementById('phone').value;
+            if (num.length < 10) return alert("අංකය වැරදියි!");
+            const link = "https://janithdidula025-design.github.io/ecard/index.html";
+            const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`);
+            if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
+            if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
+            if(type === 'call') window.open(`tel:${num}`);
+        }
+
+        // PWA Install Logic
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); deferredPrompt = e;
@@ -81,16 +147,6 @@
                 document.getElementById('install-prompt').style.display = 'none';
             }
         });
-
-        function execute(type) {
-            const num = document.getElementById('phone').value;
-            if (num.length < 10) return alert("අංකය වැරදියි!");
-            const link = "https://janithdidula025-design.github.io/ecard/index.html";
-            const msg = encodeURIComponent(`ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`);
-            if(type === 'wa') window.open(`https://wa.me/94${num.substring(1)}?text=${msg}`);
-            if(type === 'sms') window.open(`sms:${num}?body=${msg}`);
-            if(type === 'call') window.open(`tel:${num}`);
-        }
     </script>
 </body>
 </html>
