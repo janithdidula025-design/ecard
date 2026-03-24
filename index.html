@@ -25,6 +25,15 @@
         .btn-sms { background: #f39c12; } .btn-email { background: #e74c3c; }
         #pwa-installer { display: none; width: 100%; background: var(--primary); color: #000; padding: 15px; position: fixed; top: 0; z-index: 10000; font-weight: bold; justify-content: space-between; align-items: center; box-sizing: border-box; }
     </style>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "72eccb3d-dffb-4364-885f-354403389066",
+    });
+  });
+</script>
 </head>
 <body>
 
