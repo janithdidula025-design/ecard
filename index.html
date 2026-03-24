@@ -3,66 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM E-Card v1.5</title>
-    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIENhcmQiLCJzaG9ydF9uYW1lIjoiQURNIENhcmQiLCJzdGFydF91cmwiOiJpbmRleC5odG1sP3Y9MS41IiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBhMTkyZiIsInRoZW1lX2NvbG9yIjoiIzY0ZmZkYSIsIm9yaWVudGF0aW9uIjoicG9ydHJhaXQiLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2phbml0aGRpZHVsYTAyNS1kZXNpZ24vZWNhcmQvbWFpbi9sb2dvJTIwMDEucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
+    <title>ADM E-Card v1.8</title>
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIENhcmQiLCJzaG9ydF9uYW1lIjoiQURNIENhcmQiLCJzdGFydF91cmwiOiJpbmRleC5odG1sP3Y9MS44IiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBhMTkyZiIsInRoZW1lX2NvbG9yIjoiIzY0ZmZkYSIsIm9yaWVudGF0aW9uIjoicG9ydHJhaXQiLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2phbml0aGRpZHVsYTAyNS1kZXNpZ24vZWNhcmQvbWFpbi9sb2dvJTIwMDEucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
     
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; --red: #ff4757; }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #000); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; overflow-x: hidden; }
-        
-        /* Top Bar */
         .top-bar { position: absolute; top: 20px; width: 90%; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
-        .lang-switch { display: flex; gap: 5px; }
-        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 6px 12px; border-radius: 12px; cursor: pointer; font-size: 0.75rem; transition: 0.3s; }
+        .lang-switch { display: flex; gap: 4px; }
+        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 6px 10px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; }
         .lang-btn.active { background: var(--primary); color: #000; font-weight: bold; }
-        
-        .notif-btn { background: var(--primary); border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 0 15px var(--primary); animation: ring 2s infinite; }
+        .notif-btn { background: var(--primary); border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 0 15px var(--primary); animation: ring 2s infinite; }
         @keyframes ring { 0%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(15deg); } 20%, 40% { transform: rotate(-15deg); } }
-
         .card { width: 88%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 30px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(20px); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); position: relative; margin-top: 50px; }
         .p-img { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); }
-        
-        .info-box { background: rgba(0,0,0,0.4); padding: 18px; border-radius: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.82rem; line-height: 1.6; }
-        
-        /* Main Save Button */
-        .btn-save { width: 100%; padding: 16px; border-radius: 18px; font-weight: bold; font-size: 1rem; cursor: pointer; border: none; background: #fff; color: #0a192f; transition: 0.4s; }
-
-        /* Action Grid (The 4 Buttons) */
+        .info-box { background: rgba(0,0,0,0.4); padding: 18px; border-radius: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.8; }
+        .btn-save { width: 100%; padding: 16px; border-radius: 18px; font-weight: bold; font-size: 0.95rem; cursor: pointer; border: none; background: #fff; color: #0a192f; transition: 0.4s; }
         .action-grid { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; width: 100%; }
-        .btn-action { padding: 14px 5px; font-size: 0.85rem; border-radius: 15px; text-decoration: none; color: white; font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 5px; transition: 0.3s; }
-        .btn-wa { background: #25D366; }
-        .btn-call { background: #3498db; }
-        .btn-sms { background: #f39c12; }
-        .btn-email { background: #e74c3c; }
-        .btn-action:active { transform: scale(0.95); }
-
-        #pwa-installer { display: none; width: 100%; background: var(--primary); color: #000; padding: 15px; position: fixed; top: 0; z-index: 10000; font-weight: bold; justify-content: space-between; align-items: center; }
+        .btn-action { padding: 14px 5px; font-size: 0.85rem; border-radius: 15px; text-decoration: none; color: white; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
+        .btn-wa { background: #25D366; } .btn-call { background: #3498db; }
+        .btn-sms { background: #f39c12; } .btn-email { background: #e74c3c; }
+        #pwa-installer { display: none; width: 100%; background: var(--primary); color: #000; padding: 15px; position: fixed; top: 0; z-index: 10000; font-weight: bold; justify-content: space-between; align-items: center; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
     <div id="pwa-installer">
         <span id="pwa-txt">📲 ADM App එක Install කරගන්න?</span>
-        <button id="btn-install" style="background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 10px;">Install</button>
+        <button id="btn-install" style="background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 10px; font-weight: bold;">Install</button>
     </div>
 
     <div class="top-bar">
         <div class="lang-switch">
             <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
-            <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">EN</button>
+            <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
             <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
         </div>
         <button class="notif-btn" onclick="enableNotifications()">🔔</button>
     </div>
 
     <div class="card">
-        <div style="color: var(--primary); font-size: 0.75rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">ADM HIGHER EDUCATION</div>
+        <div style="color: var(--primary); font-size: 0.7rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">ADM HIGHER EDUCATION</div>
         <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg" class="p-img" alt="Profile">
         <h2 style="margin: 10px 0;">Janith Didula</h2>
-        <div id="txt-role" style="color: var(--gold); margin-bottom: 20px; font-size: 0.95rem;">සංවිධායක / කළමනාකරු</div>
+        <div id="txt-role" style="color: var(--gold); margin-bottom: 20px; font-size: 0.9rem;">සංවිධායක / කළමනාකරු</div>
         
         <div class="info-box" id="info-box">
-            📍 මීගමුව පාර, නාරම්මල (ADM ආයතනය)<br>🎓 ශාලා පන්ති (ADM Campus)<br>📞 071 065 8051
+            <span id="lbl-addr">📍 <b>ලිපිනය:</b> මීගමුව පාර, නාරම්මල</span><br>
+            <span id="lbl-class">🎓 <b>පන්තිය:</b> ADM Campus (ශාලා පන්ති)</span><br>
+            <span id="lbl-phone">📞 <b>දුරකථන:</b> 071 065 8051</span><br>
+            <span id="lbl-email">📧 <b>ඊමේල්:</b> janithdidula025@gmail.com</span>
         </div>
 
         <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
@@ -74,7 +64,7 @@
             <a href="mailto:janithdidula025@gmail.com" class="btn btn-action btn-email">Email</a>
         </div>
         
-        <div style="margin-top: 20px; font-size: 0.65rem; opacity: 0.4; letter-spacing: 1px;">ADM E-CARD SYSTEM v1.5</div>
+        <div style="margin-top: 20px; font-size: 0.6rem; opacity: 0.4;">ADM E-CARD SYSTEM v1.8</div>
     </div>
 
     <script>
@@ -83,23 +73,35 @@
         const translations = {
             si: { 
                 role: "සංවිධායක / කළමනාකරු", 
+                addr: "📍 <b>ලිපිනය:</b> මීගමුව පාර, නාරම්මල",
+                class: "🎓 <b>පන්තිය:</b> ADM Campus (ශාලා පන්ති)",
+                phone: "📞 <b>දුරකථන:</b> 071 065 8051",
+                email: "📧 <b>ඊමේල්:</b> janithdidula025@gmail.com",
                 save: "👤 CONTACT එක SAVE කරන්න", 
                 notifTitle: "ADM දැනුම්දීම", 
-                notifBody: "දැනුම්දීම් සක්‍රියයි! අලුත් පන්ති විස්තර මෙතනින් ලැබෙනු ඇත.",
+                notifBody: "දැනුම්දීම් සක්‍රියයි! පන්ති විස්තර මෙතනින් ලැබෙනු ඇත.",
                 pwa: "📲 ADM App එක Install කරගන්න?"
             },
             en: { 
                 role: "Organizer / Manager", 
+                addr: "📍 <b>Address:</b> Negombo Rd, Narammala",
+                class: "🎓 <b>Class:</b> ADM Campus (Hall Classes)",
+                phone: "📞 <b>Phone:</b> 071 065 8051",
+                email: "📧 <b>Email:</b> janithdidula025@gmail.com",
                 save: "👤 SAVE CONTACT", 
                 notifTitle: "ADM Notification", 
-                notifBody: "Notifications Active! You will receive class updates here.",
+                notifBody: "Notifications Active! Stay updated with us.",
                 pwa: "📲 Install ADM App?"
             },
             ta: { 
                 role: "ஏற்பாட்டாளர் / முகாமையாளர்", 
+                addr: "📍 <b>முகவரி:</b> நீர்கொழும்பு வீதி, நாரம்மல",
+                class: "🎓 <b>வகுப்பு:</b> ADM Campus (மண்டப வகுப்புகள்)",
+                phone: "📞 <b>தொலைபேசி:</b> 071 065 8051",
+                email: "📧 <b>மின்னஞ்சல்:</b> janithdidula025@gmail.com",
                 save: "👤 தொடர்பைச் சேமிக்கவும்", 
                 notifTitle: "ADM அறிவிப்பு", 
-                notifBody: "அறிவிப்புகள் செயலில் உள்ளன! வகுப்பு அறிவிப்புகளை இங்கே பெறுங்கள்.",
+                notifBody: "அறிவிப்புகள் செயலில் உள்ளன! இணைந்திருங்கள்.",
                 pwa: "📲 ADM செயலியை நிறுவவா?"
             }
         };
@@ -107,9 +109,12 @@
         function setLanguage(lang) {
             currentLang = lang;
             document.getElementById('txt-role').innerText = translations[lang].role;
+            document.getElementById('lbl-addr').innerHTML = translations[lang].addr;
+            document.getElementById('lbl-class').innerHTML = translations[lang].class;
+            document.getElementById('lbl-phone').innerHTML = translations[lang].phone;
+            document.getElementById('lbl-email').innerHTML = translations[lang].email;
             document.getElementById('mainSaveBtn').innerText = translations[lang].save;
             document.getElementById('pwa-txt').innerText = translations[lang].pwa;
-            
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
         }
@@ -123,21 +128,29 @@
 
         function showSystemNotification(title, message) {
             if ('serviceWorker' in navigator && Notification.permission === "granted") {
-                navigator.serviceWorker.ready.then(registration => {
-                    registration.showNotification(title, {
+                navigator.serviceWorker.ready.then(reg => {
+                    reg.showNotification(title, {
                         body: message,
                         icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png',
                         badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png',
-                        vibrate: [200, 100, 200],
-                        tag: 'adm-notif'
+                        vibrate: [200, 100, 200]
                     });
                 });
             }
         }
 
+        // VERSION 1.8 UPDATED
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js?v=1.5');
+            navigator.serviceWorker.register('./sw.js?v=1.8').then(reg => {
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // අලුත් update එකක් ආවම ඉබේම reload කරන්න
+                            window.location.reload();
+                        }
+                    };
+                };
             });
         }
 
@@ -147,7 +160,6 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url; a.download = 'Janith_ADM.vcf'; a.click();
-            
             showActionGrid();
             localStorage.setItem('contact_saved', 'true');
         }
@@ -158,9 +170,7 @@
         }
 
         window.onload = () => {
-            if(localStorage.getItem('contact_saved') === 'true') {
-                showActionGrid();
-            }
+            if(localStorage.getItem('contact_saved') === 'true') showActionGrid();
         };
 
         let deferredPrompt;
