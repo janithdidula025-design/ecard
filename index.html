@@ -3,554 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM E-Card v1.8</title>
-    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIiwic2hvcnRfbmFtZSI6IkFETSIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGExOTJmIiwidGhlbWVfY29sb3IiOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28lMjAwMS5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
+    <title>ADM E-Card v2.0</title>
+    
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIiwic2hvcnRfbmFtZSI6IkFETSIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGExOTJmIiwidGhlbWVvw29sb3IiOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28lMjAwMS5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
+    
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; --red: #ff4757; }
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #000); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; justify-content: center; overflow-x: hidden; }
-        .top-bar { position: absolute; top: 20px; width: 90%; display: flex; justify-content: space-between; align-items: center; z-index: 100; }
-        .lang-switch { display: flex; gap: 4px; }
-        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 6px 10px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; }
-        .lang-btn.active { background: var(--primary); color: #000; font-weight: bold; }
-        .notif-btn { background: var(--primary); border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 0 15px var(--primary); animation: ring 2s infinite; }
-        @keyframes ring { 0%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(15deg); } 20%, 40% { transform: rotate(-15deg); } }
-        .card { width: 88%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 30px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(20px); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); position: relative; margin-top: 50px; }
-        .p-img { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); }
-        .info-box { background: rgba(0,0,0,0.4); padding: 18px; border-radius: 20px; margin-bottom: 25px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.8; }
-        .btn-save { width: 100%; padding: 16px; border-radius: 18px; font-weight: bold; font-size: 0.95rem; cursor: pointer; border: none; background: #fff; color: #0a192f; transition: 0.4s; }
-        .action-grid { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; width: 100%; }
-        .btn-action { padding: 14px 5px; font-size: 0.85rem; border-radius: 15px; text-decoration: none; color: white; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
-        .btn-wa { background: #25D366; } .btn-call { background: #3498db; }
-        .btn-sms { background: #f39c12; } .btn-email { background: #e74c3c; }
-        #pwa-installer { display: none; width: 100%; background: var(--primary); color: #000; padding: 15px; position: fixed; top: 0; z-index: 10000; font-weight: bold; justify-content: space-between; align-items: center; box-sizing: border-box; }
+        
+        /* සම්පූර්ණ පිටුව ස්ක්‍රෝල් වීම වැළැක්වීමට */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+            width: 100%;
+        }
+
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: radial-gradient(circle at top, #112240, #000); 
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; /* කාඩ් එක මැදට ගැනීමට */
+        }
+
+        /* PWA Installer Bar */
+        #pwa-installer { 
+            display: none; width: 100%; background: var(--primary); color: #000; 
+            padding: 12px 20px; position: fixed; top: 0; z-index: 999999; 
+            font-weight: bold; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .pwa-btn { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+
+        /* Top Bar */
+        .top-bar { position: fixed; top: 60px; width: 100%; display: flex; justify-content: center; z-index: 100; }
+        .lang-switch { display: flex; gap: 8px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
+        .lang-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
+
+        /* Card Style - ස්ක්‍රීන් එකට ගැලපෙන ලෙස */
+        .card { 
+            width: 88%; 
+            max-width: 360px; 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 25px 20px; 
+            border-radius: 35px; 
+            border: 1px solid rgba(80, 227, 194, 0.2); 
+            backdrop-filter: blur(20px); 
+            text-align: center; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); 
+            margin-top: 40px;
+            max-height: 85vh; /* කාඩ් එක ස්ක්‍රීන් එකෙන් පිටතට යාම වැළැක්වීමට */
+            overflow-y: auto; /* අත්‍යවශ්‍ය නම් පමණක් කාඩ් එක ඇතුලේ ස්ක්‍රෝල් වීමට */
+        }
+
+        .p-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); }
+        .info-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 20px; margin-bottom: 20px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.7; }
+        
+        /* Buttons */
+        .btn-save { width: 100%; padding: 15px; border-radius: 18px; font-weight: bold; font-size: 1rem; cursor: pointer; border: none; background: #fff; color: #0a192f; transition: 0.4s; }
+        .action-grid { display: none; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; }
+        .btn-action { width: 100%; padding: 12px 5px; font-size: 0.8rem; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        
+        .btn-wa { background: linear-gradient(135deg, #25D366, #128C7E); }
+        .btn-call { background: linear-gradient(135deg, #007bff, #0056b3); }
+        .btn-sms { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #000; }
+        .btn-email { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+        .dropdown-content { display: none; position: absolute; background: #fff; min-width: 160px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1000; bottom: 110%; left: 50%; transform: translateX(-50%); }
+        .dropdown-content a { color: #333; padding: 12px; text-decoration: none; display: block; font-size: 13px; border-bottom: 1px solid #eee; text-align: center; }
+        .show { display: block !important; }
+
+        /* Toast */
+        .status-toast { position: fixed; bottom: -150px; left: 50%; transform: translateX(-50%); width: 280px; background: #fff; color: #333; padding: 12px; border-radius: 12px; border-left: 6px solid #2ecc71; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.6s; z-index: 9999; display: flex; align-items: center; }
+        .status-toast.show { bottom: 20px; }
+
+        /* කුඩා ස්ක්‍රීන් (iPhone SE වැනි) සඳහා විශේෂ ගැලපීම් */
+        @media (max-height: 700px) {
+            .p-img { width: 80px; height: 80px; }
+            .info-box { padding: 10px; margin-bottom: 15px; font-size: 0.75rem; }
+            .card { padding: 15px; margin-top: 50px; }
+            h2 { margin: 8px 0; font-size: 1.1rem; }
+            .top-bar { top: 50px; }
+        }
     </style>
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "72eccb3d-dffb-4364-885f-354403389066",
-    });
-  });
-</script>
 </head>
 <body>
 
- <div class="main-content">
-    <div id="pwa-installer" class="pwa-container">
-        <span id="pwa-txt">📲 App එක Install කරගන්න?</span>
+    <div id="pwa-installer">
+        <span id="pwa-txt">📲 ADM App එක Install කරන්න?</span>
         <button id="btn-install" class="pwa-btn">Install</button>
-        <button onclick="document.getElementById('pwa-installer').style.display='none'" class="pwa-close">&times;</button>
+        <button onclick="document.getElementById('pwa-installer').style.display='none'" style="background:none; border:none; color:#000; font-size:20px; font-weight:bold;">&times;</button>
+    </div>
+
+    <div class="top-bar">
+        <div class="lang-switch">
+            <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
+            <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
+            <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
+        </div>
     </div>
 
     <div class="card">
-
-<div class="top-bar">
-    <div class="lang-switch">
-        <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
-        <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
-        <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
-    </div>
-</div>
-
-<div class="main-content">
-    </div>
-
-<style>
-    /* මුළු පිටුවම Scroll වීම වැළැක්වීමට සහ Layout එක සකස් කිරීම */
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden; /* මුළු පිටුවම scroll වීම නවත්වයි */
-        font-family: 'Segoe UI', sans-serif;
-        background-color: #f4f7f6;
-        display: flex;
-        flex-direction: column;
-    }
-.top-bar { 
-    position: absolute; 
-    top: 20px; 
-    width: 100%; 
-    display: flex; 
-    justify-content: center; 
-    z-index: 1000; 
-}
-
-.lang-switch { 
-    display: flex; 
-    gap: 8px; 
-    background: rgba(255, 255, 255, 0.05); 
-    padding: 5px; 
-    border-radius: 15px; 
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* භාෂා බොත්තම් වල අකුරු කැපිලා පේන්න හදපු CSS */
-.lang-btn { 
-    background: rgba(255, 255, 255, 0.08); 
-    border: 1.5px solid rgba(80, 227, 194, 0.3); 
-    color: #ffffff; 
-    padding: 8px 15px; 
-    border-radius: 12px; 
-    cursor: pointer; 
-    font-size: 0.8rem; 
-    font-weight: 700; /* අකුරු මහත කළා */
-    letter-spacing: 0.5px; /* අකුරු අතර පරතරය */
-    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.8); /* අකුරු වටේ කළු හෙවනැල්ලක් (Shadow) */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(5px);
-}
-
-/* තෝරාගත් (Active) බොත්තම */
-.lang-btn.active { 
-    background: #50e3c2; 
-    color: #000000; /* මෙතන අකුරු කළු කළාම ලා පාට උඩ හොඳට කැපිලා පේනවා */
-    border-color: #51ffda;
-    font-weight: 900; 
-    text-shadow: none; /* Active එකේදී shadow එක ඕන වෙන්නේ නැහැ */
-    box-shadow: 0 0 20px rgba(80, 227, 194, 0.5), inset 0 0 10px rgba(255,255,255,0.3);
-    transform: scale(1.05); /* පොඩ්ඩක් ලොකු වෙලා පේන්න */
-}
-
-/* බොත්තම් උඩට යනකොට (Hover) */
-.lang-btn:hover:not(.active) {
-    background: rgba(80, 227, 194, 0.2);
-    border-color: #50e3c2;
-    color: #fff;
-}
-    /* බොත්තම් අඩංගු පෙට්ටිය (Pill Design) */
-    .lang-switch {
-        display: flex;
-        gap: 5px;
-        background: #f0f0f0;
-        padding: 3px;
-        border-radius: 50px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    /* තෝරාගෙන ඇති (Active) භාෂාව */
-    .lang-btn.active {
-        background-color: #000;
-        color: #fff;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-    }
-
-    /* ප්‍රධාන අන්තර්ගතය පෙන්වන කොටස */
-    .main-content {
-        margin-top: 50px; /* Top bar එකට යට නොවීමට */
-        flex: 1;
-        overflow-y: auto; /* අන්තර්ගතය වැඩි නම් මේ කොටස පමණක් scroll වේ */
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Mobile devices සඳහා පෙනුම තවත් සිහින් කිරීම */
-    @media (max-width: 480px) {
-        .top-bar { height: 45px; }
-        .main-content { margin-top: 45px; }
-        .lang-btn { padding: 5px 10px; font-size: 11px; }
-    }
-    /* මෙතන ඔබේ පරණ CSS ඇති, ඒ අතරට මේවා එක් කරන්න හෝ පරණ ඒවා වෙනුවට දාන්න */
-
-    .main-content {
-        margin-top: 55px; 
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start; 
-        padding: 10px; 
-        overflow-y: auto;
-    }
-
-    .profile-card {
-        width: 100%;
-        max-width: 380px;
-        margin-top: 5px; 
-        padding: 20px;
-        background: #111d27; 
-        border-radius: 25px;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .info-section {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 15px;
-        padding: 15px;
-        margin-top: 15px; 
-        text-align: left;
-        border-left: 3px solid #00ffcc; 
-    }
-    /* Card එක අඩංගු කොටස උඩට ගැනීම */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* මැදට වෙනුවට ඉහළ සිට ආරම්භ කරන්න */
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    margin-top: 80px; /* Language bar එකට පස්සේ තියෙන ඉඩ මෙතනින් පාලනය වේ */
-}
-
-/* Language bar එකේ ඉඩ අඩු කිරීම */
-.top-bar { 
-    position: absolute; 
-    top: 15px; /* උඩින් තියෙන ඉඩ 15px දක්වා අඩු කළා */
-    width: 100%; 
-    display: flex; 
-    justify-content: center; 
-    z-index: 1000; 
-}
-</style>
-
-<script>
-    // භාෂාව මාරු කිරීමේ Function එක
-    function setLanguage(lang) {
-        // සියලුම බොත්තම් වලින් active class එක ඉවත් කරන්න
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // ක්ලික් කළ බොත්තමට active class එක එක් කරන්න
-        const activeBtn = document.getElementById('btn-' + lang);
-        if (activeBtn) {
-            activeBtn.classList.add('active');
-        }
-
-        // භාෂාව මාරු වූ බව තහවුරු කිරීමට (මෙතැනට ඔබේ Translation logic එක එක් කළ හැක)
-        console.log("භාෂාව මාරු කළා: " + lang);
-    }
-</script>
-  
-<div id="statusToast" class="status-toast">
-    <div class="status-body">
-        <div class="status-icon-box" id="statusIconBox">
-            <span class="status-icon" id="statusEmoji">✅</span>
-        </div>
-        <div class="status-content">
-            <p class="status-title" id="statusTitle">විශේෂ දැනුම්දීමයි</p>
-            <p class="status-msg" id="statusMsg">අද දින ආයතනය විවෘතව ඇත.</p>
-        </div>
-    </div>
-</div>
-
-<style>
-    .status-toast {
-        position: fixed;
-        /* ආරම්භයේදී screen එකෙන් එලියට පල්ලෙහාට කර තබයි */
-        bottom: -150px; 
-        left: 50%;
-        transform: translateX(-50%); /* මැදට ගැනීමට */
-        width: 320px;
-        background: #ffffff;
-        border-left: 6px solid #2ecc71;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        padding: 15px;
-        /* අනිවාර්යයෙන්ම අනෙක් හැමදේටම උඩින් තිබිය යුතුයි */
-        z-index: 999999 !important; 
-        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        visibility: hidden; /* සැඟවීමට */
-        opacity: 0;
-    }
-
-    /* මතු වූ විට පෙනෙන ආකාරය */
-    .status-toast.show {
-        bottom: 30px;
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .status-body { display: flex; align-items: center; width: 100%; }
-
-    .status-icon-box {
-        background-color: #eafaf1;
-        min-width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 12px;
-    }
-
-    .status-icon { font-size: 20px; animation: statusPulse 2s infinite; }
-
-    .status-content { flex: 1; }
-
-    .status-title { margin: 0; font-weight: bold; color: #27ae60; font-size: 14px; }
-    .status-msg { margin: 2px 0 0; font-size: 13px; color: #333; font-weight: 500; }
-
-    @keyframes statusPulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.15); }
-    }
-
-    @media (max-width: 480px) {
-        .status-toast { width: 90%; }
-    }
-</style>
-
-<script>
-    // මෙය වෙනම පරීක්ෂා කර බැලීමට window load එක භාවිතා කරමු
-    window.addEventListener('load', function() {
-        const toast = document.getElementById('statusToast');
-
-        // පරීක්ෂා කිරීමක් ලෙස console එකේ පෙන්වන්න
-        console.log("Toast script loaded...");
-
-        setTimeout(() => {
-            toast.classList.add('show');
-            console.log("Showing toast...");
-            
-            // තත්පර 15කින් ආපසු සැඟවීමට
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 15000); 
-        }, 3000); // තත්පර 3කට පසු මතු වේ
-    });
-</script>
-
-    <div class="card">
-        <div style="color: var(--primary); font-size: 0.7rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">ADM HIGHER EDUCATION</div>
+        <div style="color: var(--primary); font-size: 0.65rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 10px;">ADM HIGHER EDUCATION</div>
         <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg" class="p-img" alt="Profile">
-        <h2 style="margin: 10px 0;">Janith Didula</h2>
-        <div id="txt-role" style="color: var(--gold); margin-bottom: 20px; font-size: 0.9rem;">සංවිධායක / කළමනාකරු</div>
+        <h2 style="margin: 10px 0 5px 0;">Janith Didula</h2>
+        <div id="txt-role" style="color: var(--gold); margin-bottom: 20px; font-size: 0.85rem;">සංවිධායක / කළමනාකරු</div>
         
-        <div class="info-box" id="info-box">
+        <div class="info-box">
             <span id="lbl-addr">📍 <b>ලිපිනය:</b> මීගමුව පාර, නාරම්මල</span><br>
-            <span id="lbl-class">🎓 <b>පන්තිය:</b> ADM Campus (ශාලා පන්ති)</span><br>
+            <span id="lbl-class">🎓 <b>පන්තිය:</b> ADM Campus</span><br>
             <span id="lbl-phone">📞 <b>දුරකථන:</b> 071 065 8051</span><br>
             <span id="lbl-email">📧 <b>ඊමේල්:</b> janithdidula025@gmail.com</span>
         </div>
 
-   <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
+        <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
 
-<div id="actionGrid" class="action-grid" style="display: none;">
-    <button class="btn-action btn-wa" onclick="window.open('https://wa.me/94710658051')">WhatsApp</button>
-    <button class="btn-action btn-call" onclick="window.open('tel:0710658051')">Call</button>
-    <button class="btn-action btn-sms" onclick="window.open('sms:0710658051')">SMS</button>
-    <button class="btn-action btn-email" onclick="window.open('mailto:janithdidula025@gmail.com')">Email</button>
-</div>
-
-<div id="actionGrid" class="action-grid" style="display: none;">
-    
-    <div class="dropdown">
-        <button type="button" class="btn-action btn-wa" onclick="toggleMenu('waMenu')">
-            <span class="icon">💬</span> WhatsApp
-        </button>
-        <div id="waMenu" class="dropdown-content">
-            <a href="https://wa.me/94710658051" target="_blank">071 065 8051</a>
-            <a href="https://wa.me/94763614792" target="_blank">076 361 4792</a>
+        <div id="actionGrid" class="action-grid">
+            <div class="dropdown">
+                <button class="btn-action btn-wa" onclick="toggleMenu('waMenu')"><span>💬</span> WhatsApp</button>
+                <div id="waMenu" class="dropdown-content">
+                    <a href="https://wa.me/94710658051" target="_blank">071 065 8051</a>
+                    <a href="https://wa.me/94763614792" target="_blank">076 361 4792</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn-action btn-call" onclick="toggleMenu('callMenu')"><span>📞</span> Call</button>
+                <div id="callMenu" class="dropdown-content">
+                    <a href="tel:0710658051">071 065 8051</a>
+                    <a href="tel:0763614792">076 361 4792</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn-action btn-sms" onclick="toggleMenu('smsMenu')"><span>✉️</span> SMS</button>
+                <div id="smsMenu" class="dropdown-content">
+                    <a href="sms:0710658051">071 065 8051</a>
+                    <a href="sms:0763614792">076 361 4792</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn-action btn-email" onclick="toggleMenu('emailMenu')"><span>📧</span> Email</button>
+                <div id="emailMenu" class="dropdown-content">
+                    <a href="mailto:janithdidula025@gmail.com">Main Email</a>
+                </div>
+            </div>
         </div>
+
+        <div style="margin-top: 20px; font-size: 0.55rem; opacity: 0.4;">ADM E-CARD SYSTEM v2.0</div>
     </div>
 
-    <div class="dropdown">
-        <button type="button" class="btn-action btn-call" onclick="toggleMenu('callMenu')">
-            <span class="icon">📞</span> Call
-        </button>
-        <div id="callMenu" class="dropdown-content">
-            <a href="tel:0710658051">071 065 8051</a>
-            <a href="tel:0763614792">076 361 4792</a>
+    <div id="statusToast" class="status-toast">
+        <span style="font-size: 20px; margin-right: 10px;">✅</span>
+        <div>
+            <b style="font-size: 13px; color: #27ae60;">විශේෂ දැනුම්දීමයි</b>
+            <p style="margin:0; font-size:11px;">අද දින ආයතනය විවෘතව ඇත.</p>
         </div>
-    </div>
-
-    <div class="dropdown">
-        <button type="button" class="btn-action btn-sms" onclick="toggleMenu('smsMenu')">
-            <span class="icon">✉️</span> SMS
-        </button>
-        <div id="smsMenu" class="dropdown-content">
-            <a href="sms:0710658051">071 065 8051</a>
-            <a href="sms:0763614792">076 361 4792</a>
-        </div>
-    </div>
-
-    <div class="dropdown">
-        <button type="button" class="btn-action btn-email" onclick="toggleMenu('emailMenu')">
-            <span class="icon">📧</span> Email
-        </button>
-        <div id="emailMenu" class="dropdown-content">
-            <a href="mailto:janithdidula025@gmail.com">janithdidula025@gmail.com</a>
-            <a href="mailto:janithdidula@gmail.com">janithdidula@gmail.com</a>
-        </div>
-    </div>
-</div>
-
-<style>
-    /* Grid එක මැදට ගැනීම සහ පිළිවෙලට සැකසීම */
-    .action-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* පේළියකට බොත්තම් 2 බැගින් */
-        gap: 15px; /* බොත්තම් අතර පරතරය */
-        max-width: 400px; /* Grid එකේ උපරිම පළල */
-        margin: 20px auto; /* පිටුවේ මැදට (Center) ගැනීම */
-        padding: 10px;
-    }
-
-    .btn-action {
-        width: 100%;
-        padding: 15px 10px;
-        border: none;
-        border-radius: 12px;
-        color: white;
-        font-weight: bold;
-        font-size: 14px;
-        cursor: pointer;
-        display: flex;
-        flex-direction: column; /* Icon එක උඩින් සහ Text එක යටින් පෙන්වීමට */
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .btn-action:active { transform: scale(0.95); }
-
-    /* Buttons වල වර්ණ */
-    .btn-wa { background: linear-gradient(135deg, #25D366, #128C7E); }
-    .btn-call { background: linear-gradient(135deg, #007bff, #0056b3); }
-    .btn-sms { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #000; }
-    .btn-email { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-
-    .icon { font-size: 22px; }
-
-    /* Dropdown පෙනුම */
-    .dropdown { position: relative; width: 100%; }
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background: #fff;
-        min-width: 180px;
-        border-radius: 10px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        z-index: 100;
-        bottom: 110%; /* බොත්තමට ඉහළින් පෙන්වීමට */
-        left: 50%;
-        transform: translateX(-50%);
-        overflow: hidden;
-    }
-
-    .dropdown-content a {
-        color: #333;
-        padding: 12px;
-        text-decoration: none;
-        display: block;
-        font-size: 13px;
-        border-bottom: 1px solid #eee;
-        text-align: center;
-    }
-
-    .dropdown-content a:hover { background: #f8f9fa; }
-    .show { display: block !important; animation: slideUp 0.3s ease; }
-
-    @keyframes slideUp {
-        from { opacity: 0; transform: translate(-50%, 10px); }
-        to { opacity: 1; transform: translate(-50%, 0); }
-    }
-</style>
-
-<script>
-    // කලින් තිබුණු JavaScript එකම භාවිතා කරන්න (toggleMenu function එක)
-    function toggleMenu(id) {
-        const menus = document.querySelectorAll('.dropdown-content');
-        menus.forEach(m => m.id === id ? m.classList.toggle('show') : m.classList.remove('show'));
-    }
-
-    window.onclick = function(e) {
-        if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
-        }
-    }
-
-    // Save කළ පසු Grid එක පෙන්වන function එක (ඔබේ saveVCard එක ඇතුළත මෙය තියෙන්න ඕනේ)
-    function showGrid() {
-        document.getElementById('actionGrid').style.display = 'grid';
-    }
-
-    function saveVCard() {
-        // මෙතන ඔබේ පවතින VCard save කරන code එක තියෙන්න ඕනේ
-        console.log("Saving Contact...");
-
-        // බොත්තම් ටික පෙන්වන්න (Action Grid එක 'flex' කරන්න)
-        const grid = document.getElementById('actionGrid');
-        grid.style.display = 'flex';
-
-        // අවශ්‍ය නම් Save Button එක Hide කරන්නත් පුළුවන්
-        // document.getElementById('mainSaveBtn').style.display = 'none';
-        
-        // උදාහරණයක් ලෙස VCard download logic එක:
-        // window.location.href = 'path_to_your_vcard.vcf'; 
-    }
-
-    function toggleMenu(id) {
-        const menus = document.querySelectorAll('.dropdown-content');
-        menus.forEach(m => m.id === id ? m.classList.toggle('show') : m.classList.remove('show'));
-    }
-
-    window.onclick = function(e) {
-        if (!e.target.matches('.btn-action')) {
-            document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
-        }
-    }
-</script>
-        
-        <div style="margin-top: 20px; font-size: 0.6rem; opacity: 0.4;">ADM E-CARD SYSTEM v1.8</div>
     </div>
 
     <script>
-        let currentLang = 'si';
-
         const translations = {
-            si: { 
-                role: "සංවිධායක / කළමනාකරු", 
-                addr: "📍 <b>ලිපිනය:</b> මීගමුව පාර, නාරම්මල",
-                class: "🎓 <b>පන්තිය:</b> ADM Campus (ශාලා පන්ති)",
-                phone: "📞 <b>දුරකථන:</b> 071 065 8051",
-                email: "📧 <b>ඊමේල්:</b> janithdidula025@gmail.com",
-                save: "👤 CONTACT එක SAVE කරන්න", 
-                notifTitle: "ADM දැනුම්දීම", 
-                notifBody: "දැනුම්දීම් සක්‍රියයි! පන්ති විස්තර මෙතනින් ලැබෙනු ඇත.",
-                pwa: "📲 ADM App එක Install කරගන්න?"
-            },
-            en: { 
-                role: "Organizer / Manager", 
-                addr: "📍 <b>Address:</b> Negombo Rd, Narammala",
-                class: "🎓 <b>Class:</b> ADM Campus (Hall Classes)",
-                phone: "📞 <b>Phone:</b> 071 065 8051",
-                email: "📧 <b>Email:</b> janithdidula025@gmail.com",
-                save: "👤 SAVE CONTACT", 
-                notifTitle: "ADM Notification", 
-                notifBody: "Notifications Active! Stay updated with us.",
-                pwa: "📲 Install ADM App?"
-            },
-            ta: { 
-                role: "ஏற்பாட்டாளர் / முகாமையாளர்", 
-                addr: "📍 <b>முகவரி:</b> நீர்கொழும்பு வீதி, நாரம்மல",
-                class: "🎓 <b>வகுப்பு:</b> ADM Campus (மண்டப வகுப்புகள்)",
-                phone: "📞 <b>தொலைபேசி:</b> 071 065 8051",
-                email: "📧 <b>மின்னஞ்சல்:</b> janithdidula025@gmail.com",
-                save: "👤 தொடர்பைச் சேமிக்கவும்", 
-                notifTitle: "ADM அறிவிப்பு", 
-                notifBody: "அறிவிப்புகள் செயலில் உள்ளன! இணைந்திருங்கள்.",
-                pwa: "📲 ADM செயலியை நிறுவவா?"
-            }
+            si: { role: "සංවිධායක / කළමනාකරු", addr: "📍 <b>ලිපිනය:</b> මීගමුව පාර, නාරම්මල", class: "🎓 <b>පන්තිය:</b> ADM Campus", phone: "📞 <b>දුරකථන:</b> 071 065 8051", email: "📧 <b>ඊමේල්:</b> janithdidula025@gmail.com", save: "👤 CONTACT එක SAVE කරන්න", pwa: "📲 ADM App එක Install කරන්න?" },
+            en: { role: "Organizer / Manager", addr: "📍 <b>Address:</b> Negombo Rd, Narammala", class: "🎓 <b>Class:</b> ADM Campus", phone: "📞 <b>Phone:</b> 071 065 8051", email: "📧 <b>Email:</b> janithdidula025@gmail.com", save: "👤 SAVE CONTACT", pwa: "📲 Install ADM App?" },
+            ta: { role: "ஏற்பாட்டாளர் / முகாமையாளர்", addr: "📍 <b>முகவரி:</b> නාරම්මල", class: "🎓 <b>வகுப்பு:</b> ADM Campus", phone: "📞 <b>தொலைபேசி:</b> 071 065 8051", email: "📧 <b>மின்னஞ்சல்:</b> janithdidula025@gmail.com", save: "👤 தொடர்பைச் சேமிக்கவும்", pwa: "📲 ADM செயலியை நிறுவவா?" }
         };
 
         function setLanguage(lang) {
-            currentLang = lang;
             document.getElementById('txt-role').innerText = translations[lang].role;
             document.getElementById('lbl-addr').innerHTML = translations[lang].addr;
             document.getElementById('lbl-class').innerHTML = translations[lang].class;
@@ -562,156 +182,52 @@
             document.getElementById(`btn-${lang}`).classList.add('active');
         }
 
-        async function enableNotifications() {
-            const permission = await Notification.requestPermission();
-            if (permission === "granted") {
-                showSystemNotification(translations[currentLang].notifTitle, translations[currentLang].notifBody);
+        function toggleMenu(id) {
+            const menu = document.getElementById(id);
+            const isVisible = menu.classList.contains('show');
+            document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
+            if (!isVisible) menu.classList.add('show');
+        }
+
+        window.onclick = (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
             }
-        }
-
-        function showSystemNotification(title, message) {
-            if ('serviceWorker' in navigator && Notification.permission === "granted") {
-                navigator.serviceWorker.ready.then(reg => {
-                    reg.showNotification(title, {
-                        body: message,
-                        icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png',
-                        badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png',
-                        vibrate: [200, 100, 200]
-                    });
-                });
-            }
-        }
-        // පිටුව load වන විට කලින් save කර ඇත්දැයි පරීක්ෂා කිරීම
-window.addEventListener('load', () => {
-    if (localStorage.getItem('contact_saved_v18') === 'true') {
-        document.getElementById('mainSaveBtn').style.display = 'none';
-        const actionGrid = document.getElementById('actionGrid');
-        if (actionGrid) actionGrid.style.display = 'grid';
-    }
-});
-
-async function saveVCard() {
-    const saveBtn = document.getElementById('mainSaveBtn');
-    saveBtn.innerText = "⏳ කරුණාකර රැඳී සිටින්න...";
-    saveBtn.disabled = true;
-
-    // පින්තූරය Base64 බවට හැරවීමේ function එක
-    async function getBase64Image(url) {
-        try {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    const base64String = reader.result.split(',')[1];
-                    resolve(base64String);
-                };
-                reader.readAsDataURL(blob);
-            });
-        } catch (e) {
-            console.error("Photo fetch failed", e);
-            return ""; // පින්තූරය ලබාගත නොහැකි නම් හිස්ව යවයි
-        }
-    }
-
-    try {
-        // ඔබේ GitHub ලෝගෝ එකේ ලින්ක් එක
-        const imageUrl = "https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg";
-        const base64Photo = await getBase64Image(imageUrl);
-
-        // VCard අන්තර්ගතය (Version 3.0)
-        let vcard = "BEGIN:VCARD\n" +
-                    "VERSION:3.0\n" +
-                    "FN:Janith Didula (ADM)\n" +
-                    "ORG:ADM Higher Education\n" +
-                    "TEL;TYPE=CELL,VOICE:0710658051\n" +
-                    "TEL;TYPE=CELL,VOICE:0763614792\n" +
-                    "EMAIL:janithdidula025@gmail.com\n" +
-                    "ADR;TYPE=WORK:;;Negombo Rd;Narammala;;;Sri Lanka\n";
-        
-        // පින්තූරය තිබේ නම් පමණක් ඇතුළත් කරයි
-        if (base64Photo) {
-            vcard += "PHOTO;TYPE=JPEG;ENCODING=b:" + base64Photo + "\n";
-        }
-        
-        vcard += "END:VCARD";
-
-        const blob = new Blob([vcard], { type: 'text/vcard' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Janith_Didula_ADM.vcf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-
-        // සාර්ථකව අවසන් වූ පසු Button මාරු කිරීම
-        localStorage.setItem('contact_saved_v18', 'true');
-        saveBtn.style.display = 'none';
-        const actionGrid = document.getElementById('actionGrid');
-        if (actionGrid) actionGrid.style.display = 'grid';
-
-    } catch (error) {
-        console.error("Error:", error);
-        saveBtn.innerText = "👤 CONTACT එක SAVE කරන්න";
-        saveBtn.disabled = false;
-        alert("දෝෂයක් ඇති විය. නැවත උත්සාහ කරන්න.");
-    }
-}
-// VERSION 2.0 - Update Logic
-// Service Worker එක Register කිරීම සහ Auto-Update Logic එක
-if ('serviceWorker' in navigator) {
-    // පරණ cache එක bypass කරන්න version එකක් (?v=2.1) එකතු කරන්න
-    navigator.serviceWorker.register('./sw.js?v=' + Date.now()).then(reg => {
-        
-        // සෑම තත්පර 60කට වරක්ම අලුත් update එකක් ඇත්දැයි බලන්න (Optional)
-        setInterval(() => {
-            reg.update();
-        }, 60000);
-
-        reg.onupdatefound = () => {
-            const installingWorker = reg.installing;
-            installingWorker.onstatechange = () => {
-                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // අලුත් update එකක් ආවම පණිවිඩයක් දීලා reload කරන්න
-                    console.log('New content is available; please refresh.');
-                    
-                    // වහාම අලුත් එකට මාරු වෙන්න අණ දෙන්න
-                    installingWorker.postMessage({ action: 'skipWaiting' });
-                }
-            };
         };
-    });
-
-    // Service Worker එක මාරු වුණු සැනින් පිටුව Reload කරන්න
-    let refreshing = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-            window.location.reload();
-            refreshing = true;
-        }
-    });
-}
 
         async function saveVCard() {
-            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\nEMAIL:janithdidula025@gmail.com\nEND:VCARD";
-            const blob = new Blob([vcard], {type:'text/vcard'});
-            const url = URL.createObjectURL(blob);
+            const btn = document.getElementById('mainSaveBtn');
+            btn.innerText = "⏳ Please Wait...";
+            btn.disabled = true;
+
+            const imageUrl = "https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg";
+            let base64Photo = "";
+
+            try {
+                const resp = await fetch(imageUrl);
+                const blob = await resp.blob();
+                base64Photo = await new Promise(r => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => r(reader.result.split(',')[1]);
+                    reader.readAsDataURL(blob);
+                });
+            } catch (e) { console.log("Photo failed"); }
+
+            const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\nTEL;TYPE=CELL:0763614792\nEMAIL:janithdidula025@gmail.com\nPHOTO;TYPE=JPEG;ENCODING=b:" + base64Photo + "\nEND:VCARD";
+            
+            const vblob = new Blob([vcard], { type: 'text/vcard' });
+            const vurl = URL.createObjectURL(vblob);
             const a = document.createElement('a');
-            a.href = url; a.download = 'Janith_ADM.vcf'; a.click();
-            showActionGrid();
-            localStorage.setItem('contact_saved', 'true');
+            a.href = vurl; a.download = 'Janith_Didula_ADM.vcf'; a.click();
+
+            localStorage.setItem('contact_saved_v2', 'true');
+            showGrid();
         }
 
-        function showActionGrid() {
+        function showGrid() {
             document.getElementById('mainSaveBtn').style.display = 'none';
             document.getElementById('actionGrid').style.display = 'grid';
         }
-
-        window.onload = () => {
-            if(localStorage.getItem('contact_saved') === 'true') showActionGrid();
-        };
 
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -723,43 +239,23 @@ if ('serviceWorker' in navigator) {
         document.getElementById('btn-install').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt = null;
-                document.getElementById('pwa-installer').style.display = 'none';
-            }
-        });
-    </script>
-    <script>
-    // ... කලින් තිබ්බ setLanguage වගේ functions මෙතන ඇති ...
-
-    let deferredPrompt;
-    const installBtn = document.getElementById('pwa-installer');
-
-    // 1. Browser එක Install කරන්න පුළුවන් කියලා අඳුරගත්තම මේක වැඩ කරනවා
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        // Install Bar එක පෙන්වනවා
-        if(installBtn) installBtn.style.display = 'flex'; 
-    });
-
-    // 2. Install Button එක එබුවම වෙන දේ
-    const btnInstall = document.getElementById('btn-install');
-    if(btnInstall) {
-        btnInstall.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') document.getElementById('pwa-installer').style.display = 'none';
                 deferredPrompt = null;
-                if(installBtn) installBtn.style.display = 'none';
             }
         });
-    }
 
-    // 3. Service Worker එක Register කිරීම (අනිවාර්යයි!)
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log("Service Worker Registered"));
-    }
-</script>
+        window.onload = () => {
+            if (localStorage.getItem('contact_saved_v2') === 'true') showGrid();
+            setTimeout(() => {
+                document.getElementById('statusToast').classList.add('show');
+                setTimeout(() => document.getElementById('statusToast').classList.remove('show'), 8000);
+            }, 3000);
+        };
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js?v=' + Date.now());
+        }
+    </script>
 </body>
 </html>
