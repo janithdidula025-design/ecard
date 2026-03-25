@@ -230,6 +230,43 @@
                 document.getElementById('pwa-installer').style.display = 'none';
             }
         });
+        window.onload = () => {
+    // Contact එක කලින්ම save කරලනම් Grid එක පෙන්වන්න
+    if (localStorage.getItem('contact_saved') === 'true') showGrid();
+    
+    // Toast message එක පෙන්වන්න
+    setTimeout(() => {
+        document.getElementById('statusToast').classList.add('active');
+        setTimeout(() => document.getElementById('statusToast').classList.remove('active'), 6000);
+    }, 2000);
+
+    // --- බලෙන් PWA Bar එක පෙන්වන කොටස (තත්පර 3කට පසු) ---
+    setTimeout(() => {
+        // දැනටමත් Install කරල නැත්නම් විතරක් පෙන්වන්න
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            document.getElementById('pwa-installer').style.display = 'flex';
+        }
+    }, 3000);
+};
+
+// Install Button එක click කළ විට සිදුවිය යුතු වෙනස
+document.getElementById('btn-install-main').addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        document.getElementById('pwa-installer').style.display = 'none';
+    } else {
+        // බ්‍රවුසරය තවම Ready නැත්නම් හෝ iPhone එකක නම් මැනුවල් ක්‍රමය කියන්න
+        const msg = {
+            si: "ඔබේ බ්‍රවුසරයේ 'Add to Home Screen' හෝ 'Install' භාවිතා කරන්න.",
+            en: "Please use 'Add to Home Screen' or 'Install' from your browser menu.",
+            ta: "உங்கள் உலாவியில் 'Add to Home Screen' அல்லது 'Install' என்பதைப் பயன்படுத்தவும்."
+        };
+        // දැනට තෝරාගෙන තියෙන භාෂාව අනුව alert එකක් දෙන්න (setLanguage function එකේ currentLang එක save කරගන්න පුළුවන්)
+        alert(msg.si); 
+    }
+});
     </script>
 </body>
 </html>
