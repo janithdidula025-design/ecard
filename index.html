@@ -460,28 +460,31 @@ body {
             }
         }
 // VERSION 2.0 - Update Logic
+// Service Worker එක Register කිරීම සහ Auto-Update Logic එක
 if ('serviceWorker' in navigator) {
-    // 1. Service Worker එක Register කිරීම (?v=2.0 මගින් Cache Bypass වේ)
-    navigator.serviceWorker.register('./sw.js?v=2.0').then(reg => {
+    // පරණ cache එක bypass කරන්න version එකක් (?v=2.1) එකතු කරන්න
+    navigator.serviceWorker.register('./sw.js?v=' + Date.now()).then(reg => {
         
-        // අලුත් Update එකක් තිබේදැයි වහාම පරීක්ෂා කරන්න
-        reg.update();
+        // සෑම තත්පර 60කට වරක්ම අලුත් update එකක් ඇත්දැයි බලන්න (Optional)
+        setInterval(() => {
+            reg.update();
+        }, 60000);
 
         reg.onupdatefound = () => {
             const installingWorker = reg.installing;
             installingWorker.onstatechange = () => {
-                if (installingWorker.state === 'installed') {
-                    if (navigator.serviceWorker.controller) {
-                        // අලුත් version එකක් තිබේ නම්, වහාම එයට මාරු වීමට අණ දෙන්න
-                        console.log("New update found! Activating...");
-                        installingWorker.postMessage({ action: 'skipWaiting' });
-                    }
+                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // අලුත් update එකක් ආවම පණිවිඩයක් දීලා reload කරන්න
+                    console.log('New content is available; please refresh.');
+                    
+                    // වහාම අලුත් එකට මාරු වෙන්න අණ දෙන්න
+                    installingWorker.postMessage({ action: 'skipWaiting' });
                 }
             };
         };
-    }).catch(err => console.error("SW Registration Failed:", err));
+    });
 
-    // 2. Service Worker එක මාරු වූ සැනින් පිටුව Reload කිරීම
+    // Service Worker එක මාරු වුණු සැනින් පිටුව Reload කරන්න
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -490,6 +493,7 @@ if ('serviceWorker' in navigator) {
         }
     });
 }
+
         async function saveVCard() {
             const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\nEMAIL:janithdidula025@gmail.com\nEND:VCARD";
             const blob = new Blob([vcard], {type:'text/vcard'});
