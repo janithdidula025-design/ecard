@@ -1,3 +1,23 @@
+// sw.js
+const CACHE_NAME = 'adm-cache-v1.8';
+const urlsToCache = [
+  './',
+  './index.html',
+  'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png'
+];
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => response || fetch(event.request))
+  );
+});
+
 // sw.js - Version 2.0
 const CACHE_NAME = 'adm-cache-v2.0';
 const ASSETS = [
