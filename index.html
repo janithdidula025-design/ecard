@@ -402,21 +402,41 @@
                 });
             }
         }
+// VERSION 1.8 UPDATED
+if ('serviceWorker' in navigator) {
+    // ?v=1.8 එකතු කිරීමෙන් Cache එක Bypass වෙනවා
+    navigator.serviceWorker.register('./sw.js?v=1.8').then(reg => {
+        
+        // අලුත් update එකක් තිබේදැයි නිතර පරීක්ෂා කරන්න
+        reg.update();
 
-        // VERSION 1.8 UPDATED
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js?v=1.8').then(reg => {
-                reg.onupdatefound = () => {
-                    const installingWorker = reg.installing;
-                    installingWorker.onstatechange = () => {
-                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // අලුත් update එකක් ආවම ඉබේම reload කරන්න
-                            window.location.reload();
+        reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+                if (installingWorker.state === 'installed') {
+                    if (navigator.serviceWorker.controller) {
+                        // අලුත් update එකක් සූදානම් නම් පණිවිඩයක් පෙන්වා reload කරන්න
+                        console.log('New update available. Reloading...');
+                        
+                        // අලුත් worker එක වහාම active කරවන්න බල කරන්න
+                        if (installingWorker) {
+                            installingWorker.postMessage({ action: 'skipWaiting' });
                         }
-                    };
-                };
-            });
+                    }
+                }
+            };
+        };
+    });
+
+    // Service Worker එක මාරු වුණු සැනින් පිටුව Reload කරන්න
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+            window.location.reload();
+            refreshing = true;
         }
+    });
+}
 
         async function saveVCard() {
             const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\nEMAIL:janithdidula025@gmail.com\nEND:VCARD";
