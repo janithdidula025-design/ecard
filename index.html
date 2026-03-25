@@ -4,68 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM E-Card v2.0</title>
-   <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImFkbWluLmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifSx7InNyYyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qYW5pdGhklkR1bGEwMjUtZGVzaWduL2VjYXJkL21haW4vbG9nby5wbmciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0="> 
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImFkbWluLmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifSx7InNyYyI6Imh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9qYW5pdGhklkR1bGEwMjUtZGVzaWduL2VjYXJkL21haW4vbG9nby5wbmciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0="> 
     
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; --red: #ff4757; }
-        
-        /* සම්පූර්ණ පිටුව ස්ක්‍රෝල් වීම වැළැක්වීමට */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden; 
-            width: 100%;
-        }
-
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: radial-gradient(circle at top, #112240, #000); 
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; /* කාඩ් එක මැදට ගැනීමට */
-        }
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; width: 100%; }
+        body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at top, #112240, #000); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
         /* PWA Installer Bar */
-        #pwa-installer { 
-            display: none; width: 100%; background: var(--primary); color: #000; 
-            padding: 12px 20px; position: fixed; top: 0; z-index: 999999; 
-            font-weight: bold; justify-content: space-between; align-items: center; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .pwa-btn { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        #pwa-installer { display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--primary); color: #000; padding: 15px; z-index: 10000; justify-content: space-between; align-items: center; box-sizing: border-box; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-weight: bold; }
+        .pwa-btn { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
         /* Top Bar */
-        .top-bar { position: fixed; top: 60px; width: 100%; display: flex; justify-content: center; z-index: 100; }
+        .top-bar { position: fixed; top: 70px; width: 100%; display: flex; justify-content: center; z-index: 100; }
         .lang-switch { display: flex; gap: 8px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: 0.3s; }
         .lang-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
 
-        /* Card Style - ස්ක්‍රීන් එකට ගැලපෙන ලෙස */
-        .card { 
-            width: 88%; 
-            max-width: 360px; 
-            background: rgba(255, 255, 255, 0.05); 
-            padding: 25px 20px; 
-            border-radius: 35px; 
-            border: 1px solid rgba(80, 227, 194, 0.2); 
-            backdrop-filter: blur(20px); 
-            text-align: center; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6); 
-            margin-top: 40px;
-            max-height: 85vh; /* කාඩ් එක ස්ක්‍රීන් එකෙන් පිටතට යාම වැළැක්වීමට */
-            overflow-y: auto; /* අත්‍යවශ්‍ය නම් පමණක් කාඩ් එක ඇතුලේ ස්ක්‍රෝල් වීමට */
-        }
-
-        .p-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); }
+        /* Card Style */
+        .card { width: 88%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 25px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(20px); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6); margin-top: 40px; max-height: 80vh; overflow-y: auto; position: relative; }
+        .p-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; background: var(--dark-blue); object-fit: cover; }
         .info-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 20px; margin-bottom: 20px; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.7; }
         
-        /* Buttons */
         .btn-save { width: 100%; padding: 15px; border-radius: 18px; font-weight: bold; font-size: 1rem; cursor: pointer; border: none; background: #fff; color: #0a192f; transition: 0.4s; }
         .action-grid { display: none; grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; }
-        .btn-action { width: 100%; padding: 12px 5px; font-size: 0.8rem; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .btn-action { width: 100%; padding: 12px 5px; font-size: 0.8rem; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; position: relative; }
         
         .btn-wa { background: linear-gradient(135deg, #25D366, #128C7E); }
         .btn-call { background: linear-gradient(135deg, #007bff, #0056b3); }
@@ -73,29 +36,24 @@
         .btn-email { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
         .dropdown-content { display: none; position: absolute; background: #fff; min-width: 160px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 1000; bottom: 110%; left: 50%; transform: translateX(-50%); }
-        .dropdown-content a { color: #333; padding: 12px; text-decoration: none; display: block; font-size: 13px; border-bottom: 1px solid #eee; text-align: center; }
+        .dropdown-content a { color: #333; padding: 12px; text-decoration: none; display: block; font-size: 13px; border-bottom: 1px solid #eee; text-align: center; font-weight: bold; }
         .show { display: block !important; }
 
         /* Toast */
         .status-toast { position: fixed; bottom: -150px; left: 50%; transform: translateX(-50%); width: 280px; background: #fff; color: #333; padding: 12px; border-radius: 12px; border-left: 6px solid #2ecc71; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.6s; z-index: 9999; display: flex; align-items: center; }
         .status-toast.show { bottom: 20px; }
 
-        /* කුඩා ස්ක්‍රීන් (iPhone SE වැනි) සඳහා විශේෂ ගැලපීම් */
-        @media (max-height: 700px) {
-            .p-img { width: 80px; height: 80px; }
-            .info-box { padding: 10px; margin-bottom: 15px; font-size: 0.75rem; }
-            .card { padding: 15px; margin-top: 50px; }
-            h2 { margin: 8px 0; font-size: 1.1rem; }
-            .top-bar { top: 50px; }
-        }
+        @media (max-height: 700px) { .p-img { width: 80px; height: 80px; } .card { padding: 15px; margin-top: 60px; } .top-bar { top: 60px; } }
     </style>
 </head>
 <body>
 
     <div id="pwa-installer">
         <span id="pwa-txt">📲 ADM App එක Install කරන්න?</span>
-        <button id="btn-install" class="pwa-btn">Install</button>
-        <button onclick="document.getElementById('pwa-installer').style.display='none'" style="background:none; border:none; color:#000; font-size:20px; font-weight:bold;">&times;</button>
+        <div>
+            <button id="btn-install" class="pwa-btn">Install</button>
+            <button onclick="document.getElementById('pwa-installer').style.display='none'" style="background:none; border:none; color:#000; font-size:24px; margin-left:10px;">&times;</button>
+        </div>
     </div>
 
     <div class="top-bar">
@@ -146,28 +104,26 @@
             <div class="dropdown">
                 <button class="btn-action btn-email" onclick="toggleMenu('emailMenu')"><span>📧</span> Email</button>
                 <div id="emailMenu" class="dropdown-content">
-                    <a href="mailto:janithdidula025@gmail.com">janithdidula025@gmail.com </a>
-                      <a href="mailto:janithdidula025@gmail.com">janithdidula@gmail.com </a>
+                    <a href="mailto:janithdidula025@gmail.com">Send Email</a>
                 </div>
             </div>
         </div>
-
         <div style="margin-top: 20px; font-size: 0.55rem; opacity: 0.4;">ADM E-CARD SYSTEM v2.0</div>
     </div>
 
     <div id="statusToast" class="status-toast">
         <span style="font-size: 20px; margin-right: 10px;">✅</span>
         <div>
-            <b style="font-size: 13px; color: #27ae60;">විශේෂ දැනුම්දීමයි</b>
-            <p style="margin:0; font-size:11px;">අද දින ආයතනය විවෘතව ඇත.</p>
+            <b id="toast-title" style="font-size: 13px; color: #27ae60;">විශේෂ දැනුම්දීමයි</b>
+            <p id="toast-msg" style="margin:0; font-size:11px;">අද දින ආයතනය විවෘතව ඇත.</p>
         </div>
     </div>
 
     <script>
         const translations = {
-            si: { role: "සංවිධායක / කළමනාකරු", addr: "📍 <b>ලිපිනය:</b> මීගමුව පාර, නාරම්මල", class: "🎓 <b>පන්තිය:</b> ADM Campus", phone: "📞 <b>දුරකථන:</b> 071 065 8051", email: "📧 <b>ඊමේල්:</b> janithdidula025@gmail.com", save: "👤 CONTACT එක SAVE කරන්න", pwa: "📲 ADM App එක Install කරන්න?" },
-            en: { role: "Organizer / Manager", addr: "📍 <b>Address:</b> Negombo Rd, Narammala", class: "🎓 <b>Class:</b> ADM Campus", phone: "📞 <b>Phone:</b> 071 065 8051", email: "📧 <b>Email:</b> janithdidula025@gmail.com", save: "👤 SAVE CONTACT", pwa: "📲 Install ADM App?" },
-            ta: { role: "ஏற்பாட்டாளர் / முகாமையாளர்", addr: "📍 <b>முகவரி:</b> නාරම්මල", class: "🎓 <b>வகுப்பு:</b> ADM Campus", phone: "📞 <b>தொலைபேசி:</b> 071 065 8051", email: "📧 <b>மின்னஞ்சல்:</b> janithdidula025@gmail.com", save: "👤 தொடர்பைச் சேமிக்கவும்", pwa: "📲 ADM செயலியை நிறுவவா?" }
+            si: { role: "සංවිධායක / කළමනාකරු", addr: "📍 <b>ලිපිනය:</b> මීගමුව පාර, නාරම්මල", class: "🎓 <b>පන්තිය:</b> ADM Campus", phone: "📞 <b>දුරකථන:</b> 071 065 8051", email: "📧 <b>ඊමේල්:</b> janithdidula025@gmail.com", save: "👤 CONTACT එක SAVE කරන්න", pwa: "📲 ADM App එක Install කරන්න?", toastT: "විශේෂ දැනුම්දීමයි", toastM: "අද දින ආයතනය විවෘතව ඇත." },
+            en: { role: "Organizer / Manager", addr: "📍 <b>Address:</b> Negombo Rd, Narammala", class: "🎓 <b>Class:</b> ADM Campus", phone: "📞 <b>Phone:</b> 071 065 8051", email: "📧 <b>Email:</b> janithdidula025@gmail.com", save: "👤 SAVE CONTACT", pwa: "📲 Install ADM App?", toastT: "Special Notice", toastM: "The institute is open today." },
+            ta: { role: "ஏற்பாட்டாளர் / முகாமையாளர்", addr: "📍 <b>முகவரி:</b> නාරම්මල", class: "🎓 <b>வகுப்பு:</b> ADM Campus", phone: "📞 <b>தொலைபேசி:</b> 071 065 8051", email: "📧 <b>மின்னஞ்சல்:</b> janithdidula025@gmail.com", save: "👤 தொடர்பைச் சேமிக்கவும்", pwa: "📲 ADM செயலியை நிறுவவா?", toastT: "சிறப்பு அறிவிப்பு", toastM: "இன்று நிறுவனம் திறக்கப்பட்டுள்ளது." }
         };
 
         function setLanguage(lang) {
@@ -178,6 +134,8 @@
             document.getElementById('lbl-email').innerHTML = translations[lang].email;
             document.getElementById('mainSaveBtn').innerText = translations[lang].save;
             document.getElementById('pwa-txt').innerText = translations[lang].pwa;
+            document.getElementById('toast-title').innerText = translations[lang].toastT;
+            document.getElementById('toast-msg').innerText = translations[lang].toastM;
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
         }
@@ -199,10 +157,8 @@
             const btn = document.getElementById('mainSaveBtn');
             btn.innerText = "⏳ Please Wait...";
             btn.disabled = true;
-
             const imageUrl = "https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg";
             let base64Photo = "";
-
             try {
                 const resp = await fetch(imageUrl);
                 const blob = await resp.blob();
@@ -212,14 +168,11 @@
                     reader.readAsDataURL(blob);
                 });
             } catch (e) { console.log("Photo failed"); }
-
             const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\nTEL;TYPE=CELL:0763614792\nEMAIL:janithdidula025@gmail.com\nPHOTO;TYPE=JPEG;ENCODING=b:" + base64Photo + "\nEND:VCARD";
-            
             const vblob = new Blob([vcard], { type: 'text/vcard' });
             const vurl = URL.createObjectURL(vblob);
             const a = document.createElement('a');
             a.href = vurl; a.download = 'Janith_Didula_ADM.vcf'; a.click();
-
             localStorage.setItem('contact_saved_v2', 'true');
             showGrid();
         }
@@ -229,6 +182,7 @@
             document.getElementById('actionGrid').style.display = 'grid';
         }
 
+        // PWA & Service Worker Logic
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -245,108 +199,27 @@
             }
         });
 
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js?v=' + Date.now()).then(reg => {
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            window.location.reload();
+                        }
+                    };
+                };
+            });
+        }
+
         window.onload = () => {
             if (localStorage.getItem('contact_saved_v2') === 'true') showGrid();
             setTimeout(() => {
-                document.getElementById('statusToast').classList.add('show');
-                setTimeout(() => document.getElementById('statusToast').classList.remove('show'), 8000);
+                const toast = document.getElementById('statusToast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 8000);
             }, 3000);
         };
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js?v=' + Date.now());
-        }
-        // Service Worker Registration with Versioning
-if ('serviceWorker' in navigator) {
-    // ?v= පාවිච්චි කිරීමෙන් Browser එක හැමවෙලේම අලුත් SW එකක් තියෙදැයි බලනවා
-    const swUrl = `./sw.js?v=${Date.now()}`; 
-    
-    navigator.serviceWorker.register(swUrl).then(reg => {
-        reg.addEventListener('updatefound', () => {
-            const newWorker = reg.installing;
-            newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // අලුත් Update එකක් තියෙනවා නම් Auto Reload වෙනවා
-                    window.location.reload();
-                }
-            });
-        });
-    });
-}
-        // 1. PWA Install Logic
-let deferredPrompt;
-const pwaBar = document.getElementById('pwa-installer');
-const installBtn = document.getElementById('btn-install');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Browser එකේ default prompt එක නතර කරලා අපේ Bar එක පෙන්වනවා
-    e.preventDefault();
-    deferredPrompt = e;
-    pwaBar.style.display = 'flex'; 
-});
-#pwa-installer { 
-    display: none; /* මුලින්ම හංගලා තියෙන්න ඕනේ */
-    position: fixed; 
-    top: 0; 
-    left: 0;
-    width: 100%; 
-    background: var(--primary); 
-    color: #000; 
-    padding: 15px; 
-    z-index: 10000; 
-    justify-content: space-between; 
-    align-items: center;
-    box-sizing: border-box;
-}
-installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt(); // Install window එක පෙන්වයි
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            console.log('User accepted the install');
-            pwaBar.style.display = 'none';
-        }
-        deferredPrompt = null;
-    }
-});
-
-// App එක දැනටමත් Install කරලා නම් Bar එක පෙන්වන්න එපා
-window.addEventListener('appinstalled', () => {
-    pwaBar.style.display = 'none';
-    deferredPrompt = null;
-});
-
-// 2. Service Worker Registration with Auto-Update Logic
-if ('serviceWorker' in navigator) {
-    // ?v= පාවිච්චි කිරීමෙන් හැමවෙලේම අලුත්ම sw.js එක load කරගනී
-    const swUrl = `./sw.js?v=${Date.now()}`; 
-    
-    navigator.serviceWorker.register(swUrl).then(reg => {
-        // අලුත් Update එකක් ආවොත් වහාම පෙන්වීමට
-        reg.onupdatefound = () => {
-            const installingWorker = reg.installing;
-            installingWorker.onstatechange = () => {
-                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // Cache එක clear වී අලුත් version එක load වීමට පිටුව reload කරයි
-                    window.location.reload();
-                }
-            };
-        };
-    }).catch(err => console.log('SW Registration Failed:', err));
-}
-
-// 3. UI Load Logic (Existing)
-window.onload = () => {
-    if (localStorage.getItem('contact_saved_v2') === 'true') {
-        document.getElementById('mainSaveBtn').style.display = 'none';
-        document.getElementById('actionGrid').style.display = 'grid';
-    }
-    
-    setTimeout(() => {
-        document.getElementById('statusToast').classList.add('show');
-        setTimeout(() => document.getElementById('statusToast').classList.remove('show'), 8000);
-    }, 3000);
-};
     </script>
 </body>
 </html>
