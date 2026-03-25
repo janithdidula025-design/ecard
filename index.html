@@ -639,5 +639,38 @@ if ('serviceWorker' in navigator) {
             }
         });
     </script>
+    <script>
+    // ... කලින් තිබ්බ setLanguage වගේ functions මෙතන ඇති ...
+
+    let deferredPrompt;
+    const installBtn = document.getElementById('pwa-installer');
+
+    // 1. Browser එක Install කරන්න පුළුවන් කියලා අඳුරගත්තම මේක වැඩ කරනවා
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Install Bar එක පෙන්වනවා
+        if(installBtn) installBtn.style.display = 'flex'; 
+    });
+
+    // 2. Install Button එක එබුවම වෙන දේ
+    const btnInstall = document.getElementById('btn-install');
+    if(btnInstall) {
+        btnInstall.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                if(installBtn) installBtn.style.display = 'none';
+            }
+        });
+    }
+
+    // 3. Service Worker එක Register කිරීම (අනිවාර්යයි!)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log("Service Worker Registered"));
+    }
+</script>
 </body>
 </html>
