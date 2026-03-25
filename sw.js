@@ -1,42 +1,24 @@
-// sw.js
-const CACHE_NAME = 'adm-cache-v1.8';
-const urlsToCache = [
+// sw.js - Version 2.0 (ADM E-Card)
+const CACHE_NAME = 'adm-cache-v2.0';
+const ASSETS = [
   './',
   './index.html',
+  './index.html?v=2.0',
   'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png'
 ];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-  );
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
-  );
-});
-
-// sw.js - Version 2.0
-const CACHE_NAME = 'adm-cache-v2.0';
-const ASSETS = [
-  './index.html',
-  './index.html?v=2.0',
-  './admin.html' // admin page එකක් ඇත්නම් පමණක් මෙය තබන්න
-];
-
-// 1. Install Event - අලුත් Assets Cache කිරීම
+// 1. Install Event - Assets Cache කිරීම
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
+      console.log('Caching assets...');
       return cache.addAll(ASSETS);
     })
   );
-  self.skipWaiting(); 
+  self.skipWaiting();
 });
 
-// 2. Activate Event - පරණ Cache (v1.8, v4, v1.3 ආදී සියල්ල) මැකීම
+// 2. Activate Event - පරණ Cache මැකීම
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -49,57 +31,40 @@ self.addEventListener('activate', event => {
   return self.clients.claim();
 });
 
-// 3. Fetch Event - Offline ඇති විට Cache එකෙන් පෙන්වීම
+// 3. Fetch Event - Offline වැඩ කිරීමට
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+      return response || fetch(event.request).catch(() => caches.match('./index.html'));
     })
   );
 });
 
-// 4. Push Notification - දැනුම්දීම පෙන්වීම
+// 4. Push Notification
 self.addEventListener('push', event => {
-    let message = 'ADM New Update!';
-    if (event.data) {
-        message = event.data.text();
-    }
-
+    let message = event.data ? event.data.text() : 'ADM New Update!';
     const options = {
         body: message,
         icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png',
         badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png',
         vibrate: [200, 100, 200],
         tag: 'adm-notif',
-        data: { url: './index.html' } // Notification එක එබූ විට යා යුතු ලිපිනය
+        data: { url: './index.html' }
     };
-
-    event.waitUntil(
-        self.registration.showNotification('ADM Higher Education', options)
-    );
+    event.waitUntil(self.registration.showNotification('ADM Higher Education', options));
 });
 
-// 5. Notification Click - Notification එක එබූ විට App එක Open කිරීම
+// 5. Notification Click
 self.addEventListener('notificationclick', event => {
     event.notification.close();
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-            // දැනටමත් app එක open නම් ඒ window එකට යන්න
             for (let client of windowClients) {
                 if (client.url.includes(event.notification.data.url) && 'focus' in client) {
                     return client.focus();
                 }
             }
-            // නැත්නම් අලුත් window එකක open කරන්න
-            if (clients.openWindow) {
-                return clients.openWindow(event.notification.data.url);
-            }
+            if (clients.openWindow) return clients.openWindow(event.notification.data.url);
         })
     );
 });
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js') // sw.js ෆයිල් එක ඔයාගේ index.html එක ගාවම තියෙන්න ඕනේ
-    .then(() => console.log("Service Worker Registered"));
-}
-<link rel="stylesheet" href="style.css?v=1.2">
-<script src="script.js?v=1.2"></script>
