@@ -64,9 +64,9 @@
             <span id="lbl-email">📧 <b>ඊමේල්:</b> janithdidula025@gmail.com</span>
         </div>
 
-        <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
-        
-        <div id="actionGrid" class="action-grid">
+     <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
+
+<div id="actionGrid" class="action-grid" style="display: none;">
     
     <div class="dropdown">
         <button type="button" class="btn btn-action btn-wa" onclick="toggleMenu('waMenu')">WhatsApp</button>
@@ -79,16 +79,16 @@
     <div class="dropdown">
         <button type="button" class="btn btn-action btn-call" onclick="toggleMenu('callMenu')">Call</button>
         <div id="callMenu" class="dropdown-content">
-            <a href="tel:0710658051">Call 071 065 8051</a>
-            <a href="tel:0763614792">Call 076 361 4792</a>
+            <a href="tel:0710658051">071 065 8051</a>
+            <a href="tel:0763614792">076 361 4792</a>
         </div>
     </div>
 
     <div class="dropdown">
         <button type="button" class="btn btn-action btn-sms" onclick="toggleMenu('smsMenu')">SMS</button>
         <div id="smsMenu" class="dropdown-content">
-            <a href="sms:0710658051">SMS to 071 065 8051</a>
-            <a href="sms:0763614792">SMS to 076 361 4792</a>
+            <a href="sms:0710658051">071 065 8051</a>
+            <a href="sms:0763614792">076 361 4792</a>
         </div>
     </div>
 
@@ -99,86 +99,85 @@
             <a href="mailto:janithdidula@gmail.com">janithdidula@gmail.com</a>
         </div>
     </div>
-
 </div>
 
 <style>
+    /* Save Button Style */
+    .btn-save {
+        width: 100%;
+        padding: 15px;
+        background-color: #000; /* ඔබට කැමති වර්ණයක් දාන්න */
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    /* Action Grid Styling (Flex box එකක් ලෙස පෙන්වීමට) */
     .action-grid {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
-        padding: 20px;
-    }
-    
-    .btn-action {
-        padding: 12px 24px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-        font-size: 16px;
-        min-width: 120px;
+        animation: fadeIn 0.5s; /* මතු වන විට ලස්සනට පෙනීමට */
     }
 
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* කලින් දුන් Dropdown CSS මෙතනට එන්න ඕනේ... */
+    .btn-action { padding: 12px; border-radius: 8px; color: white; border: none; font-weight: bold; min-width: 100px; cursor: pointer; }
     .btn-wa { background-color: #25D366; }
     .btn-call { background-color: #007bff; }
-    .btn-sms { background-color: #ffc107; color: #000; }
+    .btn-sms { background-color: #ffc107; color: black; }
     .btn-email { background-color: #dc3545; }
-
-    /* Dropdown Styling */
-    .dropdown { position: relative; display: inline-block; }
     
+    .dropdown { position: relative; }
     .dropdown-content {
         display: none;
         position: absolute;
-        background-color: white;
-        min-width: 200px;
-        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-        z-index: 10;
-        border-radius: 8px;
-        bottom: 110%; /* Button එකට ඉහළින් මෙනු එක පෙන්වීමට */
+        background: white;
+        min-width: 180px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        bottom: 110%;
         left: 50%;
         transform: translateX(-50%);
+        border-radius: 8px;
+        z-index: 100;
     }
-
-    .dropdown-content a {
-        color: #333;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        font-size: 14px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .dropdown-content a:last-child { border-bottom: none; }
-    .dropdown-content a:hover { background-color: #f1f1f1; border-radius: 8px; }
-    
-    /* පෙන්වන අවස්ථාව */
+    .dropdown-content a { color: black; padding: 12px; text-decoration: none; display: block; border-bottom: 1px solid #eee; }
     .show { display: block !important; }
 </style>
 
 <script>
-    function toggleMenu(id) {
-        const menus = document.querySelectorAll('.dropdown-content');
-        menus.forEach(menu => {
-            if (menu.id === id) {
-                menu.classList.toggle('show');
-            } else {
-                menu.classList.remove('show');
-            }
-        });
+    function saveVCard() {
+        // මෙතන ඔබේ පවතින VCard save කරන code එක තියෙන්න ඕනේ
+        console.log("Saving Contact...");
+
+        // බොත්තම් ටික පෙන්වන්න (Action Grid එක 'flex' කරන්න)
+        const grid = document.getElementById('actionGrid');
+        grid.style.display = 'flex';
+
+        // අවශ්‍ය නම් Save Button එක Hide කරන්නත් පුළුවන්
+        // document.getElementById('mainSaveBtn').style.display = 'none';
+        
+        // උදාහරණයක් ලෙස VCard download logic එක:
+        // window.location.href = 'path_to_your_vcard.vcf'; 
     }
 
-    // පිටත click කළ විට මෙනු වසන්න
-    window.onclick = function(event) {
-        if (!event.target.matches('.btn-action')) {
-            const dropdowns = document.getElementsByClassName("dropdown-content");
-            for (let i = 0; i < dropdowns.length; i++) {
-                dropdowns[i].classList.remove('show');
-            }
+    function toggleMenu(id) {
+        const menus = document.querySelectorAll('.dropdown-content');
+        menus.forEach(m => m.id === id ? m.classList.toggle('show') : m.classList.remove('show'));
+    }
+
+    window.onclick = function(e) {
+        if (!e.target.matches('.btn-action')) {
+            document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
         }
     }
 </script>
