@@ -4,7 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM E-Card v2.0</title>
-    
+<head>
+  <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
+
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png">
+
+    <style>
+        body {
+            background-color: #0a192f; /* Dark Blue Background */
+            color: #64ffda;           /* Light Green/Aqua text */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* පේජ් එකේ මැදටම එන්න */
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #112240;
+            border-radius: 15px;
+            background: #112240; /* පොඩි Box එකක් වගේ පේන්න */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        img {
+            width: 150px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #64ffda; /* Logo එක වටේට පොඩි Border එකක් */
+        }
+
+        h1 {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+    </style>
+
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
         html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; width: 100%; font-family: 'Segoe UI', sans-serif; }
@@ -43,7 +82,10 @@
     </style>
 </head>
 <body>
-
+<div class="container">
+        <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo 01.png" alt="Logo 01">
+        <h1>ADM </h1>
+    </div>
     <div id="pwa-installer">
         <span id="pwa-txt">📲 App එක Install කරන්න?</span>
         <div>
