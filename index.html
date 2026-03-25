@@ -147,7 +147,8 @@
             <div class="dropdown">
                 <button class="btn-action btn-email" onclick="toggleMenu('emailMenu')"><span>📧</span> Email</button>
                 <div id="emailMenu" class="dropdown-content">
-                    <a href="mailto:janithdidula025@gmail.com">Main Email</a>
+                    <a href="mailto:janithdidula025@gmail.com">janithdidula025@gmail.com </a>
+                      <a href="mailto:janithdidula025@gmail.com">janithdidula@gmail.com </a>
                 </div>
             </div>
         </div>
@@ -256,6 +257,23 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js?v=' + Date.now());
         }
+        // Service Worker Registration with Versioning
+if ('serviceWorker' in navigator) {
+    // ?v= පාවිච්චි කිරීමෙන් Browser එක හැමවෙලේම අලුත් SW එකක් තියෙදැයි බලනවා
+    const swUrl = `./sw.js?v=${Date.now()}`; 
+    
+    navigator.serviceWorker.register(swUrl).then(reg => {
+        reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // අලුත් Update එකක් තියෙනවා නම් Auto Reload වෙනවා
+                    window.location.reload();
+                }
+            });
+        });
+    });
+}
     </script>
 </body>
 </html>
