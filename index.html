@@ -402,12 +402,12 @@
                 });
             }
         }
-// VERSION 1.8 UPDATED
+// VERSION 2.0 - Update Logic
 if ('serviceWorker' in navigator) {
-    // ?v=1.8 එකතු කිරීමෙන් Cache එක Bypass වෙනවා
-    navigator.serviceWorker.register('./sw.js?v=1.8').then(reg => {
+    // 1. Service Worker එක Register කිරීම (?v=2.0 මගින් Cache Bypass වේ)
+    navigator.serviceWorker.register('./sw.js?v=2.0').then(reg => {
         
-        // අලුත් update එකක් තිබේදැයි නිතර පරීක්ෂා කරන්න
+        // අලුත් Update එකක් තිබේදැයි වහාම පරීක්ෂා කරන්න
         reg.update();
 
         reg.onupdatefound = () => {
@@ -415,20 +415,16 @@ if ('serviceWorker' in navigator) {
             installingWorker.onstatechange = () => {
                 if (installingWorker.state === 'installed') {
                     if (navigator.serviceWorker.controller) {
-                        // අලුත් update එකක් සූදානම් නම් පණිවිඩයක් පෙන්වා reload කරන්න
-                        console.log('New update available. Reloading...');
-                        
-                        // අලුත් worker එක වහාම active කරවන්න බල කරන්න
-                        if (installingWorker) {
-                            installingWorker.postMessage({ action: 'skipWaiting' });
-                        }
+                        // අලුත් version එකක් තිබේ නම්, වහාම එයට මාරු වීමට අණ දෙන්න
+                        console.log("New update found! Activating...");
+                        installingWorker.postMessage({ action: 'skipWaiting' });
                     }
                 }
             };
         };
-    });
+    }).catch(err => console.error("SW Registration Failed:", err));
 
-    // Service Worker එක මාරු වුණු සැනින් පිටුව Reload කරන්න
+    // 2. Service Worker එක මාරු වූ සැනින් පිටුව Reload කිරීම
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -437,7 +433,6 @@ if ('serviceWorker' in navigator) {
         }
     });
 }
-
         async function saveVCard() {
             const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nORG:ADM Higher Education\nTEL;TYPE=CELL:0710658051\nEMAIL:janithdidula025@gmail.com\nEND:VCARD";
             const blob = new Blob([vcard], {type:'text/vcard'});
