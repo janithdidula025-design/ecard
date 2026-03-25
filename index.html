@@ -4,107 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ADM E-Card v2.0</title>
-<head>
-  <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgtWFza2FibGUifV19">
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgtWFza2FibGUifV19">
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#64ffda">
 
     <style>
-        body {
-            background-color: #0a192f;
-            color: #64ffda;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .logo-container {
-            text-align: center;
-        }
-        .logo-container img {
-            width: 150px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 255, 218, 0.3);
-            margin-bottom: 15px;
-        }
-        body {
-            background-color: #0a192f;
-            color: #64ffda;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        /* පේජ් එක මැද පෙනුම */
-        .main-content { text-align: center; }
-        .main-content img { width: 120px; border-radius: 15px; margin-bottom: 10px; }
-
-        /* බලෙන් පෙන්වන Install Popup එක */
-        #installOverlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 25, 47, 0.95);
-            z-index: 9999;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .popup-box {
-            background: #112240;
-            padding: 30px;
-            border-radius: 20px;
-            border: 2px solid #64ffda;
-            box-shadow: 0 0 30px rgba(100, 255, 218, 0.2);
-            max-width: 80%;
-        }
-
-        .btn-install {
-            background: #64ffda;
-            color: #0a192f;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-        }
-    </style>
-    <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
-        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; width: 100%; font-family: 'Segoe UI', sans-serif; }
-        body { background: radial-gradient(circle at top, #112240, #000); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        body { 
+            background: radial-gradient(circle at top, #112240, #000); 
+            color: white; 
+            font-family: 'Segoe UI', 'Latha', 'Tamil', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
 
-        /* PWA Installer - Buttons වැඩ කරන්න Z-index එක වැඩි කළා */
-        #pwa-installer { display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--primary); color: #000; padding: 12px; z-index: 10000; justify-content: space-between; align-items: center; box-sizing: border-box; }
-        .pwa-btn { background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        /* PWA Installer Bar */
+        #pwa-installer { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            background: var(--primary); 
+            color: #000; 
+            padding: 12px; 
+            z-index: 10001; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-sizing: border-box; 
+            font-weight: bold;
+        }
 
-        .top-bar { position: fixed; top: 65px; width: 100%; display: flex; justify-content: center; z-index: 5000; }
-        .lang-switch { display: flex; gap: 8px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; transition: 0.3s; }
+        .top-bar { position: fixed; top: 60px; width: 100%; display: flex; justify-content: center; z-index: 5000; }
+        .lang-switch { display: flex; gap: 5px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 6px 10px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; }
         .lang-btn.active { background: var(--primary); color: #000; font-weight: bold; }
 
-        .card { width: 88%; max-width: 350px; background: rgba(255, 255, 255, 0.05); padding: 25px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(20px); text-align: center; margin-top: 40px; position: relative; z-index: 1; }
+        .card { width: 88%; max-width: 350px; background: rgba(255, 255, 255, 0.05); padding: 25px 20px; border-radius: 35px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(20px); text-align: center; position: relative; z-index: 1; }
         .p-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; object-fit: cover; }
         .info-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 20px; margin: 15px 0; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.6; }
         
-        .btn-save { width: 100%; padding: 15px; border-radius: 18px; font-weight: bold; font-size: 1rem; cursor: pointer; border: none; background: #fff; color: #0a192f; }
-        
+        .btn-save { width: 100%; padding: 15px; border-radius: 18px; font-weight: bold; font-size: 0.9rem; cursor: pointer; border: none; background: #fff; color: #0a192f; transition: 0.3s; }
         .action-grid { display: none; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        
         .dropdown { position: relative; width: 100%; }
         .btn-action { width: 100%; padding: 12px 5px; font-size: 0.8rem; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; }
-        
         .btn-wa { background: #128C7E; }
         .btn-call { background: #007bff; }
         .btn-sms { background: #f39c12; color: #000; }
@@ -114,55 +63,17 @@
         .dropdown-content a { color: #333; padding: 10px; text-decoration: none; display: block; font-size: 13px; font-weight: bold; border-bottom: 1px solid #eee; text-align: center; }
         .show { display: block !important; }
 
-        .status-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); width: 280px; background: #fff; color: #333; padding: 12px; border-radius: 12px; border-left: 6px solid #2ecc71; transition: 0.5s; z-index: 9999; display: flex; align-items: center; }
+        .status-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); width: 280px; background: #fff; color: #333; padding: 12px; border-radius: 12px; border-left: 6px solid #2ecc71; transition: 0.5s; z-index: 9999; display: flex; align-items: center; text-align: left; }
         .status-toast.active { bottom: 20px; }
     </style>
 </head>
 <body>
-<div id="installOverlay">
-        <div class="popup-box">
-            <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" style="width: 80px;">
-            <h2>Install ADM Admin App</h2>
-            <p>මෙම ඇප් එක ඔබගේ දුරකථනයේ ස්ථාපනය කරගන්න.</p>
-            <button class="btn-install" id="forceInstallBtn">Install Now</button>
-        </div>
-    </div>
 
-    <script>
-        let deferredPrompt;
-        const overlay = document.getElementById('installOverlay');
-        const installBtn = document.getElementById('forceInstallBtn');
-
-        // බ්‍රවුසර් එක ඉන්ස්ටෝල් කරන්න සූදානම් වූ විට
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // බලෙන් Popup එක පෙන්වනවා
-            overlay.style.display = 'flex';
-        });
-
-        installBtn.addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        overlay.style.display = 'none';
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        });
-
-        // දැනටමත් Install කරලා නම් Popup එක පෙන්වන්න එපා
-        window.addEventListener('appinstalled', () => {
-            overlay.style.display = 'none';
-        });
-    </script>
     <div id="pwa-installer">
-        <span id="pwa-txt">📲 App එක Install කරන්න?</span>
+        <span id="pwa-text">📲 App එක Install කරන්න?</span>
         <div>
-            <button id="btn-install" class="pwa-btn">Install</button>
-            <button onclick="document.getElementById('pwa-installer').style.display='none'" style="background:none; border:none; color:#000; font-size:24px; cursor:pointer;">&times;</button>
+            <button id="btn-install-main" style="background:#000; color:#fff; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">Install</button>
+            <button onclick="document.getElementById('pwa-installer').style.display='none'" style="background:none; border:none; color:#000; font-size:24px; cursor:pointer; margin-left:10px;">&times;</button>
         </div>
     </div>
 
@@ -170,6 +81,7 @@
         <div class="lang-switch">
             <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
             <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
+            <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
         </div>
     </div>
 
@@ -206,14 +118,14 @@
                 <button class="btn-action btn-sms" onclick="toggleMenu('smsMenu')">SMS</button>
                 <div id="smsMenu" class="dropdown-content">
                     <a href="sms:0710658051">071 065 8051</a>
-                     <a href="sms:0763614792">076 361 4792</a>
+                    <a href="sms:0763614792">076 361 4792</a>
                 </div>
             </div>
             <div class="dropdown">
                 <button class="btn-action btn-email" onclick="window.location.href='mailto:janithdidula025@gmail.com'">Email</button>
             </div>
         </div>
-        <div style="margin-top: 15px; font-size: 0.5rem; opacity: 0.4;">ADM E-CARD SYSTEM v2.0</div>
+        <div style="margin-top: 15px; font-size: 0.5rem; opacity: 0.4;">CREATED BY JANITH DIDULA | v2.0</div>
     </div>
 
     <div id="statusToast" class="status-toast">
@@ -222,15 +134,43 @@
     </div>
 
     <script>
+        let deferredPrompt;
+
         const translations = {
-            si: { role: "සංවිධායක / කළමනාකරු", save: "👤 CONTACT එක SAVE කරන්න", toast: "ආයතනය අද විවෘතයි." },
-            en: { role: "Organizer / Manager", save: "👤 SAVE CONTACT", toast: "The institute is open today." }
+            si: { 
+                role: "සංවිධායක / කළමනාකරු", 
+                save: "👤 CONTACT එක SAVE කරන්න", 
+                toastTitle: "විශේෂ දැනුම්දීමයි",
+                toastMsg: "ආයතනය අද විවෘතයි.",
+                addr: "📍 මීගමුව පාර, නාරම්මල",
+                pwa: "📲 App එක Install කරන්න?"
+            },
+            en: { 
+                role: "Organizer / Manager", 
+                save: "👤 SAVE CONTACT", 
+                toastTitle: "Special Notice",
+                toastMsg: "The institute is open today.",
+                addr: "📍 Negombo Road, Narammala",
+                pwa: "📲 Install the App?"
+            },
+            ta: { 
+                role: "ஒருங்கிணைப்பாளர் / மேலாளர்", 
+                save: "👤 தொடர்பைச் சேமிக்கவும்", 
+                toastTitle: "முக்கிய அறிவிப்பு",
+                toastMsg: "நிறுவனம் இன்று திறந்திருக்கும்.",
+                addr: "📍 நீர்கொழும்பு வீதி, நாரம்மல",
+                pwa: "📲 செயலியை நிறுவவா?"
+            }
         };
 
         function setLanguage(lang) {
             document.getElementById('txt-role').innerText = translations[lang].role;
             document.getElementById('mainSaveBtn').innerText = translations[lang].save;
-            document.getElementById('toast-msg').innerText = translations[lang].toast;
+            document.getElementById('toast-title').innerText = translations[lang].toastTitle;
+            document.getElementById('toast-msg').innerText = translations[lang].toastMsg;
+            document.getElementById('lbl-addr').innerText = translations[lang].addr;
+            document.getElementById('pwa-text').innerText = translations[lang].pwa;
+            
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
         }
@@ -242,7 +182,6 @@
             if (!isShown) menu.classList.add('show');
         }
 
-        // Dropdown එක පිටත click කළොත් වහන්න
         window.addEventListener('click', (e) => {
             if (!e.target.matches('.btn-action')) {
                 document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
@@ -261,7 +200,7 @@
             a.href = vurl; a.download = 'Janith_ADM.vcf'; a.click();
 
             localStorage.setItem('contact_saved', 'true');
-            showGrid();
+            setTimeout(showGrid, 1000);
         }
 
         function showGrid() {
@@ -277,17 +216,16 @@
             }, 2000);
         };
 
-        // PWA Install Logic
-        let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
             document.getElementById('pwa-installer').style.display = 'flex';
         });
 
-        document.getElementById('btn-install').addEventListener('click', async () => {
+        document.getElementById('btn-install-main').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
                 document.getElementById('pwa-installer').style.display = 'none';
             }
