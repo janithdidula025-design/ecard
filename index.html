@@ -336,7 +336,14 @@
             <span id="lbl-email">📧 <b>ඊමේල්:</b> janithdidula025@gmail.com</span>
         </div>
 
-     <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
+   <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
+
+<div id="actionGrid" class="action-grid" style="display: none;">
+    <button class="btn-action btn-wa" onclick="window.open('https://wa.me/94710658051')">WhatsApp</button>
+    <button class="btn-action btn-call" onclick="window.open('tel:0710658051')">Call</button>
+    <button class="btn-action btn-sms" onclick="window.open('sms:0710658051')">SMS</button>
+    <button class="btn-action btn-email" onclick="window.open('mailto:janithdidula025@gmail.com')">Email</button>
+</div>
 
 <div id="actionGrid" class="action-grid" style="display: none;">
     
@@ -574,6 +581,84 @@
                 });
             }
         }
+        // පිටුව load වන විට කලින් save කර ඇත්දැයි පරීක්ෂා කිරීම
+window.addEventListener('load', () => {
+    if (localStorage.getItem('contact_saved_v18') === 'true') {
+        document.getElementById('mainSaveBtn').style.display = 'none';
+        const actionGrid = document.getElementById('actionGrid');
+        if (actionGrid) actionGrid.style.display = 'grid';
+    }
+});
+
+async function saveVCard() {
+    const saveBtn = document.getElementById('mainSaveBtn');
+    saveBtn.innerText = "⏳ කරුණාකර රැඳී සිටින්න...";
+    saveBtn.disabled = true;
+
+    // පින්තූරය Base64 බවට හැරවීමේ function එක
+    async function getBase64Image(url) {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result.split(',')[1];
+                    resolve(base64String);
+                };
+                reader.readAsDataURL(blob);
+            });
+        } catch (e) {
+            console.error("Photo fetch failed", e);
+            return ""; // පින්තූරය ලබාගත නොහැකි නම් හිස්ව යවයි
+        }
+    }
+
+    try {
+        // ඔබේ GitHub ලෝගෝ එකේ ලින්ක් එක
+        const imageUrl = "https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg";
+        const base64Photo = await getBase64Image(imageUrl);
+
+        // VCard අන්තර්ගතය (Version 3.0)
+        let vcard = "BEGIN:VCARD\n" +
+                    "VERSION:3.0\n" +
+                    "FN:Janith Didula (ADM)\n" +
+                    "ORG:ADM Higher Education\n" +
+                    "TEL;TYPE=CELL,VOICE:0710658051\n" +
+                    "TEL;TYPE=CELL,VOICE:0763614792\n" +
+                    "EMAIL:janithdidula025@gmail.com\n" +
+                    "ADR;TYPE=WORK:;;Negombo Rd;Narammala;;;Sri Lanka\n";
+        
+        // පින්තූරය තිබේ නම් පමණක් ඇතුළත් කරයි
+        if (base64Photo) {
+            vcard += "PHOTO;TYPE=JPEG;ENCODING=b:" + base64Photo + "\n";
+        }
+        
+        vcard += "END:VCARD";
+
+        const blob = new Blob([vcard], { type: 'text/vcard' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Janith_Didula_ADM.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        // සාර්ථකව අවසන් වූ පසු Button මාරු කිරීම
+        localStorage.setItem('contact_saved_v18', 'true');
+        saveBtn.style.display = 'none';
+        const actionGrid = document.getElementById('actionGrid');
+        if (actionGrid) actionGrid.style.display = 'grid';
+
+    } catch (error) {
+        console.error("Error:", error);
+        saveBtn.innerText = "👤 CONTACT එක SAVE කරන්න";
+        saveBtn.disabled = false;
+        alert("දෝෂයක් ඇති විය. නැවත උත්සාහ කරන්න.");
+    }
+}
 // VERSION 2.0 - Update Logic
 // Service Worker එක Register කිරීම සහ Auto-Update Logic එක
 if ('serviceWorker' in navigator) {
