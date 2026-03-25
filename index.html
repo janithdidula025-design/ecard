@@ -36,10 +36,14 @@
 </head>
 <body>
 
-    <div id="pwa-installer">
-        <span id="pwa-txt">📲 ADM App එක Install කරගන්න?</span>
-        <button id="btn-install" style="background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 10px; font-weight: bold;">Install</button>
+ div class="main-content">
+    <div id="pwa-installer" class="pwa-container">
+        <span id="pwa-txt">📲 App එක Install කරගන්න?</span>
+        <button id="btn-install" class="pwa-btn">Install</button>
+        <button onclick="document.getElementById('pwa-installer').style.display='none'" class="pwa-close">&times;</button>
     </div>
+
+    <div class="card">
 
 <div class="top-bar">
     <div class="lang-switch">
