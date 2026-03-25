@@ -186,6 +186,28 @@
         text-align: left;
         border-left: 3px solid #00ffcc; 
     }
+    /* Card එක අඩංගු කොටස උඩට ගැනීම */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* මැදට වෙනුවට ඉහළ සිට ආරම්භ කරන්න */
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 80px; /* Language bar එකට පස්සේ තියෙන ඉඩ මෙතනින් පාලනය වේ */
+}
+
+/* Language bar එකේ ඉඩ අඩු කිරීම */
+.top-bar { 
+    position: absolute; 
+    top: 15px; /* උඩින් තියෙන ඉඩ 15px දක්වා අඩු කළා */
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    z-index: 1000; 
+}
 </style>
 
 <script>
