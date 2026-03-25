@@ -30,6 +30,56 @@
             box-shadow: 0 4px 15px rgba(0, 255, 218, 0.3);
             margin-bottom: 15px;
         }
+        body {
+            background-color: #0a192f;
+            color: #64ffda;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* පේජ් එක මැද පෙනුම */
+        .main-content { text-align: center; }
+        .main-content img { width: 120px; border-radius: 15px; margin-bottom: 10px; }
+
+        /* බලෙන් පෙන්වන Install Popup එක */
+        #installOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 25, 47, 0.95);
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .popup-box {
+            background: #112240;
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid #64ffda;
+            box-shadow: 0 0 30px rgba(100, 255, 218, 0.2);
+            max-width: 80%;
+        }
+
+        .btn-install {
+            background: #64ffda;
+            color: #0a192f;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
     </style>
     <style>
         :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
@@ -69,7 +119,45 @@
     </style>
 </head>
 <body>
+<div id="installOverlay">
+        <div class="popup-box">
+            <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" style="width: 80px;">
+            <h2>Install ADM Admin App</h2>
+            <p>මෙම ඇප් එක ඔබගේ දුරකථනයේ ස්ථාපනය කරගන්න.</p>
+            <button class="btn-install" id="forceInstallBtn">Install Now</button>
+        </div>
+    </div>
 
+    <script>
+        let deferredPrompt;
+        const overlay = document.getElementById('installOverlay');
+        const installBtn = document.getElementById('forceInstallBtn');
+
+        // බ්‍රවුසර් එක ඉන්ස්ටෝල් කරන්න සූදානම් වූ විට
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // බලෙන් Popup එක පෙන්වනවා
+            overlay.style.display = 'flex';
+        });
+
+        installBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        overlay.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        // දැනටමත් Install කරලා නම් Popup එක පෙන්වන්න එපා
+        window.addEventListener('appinstalled', () => {
+            overlay.style.display = 'none';
+        });
+    </script>
     <div id="pwa-installer">
         <span id="pwa-txt">📲 App එක Install කරන්න?</span>
         <div>
