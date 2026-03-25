@@ -49,6 +49,9 @@
         <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
     </div>
 </div>
+    <div class="main-content">
+        <div id="statusToast" class="status-toast">...</div>
+        </div>
 
 <style>
   /* මුළු පිටුවේම උඩින් ඇති ඉඩ ඉවත් කිරීම */
@@ -123,6 +126,68 @@ body {
         // මෙතැන් සිට ඔබේ භාෂා මාරු කිරීමේ (Translation) logic එක ලියන්න
         console.log("Selected Language: " + lang);
     }
+    /* මුළු පිටුවම Scroll වීම වැළැක්වීමට */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* පිටුව scroll වීම සම්පූර්ණයෙන්ම නවත්වයි */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ඉතාම සිහින් සහ ස්ථාවර Top Bar එක */
+.top-bar {
+    width: 100%;
+    height: 45px; /* ඉතාම සිහින් උසක් */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+}
+
+/* බොත්තම් පෙට්ටිය */
+.lang-switch {
+    display: flex;
+    gap: 5px;
+    background: #f5f5f5;
+    padding: 2px;
+    border-radius: 30px;
+}
+
+.lang-btn {
+    border: none;
+    background: transparent;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 30px;
+    color: #777;
+    transition: 0.2s;
+}
+
+.lang-btn.active {
+    background-color: #000;
+    color: #fff;
+}
+
+/* ප්‍රධාන අන්තර්ගතය පෙන්වන කොටස (Content Area) */
+.main-content {
+    margin-top: 45px; /* Top bar එකට යට නොවීමට */
+    flex: 1;
+    overflow-y: auto; /* අන්තර්ගතය වැඩි නම් ඒ කොටස පමණක් scroll වේ */
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 </script>
   
 <div id="statusToast" class="status-toast">
