@@ -48,7 +48,107 @@
             <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
             <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
         </div>
-        <button class="notif-btn" onclick="enableNotifications()">🔔</button>
+       <div id="statusToast" class="status-toast">
+    <div class="status-body">
+        <div class="status-icon-box">
+            <span class="status-icon">🚫</span>
+        </div>
+        <div class="status-content">
+            <p class="status-title">විශේෂ දැනුම්දීමයි</p>
+            <p class="status-msg">අද දින ආයතනය වසා ඇත.</p>
+        </div>
+    </div>
+    </div>
+
+<style>
+    .status-toast {
+        position: fixed;
+        bottom: -120px; /* ආරම්භයේදී සැඟවී ඇත */
+        right: 20px;
+        width: 300px;
+        background: rgba(255, 255, 255, 0.98);
+        border-left: 6px solid #e74c3c; /* රතු පැහැති border එකක් */
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        padding: 18px;
+        z-index: 10000;
+        transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* මතු වන විට පෙනෙන ආකාරය */
+    .status-toast.show {
+        bottom: 30px;
+    }
+
+    .status-body {
+        display: flex;
+        align-items: center;
+    }
+
+    .status-icon-box {
+        background-color: #fdeaea;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 15px;
+    }
+
+    .status-icon {
+        font-size: 20px;
+        animation: pulseFade 1.5s infinite;
+    }
+
+    .status-content {
+        flex: 1;
+    }
+
+    .status-title {
+        margin: 0;
+        font-weight: bold;
+        color: #c0392b;
+        font-size: 15px;
+    }
+
+    .status-msg {
+        margin: 3px 0 0;
+        font-size: 14px;
+        color: #333;
+        font-weight: 500;
+    }
+
+    /* මෘදු ලෙස දැල්වී නිවෙන animation එකක් */
+    @keyframes pulseFade {
+        0% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(1.1); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 480px) {
+        .status-toast { width: 85%; right: 7.5%; }
+    }
+</style>
+
+<script>
+    window.addEventListener('load', function() {
+        const toast = document.getElementById('statusToast');
+
+        // 1. තත්පර 2කට පසු Notification එක පෙන්වන්න
+        setTimeout(function() {
+            toast.classList.add('show');
+            
+            // 2. විනාඩි 10කට පසු (600,000 milliseconds) ස්වයංක්‍රීයව වසන්න
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 600000); 
+
+        }, 2000); 
+    });
+</script>
     </div>
 
     <div class="card">
