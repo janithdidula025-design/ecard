@@ -169,7 +169,9 @@
 <div id="actionGrid" class="action-grid" style="display: none;">
     
     <div class="dropdown">
-        <button type="button" class="btn btn-action btn-wa" onclick="toggleMenu('waMenu')">WhatsApp</button>
+        <button type="button" class="btn-action btn-wa" onclick="toggleMenu('waMenu')">
+            <span class="icon">💬</span> WhatsApp
+        </button>
         <div id="waMenu" class="dropdown-content">
             <a href="https://wa.me/94710658051" target="_blank">071 065 8051</a>
             <a href="https://wa.me/94763614792" target="_blank">076 361 4792</a>
@@ -177,7 +179,9 @@
     </div>
 
     <div class="dropdown">
-        <button type="button" class="btn btn-action btn-call" onclick="toggleMenu('callMenu')">Call</button>
+        <button type="button" class="btn-action btn-call" onclick="toggleMenu('callMenu')">
+            <span class="icon">📞</span> Call
+        </button>
         <div id="callMenu" class="dropdown-content">
             <a href="tel:0710658051">071 065 8051</a>
             <a href="tel:0763614792">076 361 4792</a>
@@ -185,7 +189,9 @@
     </div>
 
     <div class="dropdown">
-        <button type="button" class="btn btn-action btn-sms" onclick="toggleMenu('smsMenu')">SMS</button>
+        <button type="button" class="btn-action btn-sms" onclick="toggleMenu('smsMenu')">
+            <span class="icon">✉️</span> SMS
+        </button>
         <div id="smsMenu" class="dropdown-content">
             <a href="sms:0710658051">071 065 8051</a>
             <a href="sms:0763614792">076 361 4792</a>
@@ -193,7 +199,9 @@
     </div>
 
     <div class="dropdown">
-        <button type="button" class="btn btn-action btn-email" onclick="toggleMenu('emailMenu')">Email</button>
+        <button type="button" class="btn-action btn-email" onclick="toggleMenu('emailMenu')">
+            <span class="icon">📧</span> Email
+        </button>
         <div id="emailMenu" class="dropdown-content">
             <a href="mailto:janithdidula025@gmail.com">janithdidula025@gmail.com</a>
             <a href="mailto:janithdidula@gmail.com">janithdidula@gmail.com</a>
@@ -202,59 +210,97 @@
 </div>
 
 <style>
-    /* Save Button Style */
-    .btn-save {
-        width: 100%;
-        padding: 15px;
-        background-color: #000; /* ඔබට කැමති වර්ණයක් දාන්න */
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        margin-bottom: 20px;
-    }
-
-    /* Action Grid Styling (Flex box එකක් ලෙස පෙන්වීමට) */
+    /* Grid එක මැදට ගැනීම සහ පිළිවෙලට සැකසීම */
     .action-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* පේළියකට බොත්තම් 2 බැගින් */
+        gap: 15px; /* බොත්තම් අතර පරතරය */
+        max-width: 400px; /* Grid එකේ උපරිම පළල */
+        margin: 20px auto; /* පිටුවේ මැදට (Center) ගැනීම */
+        padding: 10px;
+    }
+
+    .btn-action {
+        width: 100%;
+        padding: 15px 10px;
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
         display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+        flex-direction: column; /* Icon එක උඩින් සහ Text එක යටින් පෙන්වීමට */
+        align-items: center;
         justify-content: center;
-        animation: fadeIn 0.5s; /* මතු වන විට ලස්සනට පෙනීමට */
+        gap: 5px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+    .btn-action:active { transform: scale(0.95); }
 
-    /* කලින් දුන් Dropdown CSS මෙතනට එන්න ඕනේ... */
-    .btn-action { padding: 12px; border-radius: 8px; color: white; border: none; font-weight: bold; min-width: 100px; cursor: pointer; }
-    .btn-wa { background-color: #25D366; }
-    .btn-call { background-color: #007bff; }
-    .btn-sms { background-color: #ffc107; color: black; }
-    .btn-email { background-color: #dc3545; }
-    
-    .dropdown { position: relative; }
+    /* Buttons වල වර්ණ */
+    .btn-wa { background: linear-gradient(135deg, #25D366, #128C7E); }
+    .btn-call { background: linear-gradient(135deg, #007bff, #0056b3); }
+    .btn-sms { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #000; }
+    .btn-email { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+    .icon { font-size: 22px; }
+
+    /* Dropdown පෙනුම */
+    .dropdown { position: relative; width: 100%; }
     .dropdown-content {
         display: none;
         position: absolute;
-        background: white;
+        background: #fff;
         min-width: 180px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        bottom: 110%;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        z-index: 100;
+        bottom: 110%; /* බොත්තමට ඉහළින් පෙන්වීමට */
         left: 50%;
         transform: translateX(-50%);
-        border-radius: 8px;
-        z-index: 100;
+        overflow: hidden;
     }
-    .dropdown-content a { color: black; padding: 12px; text-decoration: none; display: block; border-bottom: 1px solid #eee; }
-    .show { display: block !important; }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 12px;
+        text-decoration: none;
+        display: block;
+        font-size: 13px;
+        border-bottom: 1px solid #eee;
+        text-align: center;
+    }
+
+    .dropdown-content a:hover { background: #f8f9fa; }
+    .show { display: block !important; animation: slideUp 0.3s ease; }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translate(-50%, 10px); }
+        to { opacity: 1; transform: translate(-50%, 0); }
+    }
 </style>
 
 <script>
+    // කලින් තිබුණු JavaScript එකම භාවිතා කරන්න (toggleMenu function එක)
+    function toggleMenu(id) {
+        const menus = document.querySelectorAll('.dropdown-content');
+        menus.forEach(m => m.id === id ? m.classList.toggle('show') : m.classList.remove('show'));
+    }
+
+    window.onclick = function(e) {
+        if (!e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
+        }
+    }
+
+    // Save කළ පසු Grid එක පෙන්වන function එක (ඔබේ saveVCard එක ඇතුළත මෙය තියෙන්න ඕනේ)
+    function showGrid() {
+        document.getElementById('actionGrid').style.display = 'grid';
+    }
+</script>
     function saveVCard() {
         // මෙතන ඔබේ පවතින VCard save කරන code එක තියෙන්න ඕනේ
         console.log("Saving Contact...");
