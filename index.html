@@ -67,11 +67,121 @@
         <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
         
         <div id="actionGrid" class="action-grid">
-            <a href="https://wa.me/94710658051" class="btn btn-action btn-wa">WhatsApp</a>
-            <a href="tel:0710658051" class="btn btn-action btn-call">Call</a>
-            <a href="sms:0710658051" class="btn btn-action btn-sms">SMS</a>
-            <a href="mailto:janithdidula025@gmail.com" class="btn btn-action btn-email">Email</a>
+    
+    <div class="dropdown">
+        <button type="button" class="btn btn-action btn-wa" onclick="toggleMenu('waMenu')">WhatsApp</button>
+        <div id="waMenu" class="dropdown-content">
+            <a href="https://wa.me/94710658051" target="_blank">071 065 8051</a>
+            <a href="https://wa.me/94763614792" target="_blank">076 361 4792</a>
         </div>
+    </div>
+
+    <div class="dropdown">
+        <button type="button" class="btn btn-action btn-call" onclick="toggleMenu('callMenu')">Call</button>
+        <div id="callMenu" class="dropdown-content">
+            <a href="tel:0710658051">Call 071 065 8051</a>
+            <a href="tel:0763614792">Call 076 361 4792</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button type="button" class="btn btn-action btn-sms" onclick="toggleMenu('smsMenu')">SMS</button>
+        <div id="smsMenu" class="dropdown-content">
+            <a href="sms:0710658051">SMS to 071 065 8051</a>
+            <a href="sms:0763614792">SMS to 076 361 4792</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button type="button" class="btn btn-action btn-email" onclick="toggleMenu('emailMenu')">Email</button>
+        <div id="emailMenu" class="dropdown-content">
+            <a href="mailto:janithdidula025@gmail.com">janithdidula025@gmail.com</a>
+            <a href="mailto:janithdidula@gmail.com">janithdidula@gmail.com</a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .action-grid {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+    }
+    
+    .btn-action {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        min-width: 120px;
+    }
+
+    .btn-wa { background-color: #25D366; }
+    .btn-call { background-color: #007bff; }
+    .btn-sms { background-color: #ffc107; color: #000; }
+    .btn-email { background-color: #dc3545; }
+
+    /* Dropdown Styling */
+    .dropdown { position: relative; display: inline-block; }
+    
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        z-index: 10;
+        border-radius: 8px;
+        bottom: 110%; /* Button එකට ඉහළින් මෙනු එක පෙන්වීමට */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .dropdown-content a {
+        color: #333;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .dropdown-content a:last-child { border-bottom: none; }
+    .dropdown-content a:hover { background-color: #f1f1f1; border-radius: 8px; }
+    
+    /* පෙන්වන අවස්ථාව */
+    .show { display: block !important; }
+</style>
+
+<script>
+    function toggleMenu(id) {
+        const menus = document.querySelectorAll('.dropdown-content');
+        menus.forEach(menu => {
+            if (menu.id === id) {
+                menu.classList.toggle('show');
+            } else {
+                menu.classList.remove('show');
+            }
+        });
+    }
+
+    // පිටත click කළ විට මෙනු වසන්න
+    window.onclick = function(event) {
+        if (!event.target.matches('.btn-action')) {
+            const dropdowns = document.getElementsByClassName("dropdown-content");
+            for (let i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].classList.remove('show');
+            }
+        }
+    }
+</script>
         
         <div style="margin-top: 20px; font-size: 0.6rem; opacity: 0.4;">ADM E-CARD SYSTEM v1.8</div>
     </div>
