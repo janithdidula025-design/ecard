@@ -85,27 +85,39 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* භාෂා බොත්තම් වල අකුරු කැපිලා පේන්න හදපු CSS */
 .lang-btn { 
-    background: rgba(255, 255, 255, 0.1); 
-    border: 1px solid rgba(80, 227, 194, 0.3); 
-    color: white; 
-    padding: 8px 14px; 
-    border-radius: 10px; 
+    background: rgba(255, 255, 255, 0.08); 
+    border: 1.5px solid rgba(80, 227, 194, 0.3); 
+    color: #ffffff; 
+    padding: 8px 15px; 
+    border-radius: 12px; 
     cursor: pointer; 
-    font-size: 0.75rem; 
-    font-weight: 500;
-    transition: 0.3s; 
+    font-size: 0.8rem; 
+    font-weight: 700; /* අකුරු මහත කළා */
+    letter-spacing: 0.5px; /* අකුරු අතර පරතරය */
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.8); /* අකුරු වටේ කළු හෙවනැල්ලක් (Shadow) */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
 }
 
+/* තෝරාගත් (Active) බොත්තම */
 .lang-btn.active { 
-    background: var(--primary); 
-    color: #000; 
-    font-weight: bold; 
-    border-color: var(--primary);
-    box-shadow: 0 0 15px rgba(80, 227, 194, 0.4);
+    background: #50e3c2; 
+    color: #000000; /* මෙතන අකුරු කළු කළාම ලා පාට උඩ හොඳට කැපිලා පේනවා */
+    border-color: #51ffda;
+    font-weight: 900; 
+    text-shadow: none; /* Active එකේදී shadow එක ඕන වෙන්නේ නැහැ */
+    box-shadow: 0 0 20px rgba(80, 227, 194, 0.5), inset 0 0 10px rgba(255,255,255,0.3);
+    transform: scale(1.05); /* පොඩ්ඩක් ලොකු වෙලා පේන්න */
 }
-    
 
+/* බොත්තම් උඩට යනකොට (Hover) */
+.lang-btn:hover:not(.active) {
+    background: rgba(80, 227, 194, 0.2);
+    border-color: #50e3c2;
+    color: #fff;
+}
     /* බොත්තම් අඩංගු පෙට්ටිය (Pill Design) */
     .lang-switch {
         display: flex;
