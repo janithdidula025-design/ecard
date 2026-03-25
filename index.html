@@ -135,6 +135,7 @@
 
     <script>
         let deferredPrompt;
+        let currentLang = 'si';
 
         const translations = {
             si: { 
@@ -143,7 +144,9 @@
                 toastTitle: "විශේෂ දැනුම්දීමයි",
                 toastMsg: "ආයතනය අද විවෘතයි.",
                 addr: "📍 මීගමුව පාර, නාරම්මල",
-                pwa: "📲 App එක Install කරන්න?"
+                pwa: "📲 App එක Install කරන්න?",
+                iosMsg: "iPhone සඳහා: Share (📤) බොත්තම ඔබා 'Add to Home Screen' තෝරන්න.",
+                fallbackMsg: "ඔබේ බ්‍රවුසරයේ 'Add to Home Screen' හෝ 'Install' භාවිතා කරන්න."
             },
             en: { 
                 role: "Organizer / Manager", 
@@ -151,7 +154,9 @@
                 toastTitle: "Special Notice",
                 toastMsg: "The institute is open today.",
                 addr: "📍 Negombo Road, Narammala",
-                pwa: "📲 Install the App?"
+                pwa: "📲 Install the App?",
+                iosMsg: "For iPhone: Tap Share (📤) and select 'Add to Home Screen'.",
+                fallbackMsg: "Please use 'Add to Home Screen' or 'Install' from your browser menu."
             },
             ta: { 
                 role: "ஒருங்கிணைப்பாளர் / மேலாளர்", 
@@ -159,11 +164,14 @@
                 toastTitle: "முக்கிய அறிவிப்பு",
                 toastMsg: "நிறுவனம் இன்று திறந்திருக்கும்.",
                 addr: "📍 நீர்கொழும்பு வீதி, நாரம்மல",
-                pwa: "📲 செயலியை நிறுவவா?"
+                pwa: "📲 செயலியை நிறுவவா?",
+                iosMsg: "iPhone-க்கு: Share (📤) பொத்தானை அழுத்தி 'Add to Home Screen' என்பதைத் தேர்ந்தெடுக்கவும்.",
+                fallbackMsg: "உங்கள் உலாவியில் 'Add to Home Screen' அல்லது 'Install' என்பதைப் பயன்படுத்தவும்."
             }
         };
 
         function setLanguage(lang) {
+            currentLang = lang;
             document.getElementById('txt-role').innerText = translations[lang].role;
             document.getElementById('mainSaveBtn').innerText = translations[lang].save;
             document.getElementById('toast-title').innerText = translations[lang].toastTitle;
@@ -208,19 +216,32 @@
             document.getElementById('actionGrid').style.display = 'grid';
         }
 
+        // --- PWA LOGIC ---
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // බ්‍රවුසරය Ready නම් Bar එක එකපාරම පෙන්වන්න
+            document.getElementById('pwa-installer').style.display = 'flex';
+        });
+
         window.onload = () => {
+            // කලින් save කරලද බලන්න
             if (localStorage.getItem('contact_saved') === 'true') showGrid();
+            
+            // Toast පෙන්වන්න
             setTimeout(() => {
                 document.getElementById('statusToast').classList.add('active');
                 setTimeout(() => document.getElementById('statusToast').classList.remove('active'), 6000);
             }, 2000);
-        };
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('pwa-installer').style.display = 'flex';
-        });
+            // තත්පර 3කට පසු බලෙන් Bar එක පෙන්වන්න (Standalone mode එකේ නැත්නම් පමණක්)
+            setTimeout(() => {
+                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+                if (!isStandalone) {
+                    document.getElementById('pwa-installer').style.display = 'flex';
+                }
+            }, 3000);
+        };
 
         document.getElementById('btn-install-main').addEventListener('click', async () => {
             if (deferredPrompt) {
@@ -228,45 +249,16 @@
                 const { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
                 document.getElementById('pwa-installer').style.display = 'none';
+            } else {
+                // iPhone ද බලන්න
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                if (isIOS) {
+                    alert(translations[currentLang].iosMsg);
+                } else {
+                    alert(translations[currentLang].fallbackMsg);
+                }
             }
         });
-        window.onload = () => {
-    // Contact එක කලින්ම save කරලනම් Grid එක පෙන්වන්න
-    if (localStorage.getItem('contact_saved') === 'true') showGrid();
-    
-    // Toast message එක පෙන්වන්න
-    setTimeout(() => {
-        document.getElementById('statusToast').classList.add('active');
-        setTimeout(() => document.getElementById('statusToast').classList.remove('active'), 6000);
-    }, 2000);
-
-    // --- බලෙන් PWA Bar එක පෙන්වන කොටස (තත්පර 3කට පසු) ---
-    setTimeout(() => {
-        // දැනටමත් Install කරල නැත්නම් විතරක් පෙන්වන්න
-        if (!window.matchMedia('(display-mode: standalone)').matches) {
-            document.getElementById('pwa-installer').style.display = 'flex';
-        }
-    }, 3000);
-};
-
-// Install Button එක click කළ විට සිදුවිය යුතු වෙනස
-document.getElementById('btn-install-main').addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById('pwa-installer').style.display = 'none';
-    } else {
-        // බ්‍රවුසරය තවම Ready නැත්නම් හෝ iPhone එකක නම් මැනුවල් ක්‍රමය කියන්න
-        const msg = {
-            si: "ඔබේ බ්‍රවුසරයේ 'Add to Home Screen' හෝ 'Install' භාවිතා කරන්න.",
-            en: "Please use 'Add to Home Screen' or 'Install' from your browser menu.",
-            ta: "உங்கள் உலாவியில் 'Add to Home Screen' அல்லது 'Install' என்பதைப் பயன்படுத்தவும்."
-        };
-        // දැනට තෝරාගෙන තියෙන භාෂාව අනුව alert එකක් දෙන්න (setLanguage function එකේ currentLang එක save කරගන්න පුළුවන්)
-        alert(msg.si); 
-    }
-});
     </script>
 </body>
 </html>
