@@ -274,6 +274,67 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
+        // 1. PWA Install Logic
+let deferredPrompt;
+const pwaBar = document.getElementById('pwa-installer');
+const installBtn = document.getElementById('btn-install');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Browser එකේ default prompt එක නතර කරලා අපේ Bar එක පෙන්වනවා
+    e.preventDefault();
+    deferredPrompt = e;
+    pwaBar.style.display = 'flex'; 
+});
+
+installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt(); // Install window එක පෙන්වයි
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            console.log('User accepted the install');
+            pwaBar.style.display = 'none';
+        }
+        deferredPrompt = null;
+    }
+});
+
+// App එක දැනටමත් Install කරලා නම් Bar එක පෙන්වන්න එපා
+window.addEventListener('appinstalled', () => {
+    pwaBar.style.display = 'none';
+    deferredPrompt = null;
+});
+
+// 2. Service Worker Registration with Auto-Update Logic
+if ('serviceWorker' in navigator) {
+    // ?v= පාවිච්චි කිරීමෙන් හැමවෙලේම අලුත්ම sw.js එක load කරගනී
+    const swUrl = `./sw.js?v=${Date.now()}`; 
+    
+    navigator.serviceWorker.register(swUrl).then(reg => {
+        // අලුත් Update එකක් ආවොත් වහාම පෙන්වීමට
+        reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // Cache එක clear වී අලුත් version එක load වීමට පිටුව reload කරයි
+                    window.location.reload();
+                }
+            };
+        };
+    }).catch(err => console.log('SW Registration Failed:', err));
+}
+
+// 3. UI Load Logic (Existing)
+window.onload = () => {
+    if (localStorage.getItem('contact_saved_v2') === 'true') {
+        document.getElementById('mainSaveBtn').style.display = 'none';
+        document.getElementById('actionGrid').style.display = 'grid';
+    }
+    
+    setTimeout(() => {
+        document.getElementById('statusToast').classList.add('show');
+        setTimeout(() => document.getElementById('statusToast').classList.remove('show'), 8000);
+    }, 3000);
+};
     </script>
 </body>
 </html>
