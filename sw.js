@@ -77,3 +77,5 @@ self.addEventListener('notificationclick', event => {
         })
     );
 });
+<link rel="stylesheet" href="style.css?v=1.2">
+<script src="script.js?v=1.2"></script>
