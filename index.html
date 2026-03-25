@@ -42,12 +42,90 @@
         <button id="btn-install" style="background: #000; color: #fff; border: none; padding: 8px 15px; border-radius: 10px; font-weight: bold;">Install</button>
     </div>
 
-    <div class="top-bar">
-        <div class="lang-switch">
-            <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
-            <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
-            <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
-        </div>
+<div class="top-bar">
+    <div class="lang-switch">
+        <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
+        <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
+        <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
+    </div>
+</div>
+
+<style>
+    /* මුළු පේළියම පාලනය කරන Top Bar එක */
+    .top-bar {
+        width: 100%;
+        display: flex;
+        justify-content: center; /* බොත්තම් ටික මැදට (Center) ගැනීමට */
+        padding: 15px 0;
+        background-color: transparent; /* ඔබට අවශ්‍ය නම් මෙතැනට වර්ණයක් දිය හැක */
+        position: relative;
+        top: 0;
+        z-index: 1000;
+    }
+
+    /* බොත්තම් අඩංගු පෙට්ටිය */
+    .lang-switch {
+        display: flex;
+        gap: 10px; /* බොත්තම් අතර පරතරය */
+        background: rgba(255, 255, 255, 0.8);
+        padding: 5px;
+        border-radius: 50px; /* වටකුරු පෙනුම */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        backdrop-filter: blur(5px); /* පසුබිම මඳක් බොඳ කිරීමට (Modern look) */
+    }
+
+    /* පොදුවේ බොත්තම් වල පෙනුම */
+    .lang-btn {
+        border: none;
+        background: transparent;
+        padding: 8px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        color: #555;
+    }
+
+    /* Active (තෝරාගෙන ඇති) බොත්තමේ පෙනුම */
+    .lang-btn.active {
+        background-color: #000; /* තෝරාගත් විට කළු පැහැය */
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Mouse එක උඩට ගිය විට (Hover) */
+    .lang-btn:hover:not(.active) {
+        background-color: #f0f0f0;
+    }
+
+    /* Mobile devices සඳහා පෙනුම */
+    @media (max-width: 480px) {
+        .lang-btn {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        .lang-switch {
+            gap: 5px;
+        }
+    }
+</style>
+
+<script>
+    // භාෂාව තේරීමේදී 'active' class එක මාරු කරන ආකාරය
+    function setLanguage(lang) {
+        // සියලුම බොත්තම් වලින් active class එක අයින් කරන්න
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // ක්ලික් කළ බොත්තමට active class එක දාන්න
+        document.getElementById('btn-' + lang).classList.add('active');
+
+        // මෙතැන් සිට ඔබේ භාෂා මාරු කිරීමේ (Translation) logic එක ලියන්න
+        console.log("Selected Language: " + lang);
+    }
+</script>
   
 <div id="statusToast" class="status-toast">
     <div class="status-body">
