@@ -77,5 +77,9 @@ self.addEventListener('notificationclick', event => {
         })
     );
 });
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js') // sw.js ෆයිල් එක ඔයාගේ index.html එක ගාවම තියෙන්න ඕනේ
+    .then(() => console.log("Service Worker Registered"));
+}
 <link rel="stylesheet" href="style.css?v=1.2">
 <script src="script.js?v=1.2"></script>
