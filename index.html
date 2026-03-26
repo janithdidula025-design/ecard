@@ -327,6 +327,115 @@
                 setTimeout(() => document.getElementById('statusToast').classList.remove('active'), 5000);
             }, 2000);
         };
+        // --- 1. පෝය දින ගණනය ---
+function isFullMoon(date) {
+    const baseDate = new Date(1900, 0, 1);
+    const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
+    const lunarCycle = 29.530588853;
+    const daysSinceNewMoon = (diffDays - 0.2) % lunarCycle;
+    return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
+}
+
+// --- 2. ආයතන තත්ත්වය සහ කාලසටහන පරීක්ෂාව ---
+function checkInstituteStatus() {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const currentTime = now.getHours() + (now.getMinutes() / 60);
+
+    const weeklySchedule = {
+        0: { open: 8.0, close: 17.0, name: "ඉරිදා" },
+        1: { open: 8.5, close: 17.0, name: "සඳුදා" },
+        2: { open: 8.5, close: 17.0, name: "අඟහරුවාදා" },
+        3: { open: 8.5, close: 17.0, name: "බදාදා" },
+        4: { open: 8.5, close: 17.0, name: "බ්‍රහස්පතින්දා" },
+        5: { open: 8.5, close: 17.0, name: "සිකුරාදා" },
+        6: { open: 8.0, close: 18.0, name: "සෙනසුරාදා" }
+    };
+
+    const today = weeklySchedule[dayOfWeek];
+    let title, message, isClosed;
+
+    if (isFullMoon(now)) {
+        title = "අද පොහෝ දිනයකි";
+        message = "අද පසළොස්වක පොහෝ දිනය බැවින් ආයතනය වසා තබනු ලැබේ.";
+        isClosed = true;
+    } else if (currentTime >= today.open && currentTime < today.close) {
+        title = "ආයතනය විවෘතයි";
+        message = `අද ${today.name} දින ආයතනය විවෘතව ඇත. <br>වේලාව: පෙ.ව. ${formatTime(today.open)} - ප.ව. ${formatTime(today.close - 12)}`;
+        isClosed = false;
+    } else {
+        title = "ආයතනය දැනට වසා ඇත";
+        message = `අද ${today.name} දින විවෘත වේලාවන්: පෙ.ව. ${formatTime(today.open)} - ප.ව. ${formatTime(today.close - 12)}`;
+        isClosed = true;
+    }
+    showProfessionalPopup(title, message, isClosed);
+}
+
+// වෙලාව format කරන function එක
+function formatTime(decimalTime) {
+    const hrs = Math.floor(decimalTime);
+    const mins = Math.round((decimalTime - hrs) * 60);
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+}
+
+// --- 3. Popup පෙන්වීම ---
+function showProfessionalPopup(title, msg, isClosed) {
+    const toast = document.getElementById('statusToast');
+    if(!toast) return; 
+    
+    document.getElementById('toast-title').innerHTML = title;
+    document.getElementById('toast-msg').innerHTML = msg;
+    const iconSpan = toast.querySelector('span');
+    if(iconSpan) iconSpan.innerText = isClosed ? "⚠️" : "✅";
+    
+    toast.style.borderLeft = isClosed ? "6px solid #e74c3c" : "6px solid #2ecc71";
+    
+    setTimeout(() => {
+        toast.classList.add('active');
+        setTimeout(() => toast.classList.remove('active'), 60000);
+    }, 1500);
+}
+
+// --- 4. Service Worker & Notifications ---
+async function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        try {
+            const reg = await navigator.serviceWorker.register('sw.js');
+            if ('periodicSync' in reg) {
+                const status = await navigator.permissions.query({ name: 'periodic-background-sync' });
+                if (status.state === 'granted') {
+                    await reg.periodicSync.register('check-status', {
+                        minInterval: 12 * 60 * 60 * 1000 // පැය 12 කට වරක්
+                    });
+                }
+            }
+        } catch (e) { console.log('SW Registration Fail', e); }
+    }
+}
+
+function requestNotificationPermission() {
+    if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') registerServiceWorker();
+        });
+    }
+}
+
+// --- 5. Window Load ---
+window.onload = () => {
+    if(typeof setLanguage === "function") setLanguage('si');
+    
+    const saveBtn = document.getElementById('mainSaveBtn');
+    const actGrid = document.getElementById('actionGrid');
+    
+    if (localStorage.getItem('contact_saved') === 'true') {
+        if(saveBtn) saveBtn.style.display = 'none';
+        if(actGrid) actGrid.style.display = 'grid';
+    }
+
+    checkInstituteStatus();
+    requestNotificationPermission();
+};
     </script>
 </body>
 </html>
