@@ -75,6 +75,13 @@
         .tt-class { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; margin-bottom: 8px; border-left: 4px solid var(--primary); font-size: 0.85rem; }
 
         /* Toast */
+     .status-toast { 
+    position: fixed; bottom: -200px; left: 50%; transform: translateX(-50%); 
+    background: #ffffff; color: #333; padding: 15px 20px; border-radius: 20px; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 20000; width: 90%; max-width: 360px; 
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); display: flex; align-items: center; 
+}
+.status-toast.active { bottom: 30px; }
 .status-toast.active {
     bottom: 30px; /* active වුණාම screen එක ඇතුළට එනවා */
 }
@@ -208,6 +215,8 @@ const translations = {
         call: "ඇමතුම්", 
         sms: "පණිවිඩ", 
         email: "ඊමේල්",
+        toastTitle: "ආයතන තත්ත්වය", 
+        toastMsg: "තොරතුරු පරීක්ෂා කරමින්...",
         days: ["සඳුදා", "අඟහරුවාදා", "බදාදා", "බ්‍රහස්පතින්දා", "සිකුරාදා", "සෙනසුරාදා", "ඉරිදා"] 
     },
     en: { 
@@ -223,6 +232,8 @@ const translations = {
         call: "Call", 
         sms: "SMS", 
         email: "Email",
+        toastTitle: "Institute Status", 
+        toastMsg: "Checking status...",
         days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] 
     },
     ta: { 
@@ -231,13 +242,15 @@ const translations = {
         save: "👤 தொடர்பைச் சேமிக்கவும்", 
         ttBtn: "கால அட்டவணை", 
         ttTitle: "வாராந்திர கால அட்டவணை", 
-        addr: "📍 நீர்கොழும்பு වීதி, நாரம்மல", 
+        addr: "📍 நீர்கொழும்பு වීதி, நாரம்மல", 
         socialTitle: "எங்களுடன் இணையுங்கள்", 
         locTxt: "வரைபடம் (Maps)", 
-        credit: "உருவாக்கம்: ஜனித் திதுல | v2.2",
+        credit: "உருவாக்கம்: ஜனிත් திதுல | v2.2",
         call: "அழைப்பு", 
         sms: "செய்தி", 
         email: "மின்னஞ்சல்",
+        toastTitle: "நிறுவன நிலை", 
+        toastMsg: "நிலைமையை சரிபார்க்கிறது...",
         days: ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"] 
     }
 };
@@ -484,6 +497,29 @@ window.onload = () => {
     // 4. Notifications සඳහා අවසර ඉල්ලීම
     requestNotificationPermission();
 }; 
+        function showProfessionalPopup(title, msg, isClosed) {
+    const toast = document.getElementById('statusToast');
+    if(!toast) return; 
+    
+    // මෙතන තමයි කලින් undefined ආවේ. දැන් ඒක නිවැරදි කරලා තියෙන්නේ.
+    document.getElementById('toast-title').innerHTML = title;
+    document.getElementById('toast-msg').innerHTML = msg;
+    
+    const iconSpan = toast.querySelector('.toast-icon');
+    if(iconSpan) iconSpan.innerText = isClosed ? "⚠️" : "✅";
+    
+    toast.style.borderLeft = isClosed ? "6px solid #e74c3c" : "6px solid #2ecc71";
+    
+    // Popup එක screen එකට එනවා
+    setTimeout(() => {
+        toast.classList.add('active');
+    }, 1500);
+
+    // ✅ තත්පර 8කට පස්සේ ඉබේම අයින් වෙනවා (Auto Cut)
+    setTimeout(() => {
+        toast.classList.remove('active');
+    }, 8000); 
+}
     </script>
 </body>
 </html>
