@@ -363,18 +363,6 @@ const translations = {
             }
         });
 
-        window.onload = () => {
-            setLanguage('si');
-            setupAppLinks();
-            if (localStorage.getItem('contact_saved') === 'true') {
-                document.getElementById('mainSaveBtn').style.display = 'none';
-                document.getElementById('actionGrid').style.display = 'grid';
-            }
-            setTimeout(() => {
-                document.getElementById('statusToast').classList.add('active');
-                setTimeout(() => document.getElementById('statusToast').classList.remove('active'), 5000);
-            }, 2000);
-        };
         // --- 1. පෝය දින ගණනය ---
 function isFullMoon(date) {
     const baseDate = new Date(1900, 0, 1);
@@ -476,22 +464,26 @@ function requestNotificationPermission() {
     }
 }
 
-// --- 5. Window Load ---
+// 5. ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
 window.onload = () => {
-    if(typeof setLanguage === "function") setLanguage('si');
+    // 1. මුලින්ම භාෂාව සිංහල කරන්න
+    setLanguage('si');
+    setupAppLinks();
     
+    // 2. Contact එක කලින් Save කරලා ඇත්නම් Button එක Hide කරන්න
     const saveBtn = document.getElementById('mainSaveBtn');
     const actGrid = document.getElementById('actionGrid');
-    
     if (localStorage.getItem('contact_saved') === 'true') {
         if(saveBtn) saveBtn.style.display = 'none';
         if(actGrid) actGrid.style.display = 'grid';
     }
 
+    // 3. ආයතනය විවෘතද නැද්ද කියලා පරීක්ෂා කරලා Popup එක පෙන්වන්න
     checkInstituteStatus();
+    
+    // 4. Notifications සඳහා අවසර ඉල්ලීම
     requestNotificationPermission();
-};
-        
+}; 
     </script>
 </body>
 </html>
