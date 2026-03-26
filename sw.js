@@ -75,7 +75,7 @@ self.addEventListener('notificationclick', (e) => {
     })
   );
 });
-// පෝය දින ගණනය කිරීමේ Logic එක
+// 6.පෝය දින ගණනය කිරීමේ Logic එක
 function isFullMoon(date) {
     const baseDate = new Date(1900, 0, 1);
     const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
