@@ -343,41 +343,48 @@ function checkInstituteStatus() {
     const currentTime = now.getHours() + (now.getMinutes() / 60);
 
     const weeklySchedule = {
-        0: { open: 8.0, close: 17.0, name: "ඉරිදා" },
-        1: { open: 8.5, close: 17.0, name: "සඳුදා" },
-        2: { open: 8.5, close: 17.0, name: "අඟහරුවාදා" },
-        3: { open: 8.5, close: 17.0, name: "බදාදා" },
-        4: { open: 8.5, close: 17.0, name: "බ්‍රහස්පතින්දා" },
-        5: { open: 8.5, close: 17.0, name: "සිකුරාදා" },
-        6: { open: 8.0, close: 18.0, name: "සෙනසුරාදා" }
+        0: { open: 8.0, close: 17.0, name: "ඉරිදා", en: "Sunday", ta: "ஞாயிறு" },
+        1: { open: 8.5, close: 17.0, name: "සඳුදා", en: "Monday", ta: "திங்கள்" },
+        2: { open: 8.5, close: 17.0, name: "අඟහරුවාදා", en: "Tuesday", ta: "செவ்வாய்" },
+        3: { open: 8.5, close: 17.0, name: "බදාදා", en: "Wednesday", ta: "புதன்" },
+        4: { open: 8.5, close: 17.0, name: "බ්‍රහස්පතින්දා", en: "Thursday", ta: "வியாழன்" },
+        5: { open: 8.5, close: 17.0, name: "සිකුරාදා", en: "Friday", ta: "வெள்ளி" },
+        6: { open: 8.0, close: 18.0, name: "සෙනසුරාදා", en: "Saturday", ta: "சனி" }
     };
 
     const today = weeklySchedule[dayOfWeek];
     let title, message, isClosed;
 
     if (isFullMoon(now)) {
-        title = "අද පොහෝ දිනයකි";
-        message = "අද පසළොස්වක පොහෝ දිනය බැවින් ආයතනය වසා තබනු ලැබේ.";
+        title = "අද පොහෝ දිනයකි | Poya Day";
+        message = "අද පසළොස්වක පොහෝ දිනය බැවින් ආයතනය වසා තබනු ලැබේ.<br>" +
+                  "Institute is closed today due to Full Moon Poya Day.<br>" +
+                  "இன்று பௌர்ணமி என்பதால் நிறுவனம் மூடப்பட்டுள்ளது.";
         isClosed = true;
     } else if (currentTime >= today.open && currentTime < today.close) {
-        title = "ආයතනය විවෘතයි";
-        message = `අද ${today.name} දින ආයතනය විවෘතව ඇත. <br>වේලාව: පෙ.ව. ${formatTime(today.open)} - ප.ව. ${formatTime(today.close - 12)}`;
+        title = "ආයතනය විවෘතයි | Open Now";
+        message = `අද ${today.name} දින ආයතනය විවෘතව ඇත.<br>` +
+                  `The Institute is open today (${today.en}).<br>` +
+                  `இன்று நிறுவனம் திறக்கப்பட்டுள்ளது (${today.ta}).<br>` +
+                  `<b>${formatTime(today.open)} AM - ${formatTime(today.close - 12)} PM</b>`;
         isClosed = false;
     } else {
-        title = "ආයතනය දැනට වසා ඇත";
-        message = `අද ${today.name} දින විවෘත වේලාවන්: පෙ.ව. ${formatTime(today.open)} - ප.ව. ${formatTime(today.close - 12)}`;
+        title = "ආයතනය වසා ඇත | Closed Now";
+        message = `අද ${today.name} දින ආයතනය වසා ඇත.<br>` +
+                  `The Institute is closed today (${today.en}).<br>` +
+                  `இன்று நிறுவனம் மூடப்பட்டுள்ளது (${today.ta}).<br>` +
+                  `Opening: ${formatTime(today.open)} AM - ${formatTime(today.close - 12)} PM`;
         isClosed = true;
     }
     showProfessionalPopup(title, message, isClosed);
 }
 
-// වෙලාව format කරන function එක
+// වෙලාව format කරන function එක (මෙය එලෙසම තබන්න)
 function formatTime(decimalTime) {
     const hrs = Math.floor(decimalTime);
     const mins = Math.round((decimalTime - hrs) * 60);
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
 }
-
 // --- 3. Popup පෙන්වීම ---
 function showProfessionalPopup(title, msg, isClosed) {
     const toast = document.getElementById('statusToast');
