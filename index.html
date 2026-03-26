@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM E-Card v2.0</title>
+    <title>ADM E-Card v2.1</title>
     <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgtWFza2FibGUifV19">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo 01.png">
     <meta name="theme-color" content="#64ffda">
 
     <style>
-        :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
+        :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; --white: #ffffff; }
         body { 
             background: radial-gradient(circle at top, #112240, #000); 
             color: white; 
@@ -24,23 +24,9 @@
         }
 
         /* PWA Installer Bar */
-        #pwa-installer { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            background: var(--primary); 
-            color: #000; 
-            padding: 12px; 
-            z-index: 10001; 
-            justify-content: space-between; 
-            align-items: center; 
-            box-sizing: border-box; 
-            font-weight: bold;
-        }
+        #pwa-installer { display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--primary); color: #000; padding: 12px; z-index: 10001; justify-content: space-between; align-items: center; box-sizing: border-box; font-weight: bold; }
 
-        .top-bar { position: fixed; top: 60px; width: 100%; display: flex; justify-content: center; z-index: 5000; }
+        .top-bar { position: fixed; top: 20px; width: 100%; display: flex; justify-content: center; z-index: 5000; }
         .lang-switch { display: flex; gap: 5px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 6px 10px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; }
         .lang-btn.active { background: var(--primary); color: #000; font-weight: bold; }
@@ -49,8 +35,11 @@
         .p-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; object-fit: cover; }
         .info-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 20px; margin: 15px 0; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.6; }
         
-        .btn-save { width: 100%; padding: 15px; border-radius: 18px; font-weight: bold; font-size: 0.9rem; cursor: pointer; border: none; background: #fff; color: #0a192f; transition: 0.3s; }
-        .action-grid { display: none; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+        .btn-save, .btn-tt { width: 100%; padding: 14px; border-radius: 18px; font-weight: bold; font-size: 0.9rem; cursor: pointer; border: none; transition: 0.3s; margin-top: 10px; }
+        .btn-save { background: #fff; color: #0a192f; }
+        .btn-tt { background: var(--primary); color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        
+        .action-grid { display: none; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 10px; }
         
         .dropdown { position: relative; width: 100%; }
         .btn-action { width: 100%; padding: 12px 5px; font-size: 0.8rem; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; }
@@ -58,6 +47,15 @@
         .btn-call { background: #007bff; }
         .btn-sms { background: #f39c12; color: #000; }
         .btn-email { background: #e74c3c; }
+
+        /* Timetable Overlay */
+        .tt-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; }
+        .tt-container { width: 90%; max-width: 400px; background: #112240; border-radius: 30px; border: 1px solid var(--primary); padding: 20px; box-sizing: border-box; max-height: 80vh; overflow-y: auto; position: relative; }
+        .tt-header { color: var(--gold); font-size: 1.2rem; margin-bottom: 20px; font-weight: bold; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        .tt-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; }
+        .tt-day { color: var(--primary); font-weight: bold; width: 40%; text-align: left; }
+        .tt-time { color: #fff; width: 60%; text-align: right; }
+        .close-tt { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
 
         .dropdown-content { display: none; position: absolute; background: #fff; width: 100%; border-radius: 10px; z-index: 9000; bottom: 110%; left: 0; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .dropdown-content a { color: #333; padding: 10px; text-decoration: none; display: block; font-size: 13px; font-weight: bold; border-bottom: 1px solid #eee; text-align: center; }
@@ -125,7 +123,19 @@
                 <button class="btn-action btn-email" onclick="window.location.href='mailto:janithdidula025@gmail.com'">Email</button>
             </div>
         </div>
-        <div style="margin-top: 15px; font-size: 0.5rem; opacity: 0.4;">CREATED BY JANITH DIDULA | v2.0</div>
+
+        <button onclick="openTimetable()" class="btn-tt">📅 <span id="btn-tt-txt">කාලසටහන බලන්න</span></button>
+
+        <div style="margin-top: 15px; font-size: 0.5rem; opacity: 0.4;">CREATED BY JANITH DIDULA | v2.1</div>
+    </div>
+
+    <div id="ttOverlay" class="tt-overlay">
+        <div class="tt-container">
+            <button class="close-tt" onclick="closeTimetable()">&times;</button>
+            <div id="tt-title" class="tt-header">සතිපතා කාලසටහන</div>
+            <div id="tt-content">
+                </div>
+        </div>
     </div>
 
     <div id="statusToast" class="status-toast">
@@ -137,10 +147,23 @@
         let deferredPrompt;
         let currentLang = 'si';
 
+        // --- TIMETABLE DATA (Update here) ---
+        const timetableData = [
+            { day: { si: "සඳුදා", en: "Monday", ta: "திங்கள்" }, time: { si: "පෙ.ව. 8:00 - ප.ව. 5:00", en: "8:00 AM - 5:00 PM", ta: "மு.ப 8:00 - பி.ப 5:00" } },
+            { day: { si: "අඟහරුවාදා", en: "Tuesday", ta: "செவ்வாய்" }, time: { si: "පෙ.ව. 8:00 - ප.ව. 5:00", en: "8:00 AM - 5:00 PM", ta: "மு.ப 8:00 - பி.ப 5:00" } },
+            { day: { si: "බදාදා", en: "Wednesday", ta: "புதன்" }, time: { si: "පෙ.ව. 8:00 - ප.ව. 5:00", en: "8:00 AM - 5:00 PM", ta: "மு.ப 8:00 - பி.ப 5:00" } },
+            { day: { si: "බ්‍රහස්පතින්දා", en: "Thursday", ta: "வியாழன்" }, time: { si: "පෙ.ව. 8:00 - ප.ව. 5:00", en: "8:00 AM - 5:00 PM", ta: "மு.ப 8:00 - பி.ப 5:00" } },
+            { day: { si: "සිකුරාදා", en: "Friday", ta: "வெள்ளி" }, time: { si: "පෙ.ව. 8:30 - ප.ව. 4:30", en: "8:30 AM - 4:30 PM", ta: "மு.ப 8:30 - பி.ப 4:30" } },
+            { day: { si: "සෙනසුරාදා", en: "Saturday", ta: "சனி" }, time: { si: "පෙ.ව. 8:00 - ප.ව. 2:00", en: "8:00 AM - 2:00 PM", ta: "மு.ப 8:00 - பி.ப 2:00" } },
+            { day: { si: "ඉරිදා", en: "Sunday", ta: "ஞாயிறு" }, time: { si: "නිවාඩු", en: "Holiday", ta: "விடுமுறை" } },
+        ];
+
         const translations = {
             si: { 
                 role: "සංවිධායක / කළමනාකරු", 
                 save: "👤 CONTACT එක SAVE කරන්න", 
+                ttBtn: "කාලසටහන බලන්න",
+                ttTitle: "සතිපතා කාලසටහන",
                 toastTitle: "විශේෂ දැනුම්දීමයි",
                 toastMsg: "ආයතනය අද විවෘතයි.",
                 addr: "📍 මීගමුව පාර, නාරම්මල",
@@ -151,6 +174,8 @@
             en: { 
                 role: "Organizer / Manager", 
                 save: "👤 SAVE CONTACT", 
+                ttBtn: "View Time Table",
+                ttTitle: "Weekly Time Table",
                 toastTitle: "Special Notice",
                 toastMsg: "The institute is open today.",
                 addr: "📍 Negombo Road, Narammala",
@@ -161,9 +186,11 @@
             ta: { 
                 role: "ஒருங்கிணைப்பாளர் / மேலாளர்", 
                 save: "👤 தொடர்பைச் சேமிக்கவும்", 
+                ttBtn: "கால அட்டவணையைப் பார்க்கவும்",
+                ttTitle: "வாராந்திர கால அட்டவணை",
                 toastTitle: "முக்கிய அறிவிப்பு",
                 toastMsg: "நிறுவனம் இன்று திறந்திருக்கும்.",
-                addr: "📍 நீர்கொழும்பு வீதி, நாரம்மல",
+                addr: "📍 நீர்கொழும்பு වීதி, நாரம்மல",
                 pwa: "📲 செயலியை நிறுவவா?",
                 iosMsg: "iPhone-க்கு: Share (📤) பொத்தானை அழுத்தி 'Add to Home Screen' என்பதைத் தேர்ந்தெடுக்கவும்.",
                 fallbackMsg: "உங்கள் உலாவியில் 'Add to Home Screen' அல்லது 'Install' என்பதைப் பயன்படுத்தவும்."
@@ -174,6 +201,8 @@
             currentLang = lang;
             document.getElementById('txt-role').innerText = translations[lang].role;
             document.getElementById('mainSaveBtn').innerText = translations[lang].save;
+            document.getElementById('btn-tt-txt').innerText = translations[lang].ttBtn;
+            document.getElementById('tt-title').innerText = translations[lang].ttTitle;
             document.getElementById('toast-title').innerText = translations[lang].toastTitle;
             document.getElementById('toast-msg').innerText = translations[lang].toastMsg;
             document.getElementById('lbl-addr').innerText = translations[lang].addr;
@@ -181,7 +210,28 @@
             
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
+            
+            renderTimetable();
         }
+
+        function renderTimetable() {
+            const container = document.getElementById('tt-content');
+            container.innerHTML = '';
+            timetableData.forEach(item => {
+                container.innerHTML += `
+                    <div class="tt-row">
+                        <div class="tt-day">${item.day[currentLang]}</div>
+                        <div class="tt-time">${item.time[currentLang]}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function openTimetable() { 
+            renderTimetable();
+            document.getElementById('ttOverlay').style.display = 'flex'; 
+        }
+        function closeTimetable() { document.getElementById('ttOverlay').style.display = 'none'; }
 
         function toggleMenu(id) {
             const menu = document.getElementById(id);
@@ -189,12 +239,6 @@
             document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
             if (!isShown) menu.classList.add('show');
         }
-
-        window.addEventListener('click', (e) => {
-            if (!e.target.matches('.btn-action')) {
-                document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
-            }
-        });
 
         async function saveVCard() {
             const btn = document.getElementById('mainSaveBtn');
@@ -216,49 +260,13 @@
             document.getElementById('actionGrid').style.display = 'grid';
         }
 
-        // --- PWA LOGIC ---
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            // බ්‍රවුසරය Ready නම් Bar එක එකපාරම පෙන්වන්න
-            document.getElementById('pwa-installer').style.display = 'flex';
-        });
-
         window.onload = () => {
-            // කලින් save කරලද බලන්න
             if (localStorage.getItem('contact_saved') === 'true') showGrid();
-            
-            // Toast පෙන්වන්න
             setTimeout(() => {
                 document.getElementById('statusToast').classList.add('active');
                 setTimeout(() => document.getElementById('statusToast').classList.remove('active'), 6000);
             }, 2000);
-
-            // තත්පර 3කට පසු බලෙන් Bar එක පෙන්වන්න (Standalone mode එකේ නැත්නම් පමණක්)
-            setTimeout(() => {
-                const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-                if (!isStandalone) {
-                    document.getElementById('pwa-installer').style.display = 'flex';
-                }
-            }, 3000);
         };
-
-        document.getElementById('btn-install-main').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                document.getElementById('pwa-installer').style.display = 'none';
-            } else {
-                // iPhone ද බලන්න
-                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                if (isIOS) {
-                    alert(translations[currentLang].iosMsg);
-                } else {
-                    alert(translations[currentLang].fallbackMsg);
-                }
-            }
-        });
     </script>
 </body>
 </html>
