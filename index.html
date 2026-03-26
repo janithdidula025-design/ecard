@@ -213,32 +213,53 @@
 </div>
     <script>
         let currentLang = 'si';
-        const translations = {
-            si: { 
-                name: "ජනිත් දිදුල", role: "සංවිධායක / කළමනාකරු", save: "👤 CONTACT එක SAVE කරන්න", ttBtn: "කාලසටහන බලන්න", 
-                ttTitle: "සතිපතා කාලසටහන", toastTitle: "විශේෂ දැනුම්දීමයි", toastMsg: "ආයතනය අද විවෘතයි.", 
-                addr: "📍 මීගමුව පාර, නාරම්මල", socialTitle: "අප හා සම්බන්ධ වන්න", 
-                locTxt: "ආයතනයට පැමිණෙන මග (Maps)", credit: "නිර්මාණය: ජනිත් දිදුල | v2.2",
-                call: "ඇමතුම්", sms: "පණිවිඩ", email: "ඊමේල්",
-                days: ["සඳුදා", "අඟහරුවාදා", "බදාදා", "බ්‍රහස්පතින්දා", "සිකුරාදා", "සෙනසුරාදා", "ඉරිදා"] 
-            },
-            en: { 
-                name: "Janith Didula", role: "Organizer / Manager", save: "👤 SAVE CONTACT", ttBtn: "View Timetable", 
-                ttTitle: "Weekly Timetable", toastTitle: "Special Notice", toastMsg: "Institute is open today.", 
-                addr: "📍 Negombo Road, Narammala", socialTitle: "CONNECT WITH US", 
-                locTxt: "GET DIRECTIONS (MAPS)", credit: "CREATED BY JANITH DIDULA | v2.2",
-                call: "Call", sms: "SMS", email: "Email",
-                days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] 
-            },
-            ta: { 
-                name: "ஜனித் திதுல", role: "ஒருங்கிணைப்பாளர் / மேலாளர்", save: "👤 தொடர்பைச் சேமிக்கவும்", ttBtn: "கால அட்டவணை", 
-                ttTitle: "வாராந்திர கால அட்டவணை", toastTitle: "ముఖ్య அறிவிப்பு", toastMsg: "நிறுவனம் இன்று திறந்திருக்கும்.", 
-                addr: "📍 நீர்கොழும்பு වීති, நாரம்மல", socialTitle: "எங்களுடன் இணையுங்கள்", 
-                locTxt: "வரைபடம் (Maps)", credit: "உருவாக்கம்: ஜனித் திதுல | v2.2",
-                call: "அழைப்பு", sms: "செய்தி", email: "மின்னஞ்சல்",
-                days: ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"] 
-            }
-        };
+const translations = {
+    si: { 
+        name: "ජනිත් දිදුල", 
+        role: "සංවිධායක / කළමනාකරු", 
+        save: "👤 CONTACT එක SAVE කරන්න", 
+        ttBtn: "කාලසටහන බලන්න", 
+        ttTitle: "සතිපතා කාලසටහන", 
+        addr: "📍 මීගමුව පාර, නාරම්මල", 
+        socialTitle: "අප හා සම්බන්ධ වන්න", 
+        locTxt: "ආයතනයට පැමිණෙන මග (Maps)", 
+        credit: "නිර්මාණය: ජනිත් දිදුල | v2.2",
+        call: "ඇමතුම්", 
+        sms: "පණිවිඩ", 
+        email: "ඊමේල්",
+        days: ["සඳුදා", "අඟහරුවාදා", "බදාදා", "බ්‍රහස්පතින්දා", "සිකුරාදා", "සෙනසුරාදා", "ඉරිදා"] 
+    },
+    en: { 
+        name: "Janith Didula", 
+        role: "Organizer / Manager", 
+        save: "👤 SAVE CONTACT", 
+        ttBtn: "View Timetable", 
+        ttTitle: "Weekly Timetable", 
+        addr: "📍 Negombo Road, Narammala", 
+        socialTitle: "CONNECT WITH US", 
+        locTxt: "GET DIRECTIONS (MAPS)", 
+        credit: "CREATED BY JANITH DIDULA | v2.2",
+        call: "Call", 
+        sms: "SMS", 
+        email: "Email",
+        days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] 
+    },
+    ta: { 
+        name: "ஜனித் திதுல", 
+        role: "ஒருங்கிணைப்பாளர் / மேலாளர்", 
+        save: "👤 தொடர்பைச் சேமிக்கவும்", 
+        ttBtn: "கால அட்டவணை", 
+        ttTitle: "வாராந்திர கால அட்டவணை", 
+        addr: "📍 நீர்கොழும்பு වීதி, நாரம்மல", 
+        socialTitle: "எங்களுடன் இணையுங்கள்", 
+        locTxt: "வரைபடம் (Maps)", 
+        credit: "உருவாக்கம்: ஜனித் திதுல | v2.2",
+        call: "அழைப்பு", 
+        sms: "செய்தி", 
+        email: "மின்னஞ்சல்",
+        days: ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"] 
+    }
+};
 
         const timetable = [
             { day: 0, classes: [
