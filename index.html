@@ -434,25 +434,7 @@ function formatTime(decimalTime) {
     const mins = Math.round((decimalTime - hrs) * 60);
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
 }
-// --- 3. Popup පෙන්වීම ---
-function showProfessionalPopup(title, msg, isClosed) {
-    const toast = document.getElementById('statusToast');
-    if(!toast) return; 
-    
-    document.getElementById('toast-title').innerHTML = title;
-    document.getElementById('toast-msg').innerHTML = msg;
-    const iconSpan = toast.querySelector('span');
-    if(iconSpan) iconSpan.innerText = isClosed ? "⚠️" : "✅";
-    
-    toast.style.borderLeft = isClosed ? "6px solid #e74c3c" : "6px solid #2ecc71";
-    
-    setTimeout(() => {
-        toast.classList.add('active');
-        setTimeout(() => toast.classList.remove('active'), 60000);
-    }, 1500);
-}
-
-// --- 4. Service Worker & Notifications ---
+// --- 3. Service Worker & Notifications ---
 async function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         try {
@@ -477,7 +459,7 @@ function requestNotificationPermission() {
     }
 }
 
-// 5. ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
+// 4. ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
 window.onload = () => {
     // 1. මුලින්ම භාෂාව සිංහල කරන්න
     setLanguage('si');
@@ -510,7 +492,7 @@ window.onload = () => {
     
     toast.style.borderLeft = isClosed ? "6px solid #e74c3c" : "6px solid #2ecc71";
     
-    // Popup එක screen එකට එනවා
+// 5.Popup එක screen එකට එනවා
     setTimeout(() => {
         toast.classList.add('active');
     }, 1500);
