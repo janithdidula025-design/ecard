@@ -129,6 +129,33 @@
             <div id="tt-list"></div>
         </div>
     </div>
+    <div class="social-button-container">
+    <p class="section-title">අප හා සම්බන්ධ වන්න</p>
+    
+    <a href="https://maps.app.goo.gl/8vo9KwxneVLQ8vS79" target="_blank" class="flex-btn location-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="Loc">
+        <span>ආයතනයට පැමිණෙන මග (Maps)</span>
+    </a>
+
+    <div class="social-grid">
+        <a href="https://www.facebook.com/adm.narammala" target="_blank" class="grid-btn fb-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="FB">
+            <span>Facebook</span>
+        </a>
+        <a href="https://youtube.com/@admnarammala8582?si=0TyIfoTtFul5oEsA" target="_blank" class="grid-btn yt-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YT">
+            <span>YouTube</span>
+        </a>
+        <a href="https://www.tiktok.com/@adm.narammala?is_from_webapp=1&sender_device=pc" target="_blank" class="grid-btn tt-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TT">
+            <span>TikTok</span>
+        </a>
+        <a href="https://www.instagram.com/admnarammala?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="grid-btn ig-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="IG">
+            <span>Instagram</span>
+        </a>
+    </div>
+</div>
 
     <div id="statusToast" class="status-toast">
         <span style="font-size: 20px; margin-right: 10px;">✅</span>
@@ -202,7 +229,7 @@
                 { time: "04:00 PM - 06:00 PM", si: "2027 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2027 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2027 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" }
             ]},
             { day: 5, classes: [
-                { time: "08:00 AM - 12:00 PM", si: "ඉතිහාසය (09,10,11) - අසංක හේවාමද්දුමගේ", en: "History (09,10,11) - Asanka Hewamaddumage", ta: "வரலாறு (09,10,11) - அசங்க ஹேவாமத்துமகே" },
+                { time: "08:00 AM - 12:00 PM", si: "ඉතිහාසය (10,11) - අසංක හේවාමද්දුමගේ", en: "History (10,11) - Asanka Hewamaddumage", ta: "வரலாறு (10,11) - அசங்க ஹேவாமத்துமகே" },
                 { time: "08:30 AM - 12:30 PM", si: "ඉංග්‍රීසි (10,11) - සංජය මනෝජ්", en: "English (10,11) - Sanjaya Manoj", ta: "ஆங்கிலம் (10,11) - சஞ்சய மனோஜ்" },
                 { time: "01:00 PM - 05:30 PM", si: "විද්‍යාව (10,11) - තරිඳු නිමේෂ්", en: "Science (10,11) - Tharindu Nimesh", ta: "விஞ்ஞானம் (10,11) - தரிந்து நிமேஷ்" },
                 { time: "01:00 PM - 05:30 PM", si: "ගණිතය (10,11) - අචිර බාලසූරිය", en: "Maths (10,11) - Achira Balasooriya", ta: "கணிதம் (10,11) - அச்சிர பாலசூரிய" },
@@ -279,6 +306,72 @@
                 setTimeout(() => document.getElementById('statusToast').classList.remove('active'), 5000);
             }, 2000);
         };
+        .social-button-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+/* පොදු Button Style */
+.flex-btn, .grid-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.flex-btn img, .grid-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Location Button - Full Width */
+.location-btn {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: linear-gradient(45deg, #4285F4, #34A853);
+    border: none;
+}
+
+.location-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+}
+
+/* Social Buttons Grid (2x2) */
+.social-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.grid-btn {
+    padding: 12px;
+    font-size: 14px;
+}
+
+/* Hover වර්ණ (Branding වලට අනුව) */
+.fb-btn:hover { background: #1877F2; border-color: #1877F2; }
+.yt-btn:hover { background: #FF0000; border-color: #FF0000; }
+.tt-btn:hover { background: #010101; border-color: #010101; }
+.ig-btn:hover { background: #E4405F; border-color: #E4405F; }
+
+.grid-btn:hover {
+    transform: scale(1.05);
+}
     </script>
 </body>
 </html>
