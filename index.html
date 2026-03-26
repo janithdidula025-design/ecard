@@ -9,81 +9,77 @@
     <meta name="theme-color" content="#64ffda">
 
     <style>
-        :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; }
-        
-        * { box-sizing: border-box; }
-
+        :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; --glass: rgba(255, 255, 255, 0.08); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
             background: radial-gradient(circle at top, #112240, #000); 
             color: white; 
             font-family: 'Segoe UI', 'Latha', 'Tamil', sans-serif; 
-            margin: 0; 
-            padding: 0;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            height: 100vh; /* Screen උසටම සීමා කළා */
-            width: 100vw;
-            overflow: hidden; /* මුළු පිටුවම scroll වීම නැවැත්තුවා */
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; width: 100vw; overflow: hidden; 
         }
 
-        /* PWA Installer */
-        #pwa-installer { display: none; position: fixed; top: 0; left: 0; width: 100%; background: var(--primary); color: #000; padding: 12px; z-index: 10001; justify-content: space-between; align-items: center; font-weight: bold; }
-
+        /* Top Bar & Lang Switch */
         .top-bar { position: absolute; top: 20px; width: 100%; display: flex; justify-content: center; z-index: 5000; }
-        .lang-switch { display: flex; gap: 5px; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--primary); color: white; padding: 6px 10px; border-radius: 10px; cursor: pointer; font-size: 0.7rem; }
-        .lang-btn.active { background: var(--primary); color: #000; font-weight: bold; }
+        .lang-switch { display: flex; gap: 5px; background: var(--glass); padding: 5px; border-radius: 20px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
+        .lang-btn { background: transparent; border: none; color: rgba(255,255,255,0.6); padding: 8px 15px; border-radius: 15px; cursor: pointer; font-size: 0.75rem; transition: 0.3s; }
+        .lang-btn.active { background: var(--primary); color: #0a192f; font-weight: bold; box-shadow: 0 4px 15px rgba(80, 227, 194, 0.3); }
 
-        /* Main Card */
-        .card { width: 90%; max-width: 360px; background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 30px; border: 1px solid rgba(80, 227, 194, 0.2); backdrop-filter: blur(20px); text-align: center; position: relative; }
-        .p-img { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; object-fit: cover; }
-        .info-box { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 20px; margin: 12px 0; border-left: 4px solid var(--primary); text-align: left; font-size: 0.75rem; line-height: 1.5; }
+        /* Card Stylings */
+        .card { width: 92%; max-width: 380px; background: var(--glass); padding: 25px 20px; border-radius: 35px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px); text-align: center; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        .p-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; object-fit: cover; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
+        .info-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; margin: 15px 0; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.6; }
         
-        .btn-save, .btn-tt { width: 100%; padding: 12px; border-radius: 15px; font-weight: bold; cursor: pointer; border: none; margin-top: 8px; font-size: 0.85rem; }
-        .btn-save { background: #fff; color: #0a192f; }
-        .btn-tt { background: var(--primary); color: #000; }
+        /* Buttons */
+        .btn-save, .btn-tt { width: 100%; padding: 14px; border-radius: 18px; font-weight: bold; cursor: pointer; border: none; margin-top: 10px; font-size: 0.9rem; transition: 0.3s; }
+        .btn-save { background: #fff; color: #0a192f; box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
+        .btn-tt { background: linear-gradient(135deg, var(--primary), #3db89e); color: #0a192f; }
+        .btn-save:active, .btn-tt:active { transform: scale(0.97); }
 
-        .action-grid { display: none; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; margin-top: 8px; }
-        .btn-action { width: 100%; padding: 10px 5px; font-size: 0.75rem; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; }
+        /* Action Grid & Smooth Dropdowns */
+        .action-grid { display: none; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 10px; }
+        .btn-action { width: 100%; padding: 12px 5px; font-size: 0.8rem; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .btn-wa { background: #128C7E; } .btn-call { background: #007bff; }
         .btn-sms { background: #f39c12; color: #000; } .btn-email { background: #e74c3c; }
 
-        /* Dropdowns */
         .dropdown { position: relative; width: 100%; }
-        .dropdown-content { display: none; position: absolute; background: #fff; width: 100%; border-radius: 10px; z-index: 9000; bottom: 110%; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .dropdown-content a { color: #333; padding: 10px; text-decoration: none; display: block; font-size: 12px; font-weight: bold; border-bottom: 1px solid #eee; }
+        .dropdown-content { 
+            display: none; position: absolute; background: rgba(255, 255, 255, 0.95); 
+            width: 100%; border-radius: 18px; z-index: 9000; bottom: 120%; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); overflow: hidden;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .dropdown-content a { color: #111; padding: 14px; text-decoration: none; display: block; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.2s; }
+        .dropdown-content a:active { background: var(--primary); }
         .show { display: block !important; }
 
         /* Social Section */
-        .social-button-container { width: 90%; max-width: 360px; margin-top: 15px; text-align: center; }
-        .section-title { font-size: 11px; color: #888; margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-        .location-btn { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: white; font-weight: 500; border-radius: 12px; padding: 10px; background: linear-gradient(45deg, #4285F4, #34A853); margin-bottom: 8px; font-size: 12px; }
-        .social-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; }
-        .grid-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: white; font-size: 9px; border-radius: 10px; padding: 8px 2px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .grid-btn img, .location-btn img { width: 18px; height: 18px; }
+        .social-button-container { width: 92%; max-width: 380px; margin-top: 20px; text-align: center; }
+        .section-title { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; }
+        .location-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; color: white; font-weight: 600; border-radius: 18px; padding: 14px; background: linear-gradient(45deg, #4285F4, #34A853); margin-bottom: 10px; font-size: 0.85rem; box-shadow: 0 10px 20px rgba(66, 133, 244, 0.2); }
+        
+        .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .grid-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-decoration: none; color: white; font-size: 0.6rem; border-radius: 15px; padding: 10px 5px; background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .grid-btn img, .location-btn img { width: 22px; height: 22px; }
+        .grid-btn:active { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
-        /* Timetable Modal - Scrollable */
-        .tt-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .tt-container { width: 100%; max-width: 400px; background: #0a192f; border-radius: 25px; border: 1px solid var(--primary); padding: 20px; max-height: 80vh; overflow-y: auto; /* මෙතන scroll වෙනවා */ position: relative; }
-        .tt-day-group { margin-bottom: 15px; border-bottom: 1px solid rgba(80, 227, 194, 0.2); padding-bottom: 10px; }
-        .tt-day-name { color: var(--gold); font-size: 1rem; font-weight: bold; margin-bottom: 5px; display: block; }
-        .tt-class { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 10px; margin-bottom: 5px; border-left: 3px solid var(--primary); font-size: 0.8rem; text-align: left; }
-        .tt-time-label { color: var(--primary); font-weight: bold; font-size: 0.7rem; }
-        .close-tt { position: sticky; top: 0; float: right; background: var(--primary); border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 18px; font-weight: bold; cursor: pointer; z-index: 10; }
+        /* Timetable Overlay */
+        .tt-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .tt-container { width: 100%; max-width: 400px; background: #0a192f; border-radius: 30px; border: 1px solid var(--primary); padding: 25px; max-height: 80vh; overflow-y: auto; box-shadow: 0 0 50px rgba(80, 227, 194, 0.2); }
+        .close-tt { float: right; background: var(--primary); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 20px; font-weight: bold; cursor: pointer; color: #0a192f; }
+        .tt-day-group { margin-bottom: 20px; }
+        .tt-day-name { color: var(--gold); font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+        .tt-class { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; margin-bottom: 8px; border-left: 4px solid var(--primary); font-size: 0.85rem; }
 
         /* Toast */
-        .status-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); width: 260px; background: #fff; color: #333; padding: 10px; border-radius: 10px; border-left: 5px solid #2ecc71; transition: 0.5s; z-index: 9999; display: flex; align-items: center; }
-        .status-toast.active { bottom: 15px; }
+        .status-toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); width: 280px; background: #fff; color: #111; padding: 15px; border-radius: 20px; border-left: 6px solid #2ecc71; transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 9999; display: flex; align-items: center; box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+        .status-toast.active { bottom: 30px; }
     </style>
 </head>
 <body>
-
-    <div id="pwa-installer">
-        <span id="pwa-text">📲 App එක Install කරන්න?</span>
-        <button id="btn-install-main" style="background:#000; color:#fff; border:none; padding:6px 12px; border-radius:8px;">Install</button>
-    </div>
 
     <div class="top-bar">
         <div class="lang-switch">
@@ -94,18 +90,18 @@
     </div>
 
     <div class="card">
-        <div id="inst-name" style="color: var(--primary); font-size: 0.55rem; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px;">ADM HIGHER EDUCATION</div>
+        <div style="color: var(--primary); font-size: 0.6rem; letter-spacing: 3px; font-weight: 800; margin-bottom: 12px;">ADM HIGHER EDUCATION</div>
         <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg" class="p-img" alt="Profile">
-        <h2 id="u-name" style="margin: 8px 0 2px 0; font-size: 1.3rem;">Janith Didula</h2>
-        <div id="txt-role" style="color: var(--gold); font-size: 0.75rem; margin-bottom: 10px;">සංවිධායක / කළමනාකරු</div>
+        <h2 id="u-name" style="margin: 12px 0 4px 0; font-size: 1.5rem; letter-spacing: -0.5px;">Janith Didula</h2>
+        <div id="txt-role" style="color: var(--gold); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px;">Organizer / Manager</div>
         
         <div class="info-box">
-            <span id="lbl-addr">📍 මීගමුව පාර, නාරම්මල</span><br>
+            <span id="lbl-addr">📍 Negombo Road, Narammala</span><br>
             <span id="lbl-phone">📞 071 065 8051</span><br>
             <span id="lbl-email">📧 janithdidula025@gmail.com</span>
         </div>
 
-        <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 CONTACT එක SAVE කරන්න</button>
+        <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 SAVE CONTACT</button>
 
         <div id="actionGrid" class="action-grid">
             <div class="dropdown">
@@ -116,44 +112,41 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="btn-action btn-call" onclick="toggleMenu('callMenu')">Call</button>
+                <button class="btn-action btn-call" id="btn-call-txt" onclick="toggleMenu('callMenu')">Call</button>
                 <div id="callMenu" class="dropdown-content">
                     <a href="tel:0710658051">071 065 8051</a>
                     <a href="tel:0763614792">076 361 4792</a>
                 </div>
             </div>
             <div class="dropdown">
-                <button class="btn-action btn-sms" onclick="toggleMenu('smsMenu')">SMS</button>
+                <button class="btn-action btn-sms" id="btn-sms-txt" onclick="toggleMenu('smsMenu')">SMS</button>
                 <div id="smsMenu" class="dropdown-content">
                     <a href="sms:0710658051">071 065 8051</a>
                     <a href="sms:0763614792">076 361 4792</a>
                 </div>
             </div>
-            <button class="btn-action btn-email" onclick="window.location.href='mailto:janithdidula025@gmail.com'">Email</button>
+            <button class="btn-action btn-email" id="btn-email-txt" onclick="window.location.href='mailto:janithdidula025@gmail.com'">Email</button>
         </div>
-
-        <button onclick="openTimetable()" class="btn-tt">📅 <span id="btn-tt-txt">කාලසටහන බලන්න</span></button>
-        <div style="margin-top: 10px; font-size: 0.5rem; opacity: 0.4;">CREATED BY JANITH DIDULA | v2.2</div>
+        <button onclick="openTimetable()" class="btn-tt">📅 <span id="btn-tt-txt">View Timetable</span></button>
     </div>
-
     <div class="social-button-container">
-        <p class="section-title">අප හා සම්බන්ධ වන්න</p>
-        <a href="https://maps.app.goo.gl/YourLink" target="_blank" class="location-btn">
+        <p id="social-title" class="section-title">CONNECT WITH US</p>
+        <a id="loc-btn" href="google.navigation:q=7.4333,80.1833+(ADM+Higher+Education+Institute)" class="location-btn">
             <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="Loc">
-            <span>ආයතනයට පැමිණෙන මග (Maps)</span>
+            <span id="loc-txt">GET DIRECTIONS (MAPS)</span>
         </a>
 
         <div class="social-grid">
-            <a href="https://www.facebook.com/adm.narammala" target="_blank" class="grid-btn fb-btn">
+            <a href="#" id="fb-link" class="grid-btn">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="FB"><span>Facebook</span>
             </a>
-            <a href="https://youtube.com/@admnarammala8582" target="_blank" class="grid-btn yt-btn">
+            <a href="#" id="yt-link" class="grid-btn">
                 <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YT"><span>YouTube</span>
             </a>
-            <a href="https://www.tiktok.com/@adm.narammala" target="_blank" class="grid-btn tt-btn">
+            <a href="#" id="tt-link" class="grid-btn">
                 <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TT"><span>TikTok</span>
             </a>
-            <a href="https://www.instagram.com/admnarammala" target="_blank" class="grid-btn ig-btn">
+            <a href="#" id="ig-link" class="grid-btn">
                 <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="IG"><span>Instagram</span>
             </a>
         </div>
@@ -162,28 +155,48 @@
     <div id="ttOverlay" class="tt-overlay">
         <div class="tt-container">
             <button class="close-tt" onclick="closeTimetable()">×</button>
-            <h3 id="tt-title" style="color: var(--primary); text-align: center; margin-top: 0; font-size: 1.1rem;">සතිපතා කාලසටහන</h3>
+            <h2 id="tt-title" style="color: var(--primary); text-align: center; margin-bottom: 25px; font-size: 1.3rem;">Weekly Timetable</h2>
             <div id="tt-list"></div>
         </div>
     </div>
 
     <div id="statusToast" class="status-toast">
-        <span style="font-size: 18px; margin-right: 8px;">✅</span>
-        <div><b id="toast-title" style="font-size: 12px;">විශේෂ දැනුම්දීමයි</b><br><span id="toast-msg" style="font-size: 10px;">ආයතනය අද විවෘතයි.</span></div>
+        <span style="font-size: 24px; margin-right: 12px;">✅</span>
+        <div><b id="toast-title" style="font-size: 13px;">Special Notice</b><br><span id="toast-msg" style="font-size: 11px;">Institute is open today.</span></div>
     </div>
-
+<div id="footer-credit" style="margin-top: 15px; font-size: 0.55rem; opacity: 0.5; letter-spacing: 1px;">CREATED BY JANITH DIDULA </div>
     <script>
         let currentLang = 'si';
         const translations = {
-            si: { name: "ජනිත් දිදුල", role: "සංවිධායක / කළමනාකරු", save: "👤 CONTACT එක SAVE කරන්න", ttBtn: "කාලසටහන බලන්න", ttTitle: "සතිපතා කාලසටහන", toastTitle: "විශේෂ දැනුම්දීමයි", toastMsg: "ආයතනය අද විවෘතයි.", addr: "📍 මීගමුව පාර, නාරම්මල", pwa: "📲 App එක Install කරන්න?", days: ["සඳුදා", "අඟහරුවාදා", "බදාදා", "බ්‍රහස්පතින්දා", "සිකුරාදා", "සෙනසුරාදා", "ඉරිදා"] },
-            en: { name: "Janith Didula", role: "Organizer / Manager", save: "👤 SAVE CONTACT", ttBtn: "View Timetable", ttTitle: "Weekly Timetable", toastTitle: "Special Notice", toastMsg: "The institute is open today.", addr: "📍 Negombo Road, Narammala", pwa: "📲 Install the App?", days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] },
-            ta: { name: "ஜனித் திதுல", role: "ஒருங்கிணைப்பாளர் / மேலாளர்", save: "👤 தொடர்பைச் சேமிக்கவும்", ttBtn: "கால அட்டவணை", ttTitle: "வாராந்திர கால அட்டவணை", toastTitle: "முக்கிய அறிவிப்பு", toastMsg: "நிறுவனம் இன்று திறந்திருக்கும்.", addr: "📍 நீர்கොழும்பு වීති, නාරම්මල", pwa: "📲 செயலியை நிறுவவா?", days: ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"] }
+            si: { 
+                name: "ජනිත් දිදුල", role: "සංවිධායක / කළමනාකරු", save: "👤 CONTACT එක SAVE කරන්න", ttBtn: "කාලසටහන බලන්න", 
+                ttTitle: "සතිපතා කාලසටහන", toastTitle: "විශේෂ දැනුම්දීමයි", toastMsg: "ආයතනය අද විවෘතයි.", 
+                addr: "📍 මීගමුව පාර, නාරම්මල", socialTitle: "අප හා සම්බන්ධ වන්න", 
+                locTxt: "ආයතනයට පැමිණෙන මග (Maps)", credit: "නිර්මාණය: ජනිත් දිදුල | v2.2",
+                call: "ඇමතුම්", sms: "පණිවිඩ", email: "ඊමේල්",
+                days: ["සඳුදා", "අඟහරුවාදා", "බදාදා", "බ්‍රහස්පතින්දා", "සිකුරාදා", "සෙනසුරාදා", "ඉරිදා"] 
+            },
+            en: { 
+                name: "Janith Didula", role: "Organizer / Manager", save: "👤 SAVE CONTACT", ttBtn: "View Timetable", 
+                ttTitle: "Weekly Timetable", toastTitle: "Special Notice", toastMsg: "Institute is open today.", 
+                addr: "📍 Negombo Road, Narammala", socialTitle: "CONNECT WITH US", 
+                locTxt: "GET DIRECTIONS (MAPS)", credit: "CREATED BY JANITH DIDULA | v2.2",
+                call: "Call", sms: "SMS", email: "Email",
+                days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] 
+            },
+            ta: { 
+                name: "ஜனித் திதுல", role: "ஒருங்கிணைப்பாளர் / மேலாளர்", save: "👤 தொடர்பைச் சேமிக்கவும்", ttBtn: "கால அட்டவணை", 
+                ttTitle: "வாராந்திர கால அட்டவணை", toastTitle: "ముఖ్య அறிவிப்பு", toastMsg: "நிறுவனம் இன்று திறந்திருக்கும்.", 
+                addr: "📍 நீர்கොழும்பு වීති, நாரம்மல", socialTitle: "எங்களுடன் இணையுங்கள்", 
+                locTxt: "வரைபடம் (Maps)", credit: "உருவாக்கம்: ஜனித் திதுல | v2.2",
+                call: "அழைப்பு", sms: "செய்தி", email: "மின்னஞ்சல்",
+                days: ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"] 
+            }
         };
 
         const timetable = [
-            { day: 0, classes: [{ time: "08:30 AM - 01:00 PM", si: "Spoken English - ඕෂන් ජයරත්න", en: "Spoken English - Oshan", ta: "Spoken English" }, { time: "10:00 AM - 04:30 PM", si: "BC - සෙව්වන්දි මිස්", en: "BC - Sewwandi Miss", ta: "BC" }] },
+            { day: 0, classes: [{ time: "08:30 AM - 01:00 PM", si: "Spoken English - ඕෂන් ජයරත්න", en: "Spoken English - Oshan", ta: "Spoken English" }] },
             { day: 1, classes: [{ time: "02:30 PM - 05:30 PM", si: "Chemistry - තරිඳු නිමේෂ්", en: "Chemistry - Tharindu", ta: "Chemistry" }] },
-            { day: 4, classes: [{ time: "02:00 PM - 04:00 PM", si: "ET - ජීවන් බණ්ඩාර", en: "ET - Jeevan", ta: "ET" }] },
             { day: 5, classes: [{ time: "08:00 AM - 12:00 PM", si: "History - අසංක සර්", en: "History - Asanka", ta: "History" }] }
         ];
 
@@ -197,9 +210,35 @@
             document.getElementById('toast-title').innerText = translations[lang].toastTitle;
             document.getElementById('toast-msg').innerText = translations[lang].toastMsg;
             document.getElementById('lbl-addr').innerText = translations[lang].addr;
-            document.getElementById('pwa-text').innerText = translations[lang].pwa;
+            document.getElementById('social-title').innerText = translations[lang].socialTitle;
+            document.getElementById('loc-txt').innerText = translations[lang].locTxt;
+            document.getElementById('footer-credit').innerText = translations[lang].credit;
+            document.getElementById('btn-call-txt').innerText = translations[lang].call;
+            document.getElementById('btn-sms-txt').innerText = translations[lang].sms;
+            document.getElementById('btn-email-txt').innerText = translations[lang].email;
+            
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`btn-${lang}`).classList.add('active');
+            setupAppLinks();
+        }
+
+        function setupAppLinks() {
+            const links = [
+                { id: 'fb-link', app: 'fb://facewebmodal/f?href=https://www.facebook.com/adm.narammala', web: 'https://www.facebook.com/adm.narammala' },
+                { id: 'yt-link', app: 'vnd.youtube://www.youtube.com/@admnarammala8582', web: 'https://youtube.com/@admnarammala8582' },
+                { id: 'ig-link', app: 'instagram://user?username=admnarammala', web: 'https://www.instagram.com/admnarammala' },
+                { id: 'tt-link', app: 'snssdk1233://user/profile/adm.narammala', web: 'https://www.tiktok.com/@adm.narammala' }
+            ];
+
+            links.forEach(link => {
+                const el = document.getElementById(link.id);
+                el.onclick = (e) => {
+                    e.preventDefault();
+                    const start = Date.now();
+                    window.location.href = link.app;
+                    setTimeout(() => { if (Date.now() - start < 1500) window.location.href = link.web; }, 1000);
+                };
+            });
         }
 
         function openTimetable() {
@@ -235,10 +274,19 @@
             setTimeout(() => {
                 document.getElementById('mainSaveBtn').style.display = 'none';
                 document.getElementById('actionGrid').style.display = 'grid';
-            }, 1000);
+            }, 800);
         }
 
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', function(e) {
+            if (!e.target.matches('.btn-action')) {
+                document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
+            }
+        });
+
         window.onload = () => {
+            setLanguage('si');
+            setupAppLinks();
             if (localStorage.getItem('contact_saved') === 'true') {
                 document.getElementById('mainSaveBtn').style.display = 'none';
                 document.getElementById('actionGrid').style.display = 'grid';
