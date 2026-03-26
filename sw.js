@@ -75,21 +75,7 @@ self.addEventListener('notificationclick', (e) => {
     })
   );
 });
-// 6.පෝය දින ගණනය කිරීමේ Logic එක
-function isFullMoon(date) {
-    const baseDate = new Date(1900, 0, 1);
-    const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
-    const lunarCycle = 29.530588853;
-    const daysSinceNewMoon = (diffDays - 0.2) % lunarCycle;
-    return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
-}
-
-self.addEventListener('periodicsync', (event) => {
-    if (event.tag === 'check-status') {
-        event.waitUntil(sendInstituteNotification());
-    }
-});
-
+// 6.Notification පෙන්වන පොදු Function එක
 async function sendInstituteNotification() {
     const now = new Date();
     const dayOfWeek = now.getDay();
@@ -110,16 +96,29 @@ async function sendInstituteNotification() {
     let body = "";
 
     if (isFullMoon(now)) {
-        body = "අද පොහෝ දිනය බැවින් ආයතනය වසා ඇත.";
+        // පෝය දින පණිවිඩය - භාෂා 3 කින්
+        body = "අද පෝය දිනය බැවින් ආයතනය වසා ඇත.\n" +
+               "Today is Poya Day. Institute is closed.\n" +
+               "இன்று பௌர்ணமி தினம். நிறுவனம் மூடப்பட்டுள்ளது.";
     } else if (currentTime >= today.open && currentTime < today.close) {
-        body = "ආයතනය දැන් විවෘතයි. (පැමිණෙන්න හෝ අමතන්න)";
+        // විවෘත පණිවිඩය - භාෂා 3 කින්
+        body = "ආයතනය දැන් විවෘතයි. (පැමිණෙන්න හෝ අමතන්න)\n" +
+               "The Institute is now open. (Visit or Call)\n" +
+               "நிலையம் இப்போது திறக்கப்பட்டுள்ளது. (வருகை தரவும்)";
     } else {
-        body = "ආයතනය දැනට වසා ඇත. නැවත විවෘත වෙලාව පරීක්ෂා කරන්න.";
+        // වසා ඇති පණිවිඩය - භාෂා 3 කින්
+        body = "ආයතනය දැනට වසා ඇත. නැවත විවෘත වෙලාව පරීක්ෂා කරන්න.\n" +
+               "The Institute is currently closed. Check opening times.\n" +
+               "நிலையம் தற்போது மூடப்பட்டுள்ளது. நேரத்தை சரிபார்க்கவும்.";
     }
 
     return self.registration.showNotification(title, {
         body: body,
         icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-        badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg'
+        badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
+        vibrate: [200, 100, 200],
+        tag: 'adm-status-update', // පරණ notification එක replace කරන්න
+        renotify: true, // අලුතින් notification එකක් ආ බව දැනුම් දෙන්න
+        data: { url: './index.html' }
     });
 }
