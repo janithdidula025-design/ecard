@@ -195,9 +195,40 @@
         };
 
         const timetable = [
-            { day: 0, classes: [{ time: "08:30 AM - 01:00 PM", si: "Spoken English - ඕෂන් ජයරත්න", en: "Spoken English - Oshan", ta: "Spoken English" }] },
-            { day: 1, classes: [{ time: "02:30 PM - 05:30 PM", si: "Chemistry - තරිඳු නිමේෂ්", en: "Chemistry - Tharindu", ta: "Chemistry" }] },
-            { day: 5, classes: [{ time: "08:00 AM - 12:00 PM", si: "History - අසංක සර්", en: "History - Asanka", ta: "History" }] }
+            { day: 0, classes: [
+                { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
+                { time: "10:00 AM - 04:30 PM", si: "බෞද්ධ ශිෂ්ටාචාරය (BC) - සෙව්වන්දි මිස්", en: "Buddhist Civilization (BC) - Sewwandi Miss", ta: "புத்த நாகரிகம் (BC) - செவ்வந்தி மிஸ்" }
+            ]},
+            { day: 1, classes: [
+                { time: "02:30 PM - 05:30 PM", si: "2027 A/L රසායන විද්‍යාව - තරිඳු නිමේෂ්", en: "2027 A/L Chemistry - Tharindu Nimesh", ta: "2027 A/L இரசாயනவியல் - தரிந்து நிமேஷ்" },
+                { time: "03:00 PM - 05:00 PM", si: "2027 A/L ජපන් භාෂාව - රන්දීපා කුරුප්පුආරච්චි", en: "2027 A/L Japanese - Randipa Kuruppuarachchi", ta: "2027 A/L ஜப்பானிய மொழி - ரந்தீபா குருப்புஆராச்சி" }
+            ]},
+            { day: 2, classes: [
+                { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
+                { time: "03:00 PM - 05:00 PM", si: "2028 A/L & 10 ශ්‍රේණිය ජපන් භාෂාව - රන්දීපා", en: "2028 A/L & Grade 10 Japanese - Randipa", ta: "2028 A/L & தரம் 10 ஜப்பானிய மொழி - ரந்தீபா" },
+                { time: "05:00 PM - 07:00 PM", si: "11 ශ්‍රේණිය ජපන් භාෂාව - රන්දීපා කුරුප්පුආරච්චි", en: "Grade 11 Japanese - Randipa Kuruppuarachchi", ta: "தரம் 11 ஜப்பானிய மொழி - ரந்தீபா" }
+            ]},
+            { day: 3, classes: [
+                { time: "02:00 PM - 04:00 PM", si: "2028 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2028 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2028 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" }
+            ]},
+            { day: 4, classes: [
+                { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
+                { time: "02:00 PM - 04:00 PM", si: "2026 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2026 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2026 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" },
+                { time: "04:00 PM - 06:00 PM", si: "2027 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2027 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2027 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" }
+            ]},
+            { day: 5, classes: [
+                { time: "08:00 AM - 12:00 PM", si: "ඉතිහාසය (10,11) - අසංක හේවාමද්දුමගේ", en: "History (10,11) - Asanka Hewamaddumage", ta: "வரலாறு (10,11) - அசங்க ஹேவாமத்துமகே" },
+                { time: "08:30 AM - 12:30 PM", si: "ඉංග්‍රීසි (10,11) - සංජය මනෝජ්", en: "English (10,11) - Sanjaya Manoj", ta: "ஆங்கிலம் (10,11) - சஞ்சய மனோஜ்" },
+                { time: "01:00 PM - 05:30 PM", si: "විද්‍යාව (10,11) - තරිඳු නිමේෂ්", en: "Science (10,11) - Tharindu Nimesh", ta: "விஞ்ஞானம் (10,11) - தரிந்து நிமேஷ்" },
+                { time: "01:00 PM - 05:30 PM", si: "ගණිතය (10,11) - අචිර බාලසූරිය", en: "Maths (10,11) - Achira Balasooriya", ta: "கணிதம் (10,11) - அச்சிர பாலசூரிய" },
+                { time: "08:30 AM - 01:00 PM", si: "සංයුක්ත ගණිතය (2026 Revision) - සඳසිරි සර්", en: "Combined Maths (2026 Rev) - Sandasiri Sir", ta: "இணைந்த கணிதம் (2026 Rev) - சந்தசிறி சார்" },
+                { time: "09:00 AM - 12:00 PM", si: "2027 A/L ආර්ථික විද්‍යාව - කසුන් තිවංක", en: "2027 A/L Economics - Kasun Thivanka", ta: "2027 A/L பொருளியல் - கசுன் திவங்க" }
+            ]},
+            { day: 6, classes: [
+                { time: "08:30 AM - 12:00 PM", si: "2028 A/L දේශපාලන විද්‍යාව - ප්‍රියන්තා පුෂ්පකුමාරි", en: "2028 A/L Political Science - Priyantha Miss", ta: "2028 A/L அரசியல் அறிவியல் - பிரியந்தா மிஸ்" },
+                { time: "07:30 AM - 12:00 PM", si: "ICT (2026/2027) - ධනුෂ්ක බී. ජයතිලක", en: "ICT (2026/2027) - Dhanushka B. Jayathilake", ta: "ICT (2026/2027) - தனுஷ்க பி. ஜயதிலக" },
+                { time: "08:00 AM - 05:00 PM", si: "ගිණුම්කරණය සහ BS (2027/2028) - සචිත් ධර්මසේන", en: "Accounting & BS (2027/2028) - Sachith Dharmasena", ta: "கணக்கியல் & BS (2027/2028) - சசித் தர்மசேன" }
+            ]}
         ];
 
         function setLanguage(lang) {
