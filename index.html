@@ -461,7 +461,8 @@ function checkInstituteStatus() {
     }
     showProfessionalPopup(title, message, isClosed);
 }
-        async function saveVCard() {
+        // --- 1. Contact එක Save කරලා Button මාරු කරන Function එක ---
+async function saveVCard() {
     // VCard එක සාදා Download කිරීම
     const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL;TYPE=CELL:0710658051\nEND:VCARD";
     const vblob = new Blob([vcard], { type: 'text/vcard' });
@@ -474,16 +475,33 @@ function checkInstituteStatus() {
     // Local Storage එකේ Save වුණා කියලා ලකුණු කිරීම
     localStorage.setItem('contact_saved', 'true');
 
-    // තත්පර 1කින් Buttons ටික මාරු කිරීම
-    setTimeout(() => {
-        const saveBtn = document.getElementById('mainSaveBtn');
-        const actGrid = document.getElementById('actionGrid');
-        
-        if (saveBtn) saveBtn.style.display = 'none'; // Save Button එක හංගනවා
-        if (actGrid) actGrid.style.display = 'grid'; // Action Grid එක පෙන්වනවා
-    }, 1000);
+    // Button එක ක්ෂණිකව මාරු කිරීම
+    const saveBtn = document.getElementById('mainSaveBtn');
+    const actGrid = document.getElementById('actionGrid');
+    
+    if (saveBtn) saveBtn.style.display = 'none'; // Save Contact button එක අයින් වෙනවා
+    if (actGrid) actGrid.style.display = 'grid'; // WhatsApp, Call, SMS ටික මතු වෙනවා
 }
 
+// --- 2. පේජ් එක Load වෙනකොටම Button තත්ත්වය පරීක්ෂා කිරීම ---
+window.onload = () => {
+    // භාෂාව සකස් කිරීම
+    setLanguage('en');
+    setupAppLinks();
+    setupPWAInstall(); 
+
+    const saveBtn = document.getElementById('mainSaveBtn');
+    const actGrid = document.getElementById('actionGrid');
+
+    // කලින් Save කරලා ඇත්නම් කෙලින්ම Action Grid එක පෙන්වන්න
+    if (localStorage.getItem('contact_saved') === 'true') {
+        if (saveBtn) saveBtn.style.display = 'none';
+        if (actGrid) actGrid.style.display = 'grid';
+    } else {
+        if (saveBtn) saveBtn.style.display = 'block';
+        if (actGrid) actGrid.style.display = 'none';
+    }
+};
 // ---  Service Worker & Notification Logic (Registration) ---
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
