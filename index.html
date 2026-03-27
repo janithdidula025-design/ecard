@@ -187,13 +187,6 @@
         </div>
     </div>
 
-    <div id="ttOverlay" class="tt-overlay">
-        <div class="tt-container">
-            <button class="close-tt" onclick="closeTimetable()">×</button>
-            <h2 id="tt-title" style="color: var(--primary); text-align: center; margin-bottom: 25px; font-size: 1.3rem;">Weekly Timetable</h2>
-            <div id="tt-list"></div>
-        </div>
-    </div>
 <div id="footer-credit" style="margin-top: 15px; font-size: 0.55rem; opacity: 0.5; letter-spacing: 1px;">CREATED BY JANITH DIDULA </div>
     <div id="statusToast" class="status-toast">
     <div class="toast-content">
@@ -386,12 +379,12 @@ function setupPWAInstall() {
     const pwaContainer = document.getElementById('pwa-installer');
     const pwaBtn = document.getElementById('btn-install-main');
 
-    // 1. දැනටමත් App එකක් විදිහට (Standalone) වැඩ කරනවා නම් පෙන්වන්න එපා
+    //  දැනටමත් App එකක් විදිහට (Standalone) වැඩ කරනවා නම් පෙන්වන්න එපා
     if (window.matchMedia('(display-mode: standalone)').matches) {
         return; // මෙතනින් නවතින්න
     }
 
-    // 2. බ්‍රවුසරය Install කරන්න සූදානම් නම් පමණක් පෙන්වන්න
+    //  බ්‍රවුසරය Install කරන්න සූදානම් නම් පමණක් පෙන්වන්න
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
@@ -412,12 +405,12 @@ function setupPWAInstall() {
         });
     }
 
-    // 3. Install වුණාම හංගන්න
+    //  Install වුණාම හංගන්න
     window.addEventListener('appinstalled', () => {
         if(pwaContainer) pwaContainer.style.display = 'none';
     });
 }
-        // --- 1. පෝය දින ගණනය ---
+        // ---  පෝය දින ගණනය ---
 function isFullMoon(date) {
     const baseDate = new Date(1900, 0, 1);
     const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
@@ -426,7 +419,7 @@ function isFullMoon(date) {
     return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
 }
 
-// --- 2. ආයතන තත්ත්වය සහ කාලසටහන පරීක්ෂාව ---
+// ---  ආයතන තත්ත්වය සහ කාලසටහන පරීක්ෂාව ---
 function checkInstituteStatus() {
     const now = new Date();
     const dayOfWeek = now.getDay();
@@ -469,73 +462,44 @@ function checkInstituteStatus() {
     showProfessionalPopup(title, message, isClosed);
 }
 
-// --- 1. Service Worker & Notification Logic ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    const reg = await navigator.serviceWorker.register('sw.js');
-                    console.log('ADM: Service Worker Registered! ✅');
-
-                    // Notification සඳහා අවසර ඉල්ලීම
-                    if (Notification.permission !== 'granted') {
-                        await Notification.requestPermission();
-                    }
-
-                    // අන්තර්ජාලය ලැබුණු සැණින් පණිවිඩය යැවීමට Register කිරීම
-                    if ('sync' in reg) {
-                        await reg.sync.register('data-on-check');
-                    }
-
-                } catch (err) {
-                    console.error('ADM: SW Registration Failed!', err);
-                }
-            });
-        }
-
-        // --- 2. Data On වූ සැණින් Notification එක Trigger කිරීම (Manual Check) ---
-        window.addEventListener('online', async () => {
-            if ('serviceWorker' in navigator) {
-                const reg = await navigator.serviceWorker.ready;
-                if ('sync' in reg) {
-                    await reg.sync.register('data-on-check');
-                }
-            }
-        });
-// වෙලාව format කරන function එක (මෙය එලෙසම තබන්න)
-function formatTime(decimalTime) {
-    const hrs = Math.floor(decimalTime);
-    const mins = Math.round((decimalTime - hrs) * 60);
-    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-}
-// --- 3. Service Worker & Notifications ---
-async function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
+// ---  Service Worker & Notification Logic (Registration) ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
         try {
+            // Service Worker එක Register කිරීම
             const reg = await navigator.serviceWorker.register('sw.js');
-            if ('periodicSync' in reg) {
-                const status = await navigator.permissions.query({ name: 'periodic-background-sync' });
-                if (status.state === 'granted') {
-                    await reg.periodicSync.register('check-status', {
-                        minInterval: 12 * 60 * 60 * 1000 // පැය 12 කට වරක්
-                    });
-                }
+            console.log('ADM: Service Worker Registered! ✅');
+
+            // Notification සඳහා අවසර පරීක්ෂාව සහ ඉල්ලීම
+            if (Notification.permission === 'default') {
+                await Notification.requestPermission();
             }
-        } catch (e) { console.log('SW Registration Fail', e); }
-    }
+
+            // Background Sync Register කිරීම (ඩේටා ඔන් කළ සැණින් වැඩ කිරීමට)
+            if ('sync' in reg) {
+                await reg.sync.register('data-on-check');
+            }
+
+        } catch (err) {
+            console.error('ADM: SW Registration Failed!', err);
+        }
+    });
 }
 
-function requestNotificationPermission() {
-    if ('Notification' in window) {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') registerServiceWorker();
-        });
+// ---  Online වූ සැණින් Notification එක Trigger කිරීම (Manual Check) ---
+window.addEventListener('online', async () => {
+    if ('serviceWorker' in navigator) {
+        const reg = await navigator.serviceWorker.ready;
+        if ('sync' in reg) {
+            await reg.sync.register('data-on-check');
+        }
     }
-}
+});
 
-// 4. ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
+//  ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
 window.onload = () => {
-    // 1. මුලින්ම භාෂාව සිංහල කරන්න
-    setLanguage('si');
+    // 1. මුලින්ම භාෂාව English කරන්න
+    setLanguage('en');
     setupAppLinks();
     
     // 2. Contact එක කලින් Save කරලා ඇත්නම් Button එක Hide කරන්න
@@ -546,35 +510,7 @@ window.onload = () => {
         if(actGrid) actGrid.style.display = 'grid';
     }
 
-    // 3. ආයතනය විවෘතද නැද්ද කියලා පරීක්ෂා කරලා Popup එක පෙන්වන්න
-    checkInstituteStatus();
-    
-    // 4. Notifications සඳහා අවසර ඉල්ලීම
-    requestNotificationPermission();
-}; 
-        function showProfessionalPopup(title, msg, isClosed) {
-    const toast = document.getElementById('statusToast');
-    if(!toast) return; 
-    
-    // මෙතන තමයි කලින් undefined ආවේ. දැන් ඒක නිවැරදි කරලා තියෙන්නේ.
-    document.getElementById('toast-title').innerHTML = title;
-    document.getElementById('toast-msg').innerHTML = msg;
-    
-    const iconSpan = toast.querySelector('.toast-icon');
-    if(iconSpan) iconSpan.innerText = isClosed ? "⚠️" : "✅";
-    
-    toast.style.borderLeft = isClosed ? "6px solid #e74c3c" : "6px solid #2ecc71";
-    
-// 5.Popup එක screen එකට එනවා
-    setTimeout(() => {
-        toast.classList.add('active');
-    }, 1500);
-
-    // ✅ තත්පර 8කට පස්සේ ඉබේම අයින් වෙනවා (Auto Cut)
-    setTimeout(() => {
-        toast.classList.remove('active');
-    }, 8000); 
-}
+   
     </script>
 </body>
 </html>
