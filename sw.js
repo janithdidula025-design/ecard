@@ -139,38 +139,31 @@ self.addEventListener('sync', (e) => {
         e.waitUntil(checkScheduleAndNotify());
     }
 });
-
+// 4. ප්‍රධාන Notification පාලනය (භාෂා 3ම ඇතුළත්ය)
 async function checkScheduleAndNotify() {
+    // App එක දැනටමත් Open ද බලන්න (එසේ නම් Notification එපා)
+    const clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    if (clientsList && clientsList.length > 0) return;
+
     const now = new Date();
     const hour = now.getHours();
-
     let title = "ADM Higher Education 🎓";
     let message = "";
     let uniqueTag = "";
 
-    // --- පැය 2ක පරාසයන් ---
-
-    // 1. උදේ 08:00 - 09:59 අතර
+    // උදේ 08:00 - 10:00 (විවෘතයි)
     if (hour >= 8 && hour < 10) {
-        message = "අද ආයතනය විවෘතයි.\nThe Institute is open today.";
+        message = "ආයතනය විවෘතයි | Institute is Open | நிறுவனம் திறக்கப்பட்டுள்ளது";
         uniqueTag = "morning-open";
     }
-    
-    // 2. දවල් 12:00 - 13:59 අතර (මෙතනට තමයි 1:00 අයිති වෙන්නේ)
+    // දවල් 12:00 - 14:00 (පන්ති)
     else if (hour >= 12 && hour < 14) {
-        message = "අද කාලසටහන අනුව පන්ති පැවැත්වේ.\nClasses are held according to the timetable.";
+        message = "පන්ති පැවැත්වේ | Classes are being held | வகுப்புகள் நடைபெறுகின்றன";
         uniqueTag = "midday-classes";
     }
-
-    // 3. හවස 06:00 - 07:59 අතර (18:00 - 19:59)
-    else if (hour >= 18 && hour < 20) {
-        message = "ආයතනය වසා ඇත හෝ පන්ති පැවැත්වේ.\nCheck timetable for evening classes.";
-        uniqueTag = "evening-status";
-    }
-
-    // 4. රාත්‍රී 08:00 - 09:59 අතර (20:00 - 21:59)
+    // රාත්‍රී 20:00 - 22:00 (වසා ඇත)
     else if (hour >= 20 && hour < 22) {
-        message = "ආයතනය දැන් වසා ඇත.\nThe Institute is now closed.";
+        message = "ආයතනය වසා ඇත | Institute is Closed | நிறுவனம் மூடப்பட்டுள்ளது";
         uniqueTag = "night-closed";
     }
 
@@ -179,9 +172,10 @@ async function checkScheduleAndNotify() {
             body: message,
             icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
             badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-            vibrate: [200, 100, 200],
-            tag: uniqueTag, // එකම පරාසය ඇතුළත දෙපාරක් පණිවිඩය එන්නේ නැත
-            renotify: false,
+            vibrate: [500, 110, 500],
+            tag: uniqueTag, 
+            renotify: true,
+            requireInteraction: true,
             data: { url: './index.html' }
         });
     }
