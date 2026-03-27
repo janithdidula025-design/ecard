@@ -1,27 +1,22 @@
-// sw.js - Version 2.0 (ADM E-Card with Auto-Update & Push)
-
-const CACHE_NAME = 'adm-ecard-v' + Date.now(); // හැමවෙලේම අලුත් ID එකක් හැදේ
+const CACHE_NAME = 'adm-ecard-v' + Date.now();
 const ASSETS = [
   './',
   './index.html',
-  './admin.html', //<--- අලුතින් මේක එකතු කරන්න
+  './admin.html',
   './manifest.json',
   'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
   'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png'
 ];
 
-// 1. Install Event - අලුත් ෆයිල්ස් Cache කිරීම
+// 1. Install Event
 self.addEventListener('install', (e) => {
-  self.skipWaiting(); // පරණ එක යනකන් ඉන්න එපා, කෙලින්ම Update වෙන්න
+  self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('ADM: Caching new assets...');
-      return cache.addAll(ASSETS);
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 });
 
-// 2. Activate Event - පරණ අනවශ්‍ය Cache ඔක්කොම මකා දැමීම
+// 2. Activate Event
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -30,161 +25,105 @@ self.addEventListener('activate', (e) => {
       );
     })
   );
-  return self.clients.claim(); // අලුත් SW එක වහාම පාලනය අතට ගනී
+  return self.clients.claim();
 });
 
-// 3. Fetch Event - Network First Strategy (සුපිරියටම Update වෙන්න හේතුව මේකයි)
+// 3. Fetch Event (Network First Strategy)
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     fetch(e.request)
       .then((res) => {
-        // අලුත් Response එකක් ආවොත් ඒකත් Cache එකට දාගන්නවා
         const resClone = res.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(e.request, resClone);
-        });
+        caches.open(CACHE_NAME).then((cache) => cache.put(e.request, resClone));
         return res;
       })
-      .catch(() => caches.match(e.request)) // ඉන්ටර්නෙට් නැතිනම් පමණක් Cache එක පෙන්වයි
+      .catch(() => caches.match(e.request))
   );
 });
 
-// 4. Push Notification - පණිවිඩ පෙන්වීමට
-self.addEventListener('push', (e) => {
-  let message = e.data ? e.data.text() : 'ADM New Update!';
-  const options = {
-    body: message,
-    icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-    badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-    vibrate: [200, 100, 200],
-    tag: 'adm-notif',
-    data: { url: './index.html' }
-  };
-  e.waitUntil(self.registration.showNotification('ADM Higher Education', options));
+// 4. Sync Event (Data On වූ විට පරීක්ෂාව)
+self.addEventListener('sync', (e) => {
+  if (e.tag === 'data-on-check') {
+    e.waitUntil(checkScheduleAndNotify());
+  }
 });
 
-// 5. Notification Click - Notification එක එබූ විට App එක Open කිරීමට
+// 5. Notification පාලනය (Time + Poya + Languages)
+async function checkScheduleAndNotify() {
+  const clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+  if (clientsList && clientsList.length > 0) return;
+
+  const now = new Date();
+  const hour = now.getHours();
+  const currentTime = hour + (now.getMinutes() / 60);
+  
+  let title = "ADM Higher Education 🎓";
+  let message = "";
+  let uniqueTag = "";
+
+  // පෝය දින පරීක්ෂාව
+  if (isFullMoon(now)) {
+    message = "අද පෝය දිනය බැවින් ආයතනය වසා ඇත. | Poya Day - Closed | இன்று பௌர்ணமி - மூடப்பட்டுள்ளது";
+    uniqueTag = "poya-closed";
+  } 
+  // සාමාන්‍ය වේලාවන් පරීක්ෂාව
+  else if (hour >= 8 && hour < 10) {
+    message = "ආයතනය විවෘතයි | Institute is Open | நிறுவனம் திறக்கப்பட்டுள்ளது";
+    uniqueTag = "morning-open";
+  } 
+  else if (hour >= 12 && hour < 14) {
+    message = "පන්ති පැවැත්වේ | Classes are being held | வகுப்புகள் நடைபெறுகின்றன";
+    uniqueTag = "midday-classes";
+  } 
+  else if (hour >= 20 && hour < 22) {
+    message = "ආයතනය වසා ඇත | Institute is Closed | நிறுவனம் மூடப்பட்டுள்ளது";
+    uniqueTag = "night-closed";
+  }
+
+  if (message !== "") {
+    return self.registration.showNotification(title, {
+      body: message,
+      icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
+      badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
+      vibrate: [500, 110, 500],
+      tag: uniqueTag,
+      renotify: true,
+      requireInteraction: true,
+      data: { url: './index.html' }
+    });
+  }
+}
+
+// 6. පෝය දින ගණනය කිරීම
+function isFullMoon(date) {
+  const baseDate = new Date(1900, 0, 1);
+  const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
+  const lunarCycle = 29.530588853;
+  const daysSinceNewMoon = (diffDays - 0.2) % lunarCycle;
+  return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
+}
+
+// 7. Notification Click (වැඩි දියුණු කළ අනුවාදය)
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
   e.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
       for (let client of windowClients) {
-        if (client.url.includes(e.notification.data.url) && 'focus' in client) {
-          return client.focus();
-        }
+        if ('focus' in client) return client.focus();
       }
-      if (clients.openWindow) return clients.openWindow(e.notification.data.url);
+      return self.clients.openWindow('./index.html');
     })
   );
 });
-// 6.Notification පෙන්වන පොදු Function එක
-async function sendInstituteNotification() {
-    const now = new Date();
-    const dayOfWeek = now.getDay();
-    const currentTime = now.getHours() + (now.getMinutes() / 60);
 
-    const weeklySchedule = {
-        0: { open: 8.0, close: 17.0 }, // ඉරිදා
-        1: { open: 8.5, close: 17.0 }, // සඳුදා
-        2: { open: 8.5, close: 17.0 },
-        3: { open: 8.5, close: 17.0 },
-        4: { open: 8.5, close: 17.0 },
-        5: { open: 8.5, close: 17.0 },
-        6: { open: 8.0, close: 18.0 }  // සෙනසුරාදා
-    };
-
-    const today = weeklySchedule[dayOfWeek];
-    let title = "ADM Higher Education";
-    let body = "";
-
-    if (isFullMoon(now)) {
-        // පෝය දින පණිවිඩය - භාෂා 3 කින්
-        body = "අද පෝය දිනය බැවින් ආයතනය වසා ඇත.\n" +
-               "Today is Poya Day. Institute is closed.\n" +
-               "இன்று பௌர்ணமி தினம். நிறுவனம் மூடப்பட்டுள்ளது.";
-    } else if (currentTime >= today.open && currentTime < today.close) {
-        // විවෘත පණිවිඩය - භාෂා 3 කින්
-        body = "ආයතනය දැන් විවෘතයි. (පැමිණෙන්න හෝ අමතන්න)\n" +
-               "The Institute is now open. (Visit or Call)\n" +
-               "நிலையம் இப்போது திறக்கப்பட்டுள்ளது. (வருகை தரவும்)";
-    } else {
-        // වසා ඇති පණිවිඩය - භාෂා 3 කින්
-        body = "ආයතනය දැනට වසා ඇත. නැවත විවෘත වෙලාව පරීක්ෂා කරන්න.\n" +
-               "The Institute is currently closed. Check opening times.\n" +
-               "நிலையம் தற்போது மூடப்பட்டுள்ளது. நேரத்தை சரிபார்க்கவும்.";
-    }
-
-    return self.registration.showNotification(title, {
-        body: body,
-        icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-        badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-        vibrate: [200, 100, 200],
-        tag: 'adm-status-update', // පරණ notification එක replace කරන්න
-        renotify: true, // අලුතින් notification එකක් ආ බව දැනුම් දෙන්න
-        data: { url: './index.html' }
-    });
-}
-// පෝය දින ගණනය කිරීමේ logic එක sw.js එකටත් අවශ්‍යයි
-function isFullMoon(date) {
-    const baseDate = new Date(1900, 0, 1);
-    const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
-    const lunarCycle = 29.530588853;
-    const daysSinceNewMoon = (diffDays - 0.2) % lunarCycle;
-    return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
-}
-self.addEventListener('install', (e) => self.skipWaiting());
-self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
-
-// Data On කළ විට හෝ පසුබිමේදී පරීක්ෂා කිරීම
-self.addEventListener('sync', (e) => {
-    if (e.tag === 'data-on-check') {
-        e.waitUntil(checkScheduleAndNotify());
-    }
-});
-// 4. ප්‍රධාන Notification පාලනය (භාෂා 3ම ඇතුළත්ය)
-async function checkScheduleAndNotify() {
-    // App එක දැනටමත් Open ද බලන්න (එසේ නම් Notification එපා)
-    const clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-    if (clientsList && clientsList.length > 0) return;
-
-    const now = new Date();
-    const hour = now.getHours();
-    let title = "ADM Higher Education 🎓";
-    let message = "";
-    let uniqueTag = "";
-
-    // උදේ 08:00 - 10:00 (විවෘතයි)
-    if (hour >= 8 && hour < 10) {
-        message = "ආයතනය විවෘතයි | Institute is Open | நிறுவனம் திறக்கப்பட்டுள்ளது";
-        uniqueTag = "morning-open";
-    }
-    // දවල් 12:00 - 14:00 (පන්ති)
-    else if (hour >= 12 && hour < 14) {
-        message = "පන්ති පැවැත්වේ | Classes are being held | வகுப்புகள் நடைபெறுகின்றன";
-        uniqueTag = "midday-classes";
-    }
-    // රාත්‍රී 20:00 - 22:00 (වසා ඇත)
-    else if (hour >= 20 && hour < 22) {
-        message = "ආයතනය වසා ඇත | Institute is Closed | நிறுவனம் மூடப்பட்டுள்ளது";
-        uniqueTag = "night-closed";
-    }
-
-    if (message !== "") {
-        return self.registration.showNotification(title, {
-            body: message,
-            icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-            badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
-            vibrate: [500, 110, 500],
-            tag: uniqueTag, 
-            renotify: true,
-            requireInteraction: true,
-            data: { url: './index.html' }
-        });
-    }
-}
-
-// 4. Notification Click
-self.addEventListener('notificationclick', (e) => {
-  e.notification.close();
-  e.waitUntil(clients.openWindow('./index.html'));
+// 8. Push Event
+self.addEventListener('push', (e) => {
+  let message = e.data ? e.data.text() : 'ADM New Update!';
+  e.waitUntil(
+    self.registration.showNotification('ADM Higher Education', {
+      body: message,
+      icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
+      tag: 'adm-push'
+    })
+  );
 });
