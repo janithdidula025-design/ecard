@@ -164,6 +164,13 @@
         </div>
         <button onclick="openTimetable()" class="btn-tt">📅 <span id="btn-tt-txt">View Timetable</span></button>
     </div>
+    <div id="ttOverlay" class="tt-overlay">
+    <div class="tt-container">
+        <button class="close-tt" onclick="closeTimetable()">×</button>
+        <h3 id="tt-title" style="color: var(--primary); margin-top: 0;">Weekly Timetable</h3>
+        <div id="tt-list"></div>
+    </div>
+</div>
     <div class="social-button-container">
         <p id="social-title" class="section-title">CONNECT WITH US</p>
         <a id="loc-btn" href="https://maps.app.goo.gl/oqcwyunNTEzB69WF7" class="location-btn">
