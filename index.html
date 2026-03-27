@@ -496,6 +496,28 @@ window.addEventListener('online', async () => {
     }
 });
 
+window.onload = () => {
+    // 1. භාෂාව සකස් කිරීම
+    setLanguage('en');
+    setupAppLinks();
+    setupPWAInstall(); // PWA Install එක වැඩ කරන්න මේක දාන්න
+
+    // 2. Contact එක කලින් Save කරලා ඇත්නම් Button එක Hide කර Grid එක පෙන්වීම
+    const saveBtn = document.getElementById('mainSaveBtn');
+    const actGrid = document.getElementById('actionGrid');
+
+    if (localStorage.getItem('contact_saved') === 'true') {
+        if (saveBtn) saveBtn.style.display = 'none';
+        if (actGrid) actGrid.style.display = 'grid';
+    } else {
+        if (saveBtn) saveBtn.style.display = 'block';
+        if (actGrid) actGrid.style.display = 'none';
+    }
+    
+    // ආයතන තත්ත්වය පරීක්ෂා කිරීම (Popup එක ඕනේ නම්)
+    // checkInstituteStatus(); 
+};
+
 //  ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
 window.onload = () => {
     // 1. මුලින්ම භාෂාව English කරන්න
