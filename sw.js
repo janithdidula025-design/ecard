@@ -143,53 +143,52 @@ self.addEventListener('sync', (e) => {
 async function checkScheduleAndNotify() {
     const now = new Date();
     const hour = now.getHours();
-    const minutes = now.getMinutes();
-    const currentTime = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
     let title = "ADM Higher Education 🎓";
     let message = "";
+    let uniqueTag = "";
 
-    // 1. උදේ 08:00 - අද විවෘතයි පණිවිඩය
-    if (currentTime === "08:00") {
-        message = "අද ආයතනය විවෘතයි.\nThe Institute is open today.\nஇன்று நிலையம் திறக்கப்பட்டுள்ளது.";
+    // --- පැය 2ක පරාසයන් ---
+
+    // 1. උදේ 08:00 - 09:59 අතර
+    if (hour >= 8 && hour < 10) {
+        message = "අද ආයතනය විවෘතයි.\nThe Institute is open today.";
+        uniqueTag = "morning-open";
     }
     
-    // 2. දවල් 12:00 - කාලසටහන අනුව පන්ති පැවැත්වේ
-    else if (currentTime === "12:00") {
-        message = "අද කාලසටහන අනුව පන්ති පැවැත්වේ.\nClasses are held according to the timetable.\nகால அட்டவணைப்படி வகுப்புகள் நடைபெறும்.";
+    // 2. දවල් 12:00 - 13:59 අතර (මෙතනට තමයි 1:00 අයිති වෙන්නේ)
+    else if (hour >= 12 && hour < 14) {
+        message = "අද කාලසටහන අනුව පන්ති පැවැත්වේ.\nClasses are held according to the timetable.";
+        uniqueTag = "midday-classes";
     }
 
-    // 3. දවල් 01:00 (13:00) - කාලසටහන අනුව පන්ති පැවැත්වේ
-    else if (currentTime === "13:00") {
-        message = "කාලසටහන බලන්න, පන්ති පැවැත්වේ.\nCheck the timetable, classes are in progress.\nகால அட்டவணையைப் பார்க்கவும், வகுப்புகள் நடைபெறுகின்றன.";
+    // 3. හවස 06:00 - 07:59 අතර (18:00 - 19:59)
+    else if (hour >= 18 && hour < 20) {
+        message = "ආයතනය වසා ඇත හෝ පන්ති පැවැත්වේ.\nCheck timetable for evening classes.";
+        uniqueTag = "evening-status";
     }
 
-    // 4. හවස 06:00 (18:00) - කාලසටහන අනුව ආයතනය වසා ඇත/පැවැත්වේ
-    else if (currentTime === "18:00") {
-        message = "කාලසටහන අනුව ආයතනය වසා ඇත හෝ පන්ති පැවැත්වේ.\nInstitute is closed or classes held as per timetable.\nகால அட்டவணைப்படி நிலையம் மூடப்பட்டுள்ளது அல்லது வகுப்புகள் நடைபெறும்.";
+    // 4. රාත්‍රී 08:00 - 09:59 අතර (20:00 - 21:59)
+    else if (hour >= 20 && hour < 22) {
+        message = "ආයතනය දැන් වසා ඇත.\nThe Institute is now closed.";
+        uniqueTag = "night-closed";
     }
 
-    // 5. රාත්‍රී 08:00 (20:00) - වසා ඇත
-    else if (currentTime === "20:00") {
-        message = "ආයතනය දැන් වසා ඇත.\nThe Institute is now closed.\nநிலையம் இப்போது மூடப்பட்டுள்ளது.";
-    }
-
-    // පණිවිඩයක් තිබේ නම් පමණක් Notification එක යවන්න
     if (message !== "") {
         return self.registration.showNotification(title, {
             body: message,
             icon: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
             badge: 'https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg',
             vibrate: [200, 100, 200],
-            tag: 'adm-timetable-notif',
-            renotify: true,
+            tag: uniqueTag, // එකම පරාසය ඇතුළත දෙපාරක් පණිවිඩය එන්නේ නැත
+            renotify: false,
             data: { url: './index.html' }
         });
     }
 }
 
-// Notification එක එබූ විට App එකට යාම
+// 4. Notification Click
 self.addEventListener('notificationclick', (e) => {
-    e.notification.close();
-    e.waitUntil(clients.openWindow('./index.html'));
+  e.notification.close();
+  e.waitUntil(clients.openWindow('./index.html'));
 });
