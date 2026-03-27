@@ -12,7 +12,10 @@ const ASSETS = [
 self.addEventListener('install', (e) => {
   self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('ADM: Caching new assets...');
+      return cache.addAll(ASSETS);
+    })
   );
 });
 
@@ -28,7 +31,7 @@ self.addEventListener('activate', (e) => {
   return self.clients.claim();
 });
 
-// 3. Fetch Event (Network First Strategy)
+// 3. Fetch Event (Network First)
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     fetch(e.request)
@@ -41,22 +44,19 @@ self.addEventListener('fetch', (e) => {
   );
 });
 
-// 4. Sync Event (Data On වූ විට පරීක්ෂාව)
+// 4. Notification Logic (Sync & Time Schedule)
 self.addEventListener('sync', (e) => {
   if (e.tag === 'data-on-check') {
     e.waitUntil(checkScheduleAndNotify());
   }
 });
 
-// 5. Notification පාලනය (Time + Poya + Languages)
 async function checkScheduleAndNotify() {
-  const clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-  if (clientsList && clientsList.length > 0) return;
+  const clientList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+  if (clientList.length > 0) return; // App එක open නම් notification යවන්නේ නැත
 
   const now = new Date();
   const hour = now.getHours();
-  const currentTime = hour + (now.getMinutes() / 60);
-  
   let title = "ADM Higher Education 🎓";
   let message = "";
   let uniqueTag = "";
@@ -66,16 +66,14 @@ async function checkScheduleAndNotify() {
     message = "අද පෝය දිනය බැවින් ආයතනය වසා ඇත. | Poya Day - Closed | இன்று பௌர்ணமி - மூடப்பட்டுள்ளது";
     uniqueTag = "poya-closed";
   } 
-  // සාමාන්‍ය වේලාවන් පරීක්ෂාව
+  // සාමාන්‍ය වේලාවන් (භාෂා 3ම ඇතුළත් කර ඇත)
   else if (hour >= 8 && hour < 10) {
     message = "ආයතනය විවෘතයි | Institute is Open | நிறுவனம் திறக்கப்பட்டுள்ளது";
     uniqueTag = "morning-open";
-  } 
-  else if (hour >= 12 && hour < 14) {
-    message = "පන්ති පැවැත්වේ | Classes are being held | வகுப்புகள் நடைபெறுகின்றன";
+  } else if (hour >= 12 && hour < 14) {
+    message = "පන්ති පැවැත්වේ | Classes are On | வகுப்புகள் நடைபெறுகின்றன";
     uniqueTag = "midday-classes";
-  } 
-  else if (hour >= 20 && hour < 22) {
+  } else if (hour >= 20 && hour < 22) {
     message = "ආයතනය වසා ඇත | Institute is Closed | நிறுவனம் மூடப்பட்டுள்ளது";
     uniqueTag = "night-closed";
   }
@@ -94,7 +92,7 @@ async function checkScheduleAndNotify() {
   }
 }
 
-// 6. පෝය දින ගණනය කිරීම
+// පෝය දින ගණනය
 function isFullMoon(date) {
   const baseDate = new Date(1900, 0, 1);
   const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
@@ -103,7 +101,7 @@ function isFullMoon(date) {
   return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
 }
 
-// 7. Notification Click (වැඩි දියුණු කළ අනුවාදය)
+// 5. Notification Click
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
   e.waitUntil(
@@ -116,7 +114,7 @@ self.addEventListener('notificationclick', (e) => {
   );
 });
 
-// 8. Push Event
+// 6. Push Notification (Manual Push)
 self.addEventListener('push', (e) => {
   let message = e.data ? e.data.text() : 'ADM New Update!';
   e.waitUntil(
