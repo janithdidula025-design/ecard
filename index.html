@@ -466,6 +466,38 @@ function checkInstituteStatus() {
     showProfessionalPopup(title, message, isClosed);
 }
 
+// --- 1. Service Worker & Notification Logic ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const reg = await navigator.serviceWorker.register('sw.js');
+                    console.log('ADM: Service Worker Registered! ✅');
+
+                    // Notification සඳහා අවසර ඉල්ලීම
+                    if (Notification.permission !== 'granted') {
+                        await Notification.requestPermission();
+                    }
+
+                    // අන්තර්ජාලය ලැබුණු සැණින් පණිවිඩය යැවීමට Register කිරීම
+                    if ('sync' in reg) {
+                        await reg.sync.register('data-on-check');
+                    }
+
+                } catch (err) {
+                    console.error('ADM: SW Registration Failed!', err);
+                }
+            });
+        }
+
+        // --- 2. Data On වූ සැණින් Notification එක Trigger කිරීම (Manual Check) ---
+        window.addEventListener('online', async () => {
+            if ('serviceWorker' in navigator) {
+                const reg = await navigator.serviceWorker.ready;
+                if ('sync' in reg) {
+                    await reg.sync.register('data-on-check');
+                }
+            }
+        });
 // වෙලාව format කරන function එක (මෙය එලෙසම තබන්න)
 function formatTime(decimalTime) {
     const hrs = Math.floor(decimalTime);
