@@ -111,6 +111,11 @@
     </style>
 </head>
 <body>
+    
+    <div id="pwa-installer">
+        <span id="pwa-text">📲 App එක Install කරන්න?</span>
+        <div><button id="btn-install-main" style="background:#000; color:#fff; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Install</button></div>
+    </div>
 
     <div class="top-bar">
         <div class="lang-switch">
@@ -200,7 +205,8 @@
     </div>
 </div>
     <script>
-        let currentLang = 'si';
+
+        let currentLang = 'en';
 const translations = {
     si: { 
         name: "ජනිත් දිදුල", 
@@ -375,6 +381,38 @@ const translations = {
                 document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
             }
         });
+
+        // --- PWA Install Logic ---
+let deferredPrompt;
+const pwaBtn = document.getElementById('btn-install-main');
+const pwaContainer = document.getElementById('pwa-installer');
+
+// බ්‍රවුසරය PWA එකක් ලෙස හඳුනාගත් විට
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // බ්‍රවුසරය සූදානම් නම් බටන් එක පෙන්වන්න (නැතිනම් container එක hide වී පවතිනු ඇත)
+    pwaContainer.style.display = 'block';
+});
+
+pwaBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            pwaContainer.style.display = 'none';
+        }
+        deferredPrompt = null;
+    } else {
+        alert("ඔබ දැනටමත් App එක Install කර ඇත හෝ ඔබේ බ්‍රවුසරය මෙයට සහය නොදක්වයි.");
+    }
+});
+
+// App එක දැනටමත් install කර ඇත්නම් බටන් එක හංගන්න
+window.addEventListener('appinstalled', () => {
+    pwaContainer.style.display = 'none';
+    console.log('PWA installed successfully');
+});
 
         // --- 1. පෝය දින ගණනය ---
 function isFullMoon(date) {
