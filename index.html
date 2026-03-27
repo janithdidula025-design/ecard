@@ -461,6 +461,28 @@ function checkInstituteStatus() {
     }
     showProfessionalPopup(title, message, isClosed);
 }
+        async function saveVCard() {
+    // VCard එක සාදා Download කිරීම
+    const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL;TYPE=CELL:0710658051\nEND:VCARD";
+    const vblob = new Blob([vcard], { type: 'text/vcard' });
+    const vurl = URL.createObjectURL(vblob);
+    const a = document.createElement('a');
+    a.href = vurl; 
+    a.download = 'Janith_ADM.vcf'; 
+    a.click();
+
+    // Local Storage එකේ Save වුණා කියලා ලකුණු කිරීම
+    localStorage.setItem('contact_saved', 'true');
+
+    // තත්පර 1කින් Buttons ටික මාරු කිරීම
+    setTimeout(() => {
+        const saveBtn = document.getElementById('mainSaveBtn');
+        const actGrid = document.getElementById('actionGrid');
+        
+        if (saveBtn) saveBtn.style.display = 'none'; // Save Button එක හංගනවා
+        if (actGrid) actGrid.style.display = 'grid'; // Action Grid එක පෙන්වනවා
+    }, 1000);
+}
 
 // ---  Service Worker & Notification Logic (Registration) ---
 if ('serviceWorker' in navigator) {
