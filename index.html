@@ -463,45 +463,38 @@ function checkInstituteStatus() {
 }
         // --- 1. Contact එක Save කරලා Button මාරු කරන Function එක ---
 async function saveVCard() {
-    // VCard එක සාදා Download කිරීම
     const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL;TYPE=CELL:0710658051\nEND:VCARD";
     const vblob = new Blob([vcard], { type: 'text/vcard' });
     const vurl = URL.createObjectURL(vblob);
     const a = document.createElement('a');
-    a.href = vurl; 
-    a.download = 'Janith_ADM.vcf'; 
-    a.click();
-
-    // Local Storage එකේ Save වුණා කියලා ලකුණු කිරීම
+    a.href = vurl; a.download = 'Janith_ADM.vcf'; a.click();
+    
     localStorage.setItem('contact_saved', 'true');
 
-    // Button එක ක්ෂණිකව මාරු කිරීම
-    const saveBtn = document.getElementById('mainSaveBtn');
-    const actGrid = document.getElementById('actionGrid');
-    
-    if (saveBtn) saveBtn.style.display = 'none'; // Save Contact button එක අයින් වෙනවා
-    if (actGrid) actGrid.style.display = 'grid'; // WhatsApp, Call, SMS ටික මතු වෙනවා
+    // බටන් මාරු කිරීම
+    document.getElementById('mainSaveBtn').style.display = 'none';
+    document.getElementById('actionGrid').style.display = 'grid';
 }
 
-// --- 2. පේජ් එක Load වෙනකොටම Button තත්ත්වය පරීක්ෂා කිරීම ---
-window.onload = () => {
-    // භාෂාව සකස් කිරීම
-    setLanguage('en');
-    setupAppLinks();
-    setupPWAInstall(); 
+function openTimetable() {
+    // Timetable පෙන්වන logic එක
+    document.getElementById('ttOverlay').style.display = 'flex';
+}
 
-    const saveBtn = document.getElementById('mainSaveBtn');
-    const actGrid = document.getElementById('actionGrid');
+function closeTimetable() { document.getElementById('ttOverlay').style.display = 'none'; }
 
-    // කලින් Save කරලා ඇත්නම් කෙලින්ම Action Grid එක පෙන්වන්න
-    if (localStorage.getItem('contact_saved') === 'true') {
-        if (saveBtn) saveBtn.style.display = 'none';
-        if (actGrid) actGrid.style.display = 'grid';
-    } else {
-        if (saveBtn) saveBtn.style.display = 'block';
-        if (actGrid) actGrid.style.display = 'none';
+function toggleMenu(id) {
+    const menu = document.getElementById(id);
+    const isShown = menu.classList.contains('show');
+    document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
+    if (!isShown) menu.classList.add('show');
+}
+
+window.onclick = function(e) {
+    if (!e.target.matches('.btn-action')) {
+        document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
     }
-};
+}
 // ---  Service Worker & Notification Logic (Registration) ---
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
@@ -536,13 +529,14 @@ window.addEventListener('online', async () => {
     }
 });
 
+// ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
 window.onload = () => {
-    // 1. භාෂාව සකස් කිරීම
+    // 1. මූලික Functions ක්‍රියාත්මක කිරීම
     setLanguage('en');
     setupAppLinks();
-    setupPWAInstall(); // PWA Install එක වැඩ කරන්න මේක දාන්න
+    if (typeof setupPWAInstall === "function") setupPWAInstall(); 
 
-    // 2. Contact එක කලින් Save කරලා ඇත්නම් Button එක Hide කර Grid එක පෙන්වීම
+    // 2. Buttons පාලනය (Save Button vs Action Grid)
     const saveBtn = document.getElementById('mainSaveBtn');
     const actGrid = document.getElementById('actionGrid');
 
@@ -553,25 +547,12 @@ window.onload = () => {
         if (saveBtn) saveBtn.style.display = 'block';
         if (actGrid) actGrid.style.display = 'none';
     }
-    
-    // ආයතන තත්ත්වය පරීක්ෂා කිරීම (Popup එක ඕනේ නම්)
-    // checkInstituteStatus(); 
-};
 
-//  ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
-window.onload = () => {
-    // 1. මුලින්ම භාෂාව English කරන්න
-    setLanguage('en');
-    setupAppLinks();
-    
-    // 2. Contact එක කලින් Save කරලා ඇත්නම් Button එක Hide කරන්න
-    const saveBtn = document.getElementById('mainSaveBtn');
-    const actGrid = document.getElementById('actionGrid');
-    if (localStorage.getItem('contact_saved') === 'true') {
-        if(saveBtn) saveBtn.style.display = 'none';
-        if(actGrid) actGrid.style.display = 'grid';
+    // 3. ආයතන තත්ත්වය පරීක්ෂා කිරීම (අවශ්‍ය නම් පමණක්)
+    if (typeof checkInstituteStatus === "function") {
+        // checkInstituteStatus(); 
     }
-
+};
    
     </script>
 </body>
