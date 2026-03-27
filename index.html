@@ -535,7 +535,31 @@ window.addEventListener('online', async () => {
         }
     }
 });
+function openTimetable() {
+    const list = document.getElementById('tt-list');
+    list.innerHTML = ''; // කලින් තිබුණ ඒවා අයින් කරන්න
+    
+    timetable.forEach(d => {
+        let dayHtml = `<div class="tt-day-group">
+            <span class="tt-day-name">${translations[currentLang].days[d.day]}</span>`;
+        
+        d.classes.forEach(c => {
+            dayHtml += `<div class="tt-class">
+                <span style="color: var(--gold); font-size: 0.75rem;">🕒 ${c.time}</span><br>
+                ${c[currentLang]}
+            </div>`;
+        });
+        
+        dayHtml += `</div>`;
+        list.innerHTML += dayHtml;
+    });
+    
+    document.getElementById('ttOverlay').style.display = 'flex';
+}
 
+function closeTimetable() {
+    document.getElementById('ttOverlay').style.display = 'none';
+}
 // ✅ සියල්ල එකට එකතු කළ නිවැරදි Window Load එක
 window.onload = () => {
     // 1. මූලික Functions ක්‍රියාත්මක කිරීම
