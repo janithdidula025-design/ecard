@@ -182,7 +182,6 @@
     <a href="#" id="fb-link" class="grid-btn">
         <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="FB">
         <span>Facebook</span>
-        <span class="badge" id="fb-count">0</span>
     </a>
 
     <a href="#" id="yt-link" class="grid-btn">
@@ -194,13 +193,11 @@
     <a href="#" id="tt-link" class="grid-btn">
         <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TT">
         <span>TikTok</span>
-        <span class="badge" id="tt-count">0</span>
     </a>
 
     <a href="#" id="ig-link" class="grid-btn">
         <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="IG">
         <span>Instagram</span>
-        <span class="badge" id="ig-count">0</span>
     </a>
 </div>
     </div>
@@ -347,38 +344,7 @@ const translations = {
                     setTimeout(() => { if (Date.now() - start < 1500) window.location.href = link.web; }, 1000);
                 };
             });
-            .grid-btn {
-    position: relative; /* Badge eka icon eka uda thiyanna meka aniwarayai */
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    text-decoration: none;
-}
 
-.badge {
-    position: absolute;
-    top: 5px;            /* Udin thiyena ida */
-    right: 15px;         /* Dakin thiyena ida */
-    background-color: #ff0000; /* Rathu pata */
-    color: white;
-    border-radius: 50%;  /* Wata kuratama raum karanna */
-    padding: 2px 6px;
-    font-size: 11px;
-    font-weight: bold;
-    min-width: 16px;
-    height: 16px;
-    line-height: 16px;
-    text-align: center;
-    display: none;       /* Post nathi welawata pennanne na */
-    border: 2px solid white; /* Icon eken wen wela penna */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Meka dammahama badge eka penna gannawa */
-.badge.show {
-    display: block;
-}
         }
 
         function openTimetable() {
@@ -637,11 +603,7 @@ window.onload = () => {
     }
 }
 
-// Me widiyata pawichchi karanna:
-setBadgeCount('fb-count', 2);  // Facebook ekata post 2i
-setBadgeCount('yt-count', 0);  // YouTube post na (badge eka penne na)
-setBadgeCount('tt-count', 12); // TikTok post 12i
-setBadgeCount('ig-count', 5);  // Instagram post 5i
+
     </script>
 </body>
 </html>
