@@ -603,11 +603,12 @@ window.onload = () => {
     }
 }
     </script>
-<script type="module">
+    <script type="module">
+    // Firebase SDK Import කිරීම
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
     import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js";
 
-    // ඔයාගේ Firebase Config එක
+    // 1. Firebase Config (ඔබේ දත්ත)
     const firebaseConfig = {
         apiKey: "AIzaSyCZRZecMIMxOO9SmnaJctRf1x-DxFId340",
         authDomain: "ecard-c8f61.firebaseapp.com",
@@ -621,41 +622,71 @@ window.onload = () => {
     const app = initializeApp(firebaseConfig);
     const messaging = getMessaging(app);
 
-    // ශිෂ්‍යයාගෙන් Notification Permission ලබා ගැනීම
-    async function setupNotifications() {
+    // 2. ශිෂ්‍යයාගේ Token එක ලබාගැනීමේ Function එක
+    async function requestNotificationPermission() {
         try {
             const permission = await Notification.requestPermission();
             if (permission === 'granted') {
-                console.log('Notification permission granted.');
-                
-                // ඔයා එවපු Public VAPID Key එක මෙතනට දාන්න
+                console.log('Notification permission granted. ✅');
+
+                // VAPID Key එක භාවිතා කර Token එක ලබාගැනීම
                 const token = await getToken(messaging, { 
                     vapidKey: 'BAnTLc-JQDvEggqLq5KmhKIBdfGS--0bMX4O8FpM5jkxevrTtSLGhY_EQVg5QPkGEr1htEFOQqj670lRf_szhA8' 
                 });
 
                 if (token) {
-                    console.log("ශිෂ්‍යයාගේ Token එක:", token);
-                    // මෙතනදී තමයි මේ Token එක ඔයාගේ Database එකට යවන්න ඕනේ.
-                    // දැනට මේක Console එකේ බලාගන්න පුළුවන්.
+                    console.log("Student Device Token:", token);
+                    // මෙම Token එක පසුව Database එකට යැවීමට භාවිතා කළ හැක.
                 }
             } else {
-                console.log('Notification permission denied.');
+                console.warn('Permission denied for notifications. ❌');
             }
         } catch (err) {
-            console.log('An error occurred while retrieving token: ', err);
+            console.error('An error occurred while retrieving token:', err);
         }
     }
 
-    // පේජ් එක Load වෙද්දී Notification Setup එක පටන් ගන්න
-    window.addEventListener('load', setupNotifications);
-
-    // ශිෂ්‍යයා පේජ් එකේ ඉද්දීම Notification එකක් ආවොත් (Foreground)
+    // 3. Foreground Messages (App එක open කරගෙන ඉද්දී Notification ආවොත්)
     onMessage(messaging, (payload) => {
-        console.log('Message received. ', payload);
-        alert(payload.notification.title + ": " + payload.notification.body);
+        console.log('Message received: ', payload);
+        // Toast එකක් හෝ Alert එකක් ලෙස පෙන්වීම
+        alert("ADM MESSAGE: " + payload.notification.body);
     });
 
+    // --- පවතින අනෙකුත් JavaScript Functions (Translations, Timetable etc.) ---
+    
+    // භාෂා සහ අනෙකුත් දත්ත (ඔබේ කේතයෙන් ගත් කොටස්)
+    let currentLang = 'en';
+    const translations = { /* ඔබේ Translations මෙතැනට */ };
+    const timetable = [ /* ඔබේ Timetable මෙතැනට */ ];
 
-    </script>
+    // Window Load එකේදී සියල්ල ක්‍රියාත්මක කිරීම
+    window.addEventListener('load', () => {
+        // Firebase Permission ඉල්ලීම
+        requestNotificationPermission();
+
+        // මූලික Functions
+        setLanguage('en');
+        setupAppLinks();
+        setupPWAInstall();
+
+        // Buttons පාලනය
+        const saveBtn = document.getElementById('mainSaveBtn');
+        const actGrid = document.getElementById('actionGrid');
+        if (localStorage.getItem('contact_saved') === 'true') {
+            if (saveBtn) saveBtn.style.display = 'none';
+            if (actGrid) actGrid.style.display = 'grid';
+        }
+    });
+
+    // Global Functions (HTML Buttons වලට පෙනෙන්නට)
+    window.setLanguage = (lang) => { /* ඔබේ setLanguage function එක */ };
+    window.saveVCard = () => { /* ඔබේ saveVCard function එක */ };
+    window.openTimetable = () => { /* ඔබේ openTimetable function එක */ };
+    window.closeTimetable = () => { document.getElementById('ttOverlay').style.display = 'none'; };
+    window.toggleMenu = (id) => { /* ඔබේ toggleMenu function එක */ };
+
+</script>
+
 </body>
 </html>
