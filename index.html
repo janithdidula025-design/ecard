@@ -108,6 +108,95 @@
     color: #666;
     line-height: 1.4;
 }
+/* CSS කොටස */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    margin-bottom: 10px;
+}
+.dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
+.dot-green { background: #2ecc71; box-shadow: 0 0 10px #2ecc71; }
+.dot-red { background: #e74c3c; }
+
+.live-dot {
+    height: 8px;
+    width: 8px;
+    background-color: #50e3c2;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 10px #50e3c2;
+    animation: pulse-live 1.5s infinite;
+}
+
+@keyframes pulse-live {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(80, 227, 194, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(80, 227, 194, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(80, 227, 194, 0); }
+}
+        /* Background එකේ ඇති Orbs වල මූලික සැකසුම */
+        body {
+    background: #050a14; /* ඉතා තද වර්ණයක් පාවිච්චි කරන්න */
+    /* අනිත් body styles එලෙසම තබන්න */
+}
+.bg-animations {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1; /* Card එකට පිටුපසින් තැබීමට */
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px); /* හොඳින් බොඳ කිරීමට */
+    opacity: 0.5;
+    animation: moveOrb 20s infinite alternate ease-in-out;
+}
+
+/* Orbs 3ක් සඳහා වර්ණ සහ ප්‍රමාණයන් */
+.orb-1 {
+    width: 300px; height: 300px;
+    background: #50e3c2; /* Primary Green */
+    top: -50px; left: -50px;
+}
+
+.orb-2 {
+    width: 400px; height: 400px;
+    background: #007bff; /* Blue */
+    bottom: -100px; right: -50px;
+    animation-duration: 25s;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 250px; height: 250px;
+    background: #ffcc00; /* Gold */
+    top: 40%; left: 60%;
+    animation-duration: 15s;
+    animation-delay: -2s;
+}
+
+/* Orbs චලනය වන ආකාරය */
+@keyframes moveOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, 50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* දැනට පවතින Card එක තවත් පැහැදිලි වීමට මේ CSS එක පොඩ්ඩක් වෙනස් කරන්න */
+.card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(30px) !important; /* Blur ගතිය වැඩි කරන්න */
+}
     </style>
 </head>
 <body>
@@ -115,7 +204,12 @@
     <span id="pwa-text" style="font-size:0.85rem; display:block; margin-bottom:10px;">📲 ADM App එක Install කරගන්න</span>
     <button id="btn-install-main" style="background:var(--primary); color:#0a192f; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; width:100%;">Install Now</button>
 </div>
-
+<div class="bg-animations">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+    
     <div class="top-bar">
         <div class="lang-switch">
             <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
@@ -126,6 +220,12 @@
 
     <div class="card">
         <div style="color: var(--primary); font-size: 0.6rem; letter-spacing: 3px; font-weight: 800; margin-bottom: 12px;">ADM HIGHER EDUCATION</div>
+        <div id="live-class-container" style="display: none; margin-bottom: 10px;">
+    <div style="display: inline-flex; align-items: center; background: rgba(0, 255, 127, 0.1); border: 1px solid #50e3c2; padding: 5px 12px; border-radius: 20px; gap: 8px;">
+        <span class="live-dot"></span>
+        <span id="live-class-text" style="color: #50e3c2; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase;"></span>
+    </div>
+</div>
         <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg" class="p-img" alt="Profile">
         <h2 id="u-name" style="margin: 12px 0 4px 0; font-size: 1.5rem; letter-spacing: -0.5px;">Janith Didula</h2>
         <div id="txt-role" style="color: var(--gold); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px;">Organizer / Manager</div>
@@ -211,6 +311,7 @@
         </div>
     </div>
 </div>
+    
     <script>
 
         let currentLang = 'en';
@@ -477,6 +578,7 @@ function checkInstituteStatus() {
     }
     showProfessionalPopup(title, message, isClosed);
 }
+        
         // --- 1. Contact එක Save කරලා Button මාරු කරන Function එක ---
 async function saveVCard() {
     const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL;TYPE=CELL:0710658051\nEND:VCARD";
@@ -602,5 +704,61 @@ window.onload = () => {
         badge.classList.remove('show'); // 0 nam badge eka hanganna
     }
 }
+// Info box එකේ තොරතුරු copy කිරීමට
+function copyToClipboard(text, label) {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast("Copied!", `${label} copied to clipboard.`);
+    });
+}
+
+// HTML එකේ මෙලෙස වෙනස් කරන්න:
+// <span onclick="copyToClipboard('0710658051', 'Phone number')">📞 071 065 8051</span>
+        
+function updateLiveStatus() {
+    const now = new Date();
+    const currentDay = now.getDay(); // 0=Sunday, 1=Monday...
+    const currentTimeStr = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
+    
+    // වෙලාව සංසන්දනය කිරීමට පහසු කරගැනීම (e.g. 08:30 AM -> 8.5)
+    function parseTime(timeStr) {
+        const [time, modifier] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (hours === '12') hours = '00';
+        if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
+        return parseInt(hours, 10) + (parseInt(minutes, 10) / 60);
+    }
+
+    const currentDecimalTime = parseTime(currentTimeStr);
+    const dayData = timetable.find(d => d.day === currentDay);
+    
+    let activeClass = null;
+
+    if (dayData) {
+        activeClass = dayData.classes.find(c => {
+            const [startStr, endStr] = c.time.split(' - ');
+            return currentDecimalTime >= parseTime(startStr) && currentDecimalTime <= parseTime(endStr);
+        });
+    }
+
+    const container = document.getElementById('live-class-container');
+    const textSpan = document.getElementById('live-class-text');
+
+    if (activeClass) {
+        container.style.display = 'block';
+        // භාෂාව අනුව නම පෙන්වීම
+        const statusPrefix = currentLang === 'si' ? 'දැන් පැවැත්වේ: ' : (currentLang === 'ta' ? 'இப்போது: ' : 'LIVE: ');
+        textSpan.innerHTML = statusPrefix + activeClass[currentLang];
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+// Window load එකේදී මෙය ක්‍රියාත්මක කරන්න
+// ඔබ දැනටමත් පාවිච්චි කරන window.onload එක ඇතුළට මෙය දාන්න:
+// updateLiveStatus(); 
+// setInterval(updateLiveStatus, 60000); // විනාඩියකට වරක් update වේ.
+
+        
+    </script>     
 </body>
 </html>
