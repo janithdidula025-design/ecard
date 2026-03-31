@@ -602,6 +602,58 @@ window.onload = () => {
         badge.classList.remove('show'); // 0 nam badge eka hanganna
     }
 }
+    </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js";
+
+    // ඔයාගේ Firebase Config එක
+    const firebaseConfig = {
+        apiKey: "AIzaSyCZRZecMIMxOO9SmnaJctRf1x-DxFId340",
+        authDomain: "ecard-c8f61.firebaseapp.com",
+        projectId: "ecard-c8f61",
+        storageBucket: "ecard-c8f61.firebasestorage.app",
+        messagingSenderId: "204555084801",
+        appId: "1:204555084801:web:906ad95ddf279c4a6e0c00"
+    };
+
+    // Firebase Initialize කිරීම
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+
+    // ශිෂ්‍යයාගෙන් Notification Permission ලබා ගැනීම
+    async function setupNotifications() {
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                
+                // ඔයා එවපු Public VAPID Key එක මෙතනට දාන්න
+                const token = await getToken(messaging, { 
+                    vapidKey: 'BAnTLc-JQDvEggqLq5KmhKIBdfGS--0bMX4O8FpM5jkxevrTtSLGhY_EQVg5QPkGEr1htEFOQqj670lRf_szhA8' 
+                });
+
+                if (token) {
+                    console.log("ශිෂ්‍යයාගේ Token එක:", token);
+                    // මෙතනදී තමයි මේ Token එක ඔයාගේ Database එකට යවන්න ඕනේ.
+                    // දැනට මේක Console එකේ බලාගන්න පුළුවන්.
+                }
+            } else {
+                console.log('Notification permission denied.');
+            }
+        } catch (err) {
+            console.log('An error occurred while retrieving token: ', err);
+        }
+    }
+
+    // පේජ් එක Load වෙද්දී Notification Setup එක පටන් ගන්න
+    window.addEventListener('load', setupNotifications);
+
+    // ශිෂ්‍යයා පේජ් එකේ ඉද්දීම Notification එකක් ආවොත් (Foreground)
+    onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+        alert(payload.notification.title + ": " + payload.notification.body);
+    });
 
 
     </script>
