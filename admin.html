@@ -148,10 +148,20 @@
             Direct SMS Send
         </button>
     </div>
+    
+    <div class="main-card" style="margin-top: 20px;">
+    <h3 style="color: var(--accent);">PUSH NOTIFICATION SEND</h3>
+    <input type="text" id="notif-title" placeholder="පණිවිඩයේ මාතෘකාව (Title)">
+    <textarea id="notif-body" placeholder="පණිවිඩය මෙතන ලියන්න..." style="width: 100%; height: 100px; border-radius: 15px; padding: 15px; background: #020c1b; color: white; border: 2px solid #233554;"></textarea>
+    <button class="btn" style="background: linear-gradient(135deg, #ff4b2b, #ff416c); margin-top: 15px;" onclick="sendNotification()">
+        SEND TO ALL STUDENTS
+    </button>
+</div>
 
     <div class="footer-credit">
         Created by <b>Janith Didula</b>
     </div>
+    
 
     <script>
         const translations = {
@@ -214,5 +224,48 @@
             navigator.serviceWorker.register('data:text/javascript,self.addEventListener("fetch", (e) => {});');
         }
     </script>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCZRZecMIMxOO9SmnaJctRf1x-DxFId340",
+        authDomain: "ecard-c8f61.firebaseapp.com",
+        projectId: "ecard-c8f61",
+        storageBucket: "ecard-c8f61.firebasestorage.app",
+        messagingSenderId: "204555084801",
+        appId: "1:204555084801:web:906ad95ddf279c4a6e0c00"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+
+    // Notification Permission ලබා ගැනීම
+    async function requestPermission() {
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                const token = await getToken(messaging, { 
+                    vapidKey: 'BAnTLc-JQDvEggqLq5KmhKIBdfGS--0bMX4O8FpM5jkxevrTtSLGhY_EQVg5QPkGEr1htEFOQqj670lRf_szhA8' 
+                });
+                
+                if (token) {
+                    console.log("ඔයාගේ Device Token එක:", token);
+                    // මේ Token එක කොපි කරලා තියාගන්න Test කරන්න.
+                }
+            }
+        } catch (err) {
+            console.log("Error getting token:", err);
+        }
+    }
+
+    // App එක Open වෙද්දී Permission අහන්න
+    window.onload = requestPermission;
+
+    // App එක Open වෙලා තියෙද්දී Notification ආවොත් පෙන්වන්න
+    onMessage(messaging, (payload) => {
+        alert(payload.notification.title + ": " + payload.notification.body);
+    });
+</script>
 </body>
 </html>
