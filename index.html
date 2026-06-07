@@ -1,197 +1,460 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM E-Card v2.2</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ADM E-Card v2.2</title>
 
-    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png">
-    <meta name="theme-color" content="#64ffda">
+  <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImluZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3IiOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo%2001.png">
+  <meta name="theme-color" content="#64ffda">
 
-    <!-- OneSignal Web SDK -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <!-- OneSignal Web SDK -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
-    <style>
-        :root { --primary: #50e3c2; --gold: #ffcc00; --dark-blue: #0a192f; --glass: rgba(255, 255, 255, 0.08); }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            background: radial-gradient(circle at top, #112240, #000);
-            color: white;
-            font-family: 'Segoe UI', 'Latha', 'Tamil', sans-serif;
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; width: 100vw; overflow: hidden;
-        }
+  <style>
+    :root {
+      --primary: #50e3c2;
+      --gold: #ffcc00;
+      --dark-blue: #0a192f;
+      --glass: rgba(255, 255, 255, 0.08);
+    }
 
-        .top-bar { position: absolute; top: 20px; width: 100%; display: flex; justify-content: center; z-index: 5000; }
-        .lang-switch { display: flex; gap: 5px; background: var(--glass); padding: 5px; border-radius: 20px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        .lang-btn { background: transparent; border: none; color: rgba(255,255,255,0.6); padding: 8px 15px; border-radius: 15px; cursor: pointer; font-size: 0.75rem; transition: 0.3s; }
-        .lang-btn.active { background: var(--primary); color: #0a192f; font-weight: bold; box-shadow: 0 4px 15px rgba(80, 227, 194, 0.3); }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        .card { width: 92%; max-width: 380px; background: var(--glass); padding: 25px 20px; border-radius: 35px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(25px); text-align: center; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        .p-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--gold); padding: 4px; object-fit: cover; box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-        .info-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; margin: 15px 0; border-left: 4px solid var(--primary); text-align: left; font-size: 0.8rem; line-height: 1.6; }
+    body {
+      background: radial-gradient(circle at top, #112240, #000);
+      color: white;
+      font-family: 'Segoe UI', 'Latha', 'Tamil', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
 
-        .btn-save, .btn-tt, .btn-notify { width: 100%; padding: 14px; border-radius: 18px; font-weight: bold; cursor: pointer; border: none; margin-top: 10px; font-size: 0.9rem; transition: 0.3s; }
-        .btn-save { background: #fff; color: #0a192f; box-shadow: 0 10px 20px rgba(255,255,255,0.1); }
-        .btn-tt { background: linear-gradient(135deg, var(--primary), #3db89e); color: #0a192f; }
-        .btn-notify { background: linear-gradient(135deg, #ff4b2b, #ff416c); color: #fff; }
-        .btn-save:active, .btn-tt:active, .btn-notify:active { transform: scale(0.97); }
+    .top-bar {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 5000;
+    }
 
-        .action-grid { display: none; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 10px; }
-        .btn-action { width: 100%; padding: 12px 5px; font-size: 0.8rem; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-wa { background: #128C7E; } .btn-call { background: #007bff; }
-        .btn-sms { background: #f39c12; color: #000; } .btn-email { background: #e74c3c; }
+    .lang-switch {
+      display: flex;
+      gap: 5px;
+      background: var(--glass);
+      padding: 5px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
 
-        .dropdown { position: relative; width: 100%; }
-        .dropdown-content {
-            display: none; position: absolute; background: rgba(255, 255, 255, 0.95);
-            width: 100%; border-radius: 18px; z-index: 9000; bottom: 120%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); overflow: hidden;
-            animation: slideUp 0.3s ease-out;
-        }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .dropdown-content a { color: #111; padding: 14px; text-decoration: none; display: block; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.2s; }
-        .dropdown-content a:active { background: var(--primary); }
-        .show { display: block !important; }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      padding: 8px 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: 0.3s;
+    }
 
-        .social-button-container { width: 92%; max-width: 380px; margin-top: 20px; text-align: center; }
-        .section-title { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 12px; letter-spacing: 2px; text-transform: uppercase; }
-        .location-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; color: white; font-weight: 600; border-radius: 18px; padding: 14px; background: linear-gradient(45deg, #4285F4, #34A853); margin-bottom: 10px; font-size: 0.85rem; box-shadow: 0 10px 20px rgba(66, 133, 244, 0.2); }
-        .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .grid-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-decoration: none; color: white; font-size: 0.6rem; border-radius: 15px; padding: 10px 5px; background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
-        .grid-btn img, .location-btn img { width: 22px; height: 22px; }
-        .grid-btn:active { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+    .lang-btn.active {
+      background: var(--primary);
+      color: #0a192f;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(80, 227, 194, 0.3);
+    }
 
-        .tt-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .tt-container { width: 100%; max-width: 400px; background: #0a192f; border-radius: 30px; border: 1px solid var(--primary); padding: 25px; max-height: 80vh; overflow-y: auto; box-shadow: 0 0 50px rgba(80, 227, 194, 0.2); }
-        .close-tt { float: right; background: var(--primary); border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 20px; font-weight: bold; cursor: pointer; color: #0a192f; }
+    .bell-btn {
+      position: absolute;
+      right: 18px;
+      top: 0;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #3db89e);
+      color: #0a192f;
+      font-size: 22px;
+      font-weight: 900;
+      box-shadow: 0 8px 24px rgba(80,227,194,.35);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .tt-day-group { margin-bottom: 20px; }
-        .tt-day-name { color: var(--gold); font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; display: block; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
-        .tt-class { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 15px; margin-bottom: 8px; border-left: 4px solid var(--primary); font-size: 0.85rem; }
+    .card {
+      width: 92%;
+      max-width: 380px;
+      background: var(--glass);
+      padding: 25px 20px;
+      border-radius: 35px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(25px);
+      text-align: center;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
 
-        .status-toast {
-            position: fixed; bottom: -200px; left: 50%; transform: translateX(-50%);
-            background: #ffffff; color: #333; padding: 15px 20px; border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4); z-index: 20000; width: 90%; max-width: 360px;
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); display: flex; align-items: center;
-        }
-        .status-toast.active { bottom: 30px; }
-        .toast-content { display: flex; align-items: flex-start; gap: 15px; }
-        .toast-details h4 { margin: 0; font-size: 16px; color: #333; }
-        .toast-details p { margin: 5px 0 0; font-size: 13px; color: #666; line-height: 1.4; }
+    .p-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+      padding: 4px;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+    }
 
-        .status-indicator { display: inline-flex; align-items: center; gap: 5px; font-size: 0.7rem; font-weight: bold; padding: 5px 10px; border-radius: 20px; background: rgba(255,255,255,0.1); margin-bottom: 10px; }
-        .dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; }
-        .dot-green { background: #2ecc71; box-shadow: 0 0 10px #2ecc71; }
-        .dot-red { background: #e74c3c; }
+    .info-box {
+      background: rgba(0,0,0,0.3);
+      padding: 15px;
+      border-radius: 20px;
+      margin: 15px 0;
+      border-left: 4px solid var(--primary);
+      text-align: left;
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
 
-        .live-dot {
-            height: 8px;
-            width: 8px;
-            background-color: #50e3c2;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 10px #50e3c2;
-            animation: pulse-live 1.5s infinite;
-        }
-        @keyframes pulse-live {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(80, 227, 194, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(80, 227, 194, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(80, 227, 194, 0); }
-        }
+    .btn-save, .btn-tt {
+      width: 100%;
+      padding: 14px;
+      border-radius: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
 
-        body { background: #050a14; }
-        .bg-animations { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; animation: moveOrb 20s infinite alternate ease-in-out; }
-        .orb-1 { width: 300px; height: 300px; background: #50e3c2; top: -50px; left: -50px; }
-        .orb-2 { width: 400px; height: 400px; background: #007bff; bottom: -100px; right: -50px; animation-duration: 25s; animation-delay: -5s; }
-        .orb-3 { width: 250px; height: 250px; background: #ffcc00; top: 40%; left: 60%; animation-duration: 15s; animation-delay: -2s; }
-        @keyframes moveOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, 50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0, 0) scale(1); }
-        }
+    .btn-save {
+      background: #fff;
+      color: #0a192f;
+      box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+    }
 
-        .card {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            backdrop-filter: blur(30px) !important;
-        }
+    .btn-tt {
+      background: linear-gradient(135deg, var(--primary), #3db89e);
+      color: #0a192f;
+    }
 
-        /* Notification Modal */
-        #notifModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.65);
-            z-index: 30000;
-            padding: 20px;
-            align-items: center;
-            justify-content: center;
-        }
-        .notif-box {
-            width: 100%;
-            max-width: 420px;
-            background: #112240;
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(100,255,218,0.15);
-        }
-        .notif-title {
-            margin: 0 0 15px 0;
-            color: #fff;
-        }
-        #notif-title-input, #notif-body-input {
-            width: 100%;
-            background: rgba(2, 12, 27, 0.5);
-            border: 1.5px solid #233554;
-            border-radius: 18px;
-            color: var(--accent);
-            padding: 15px;
-            outline: none;
-            transition: 0.3s;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-        #notif-body-input { height: 120px; resize: none; margin-top: 10px; }
-        .notif-actions { display: flex; gap: 10px; margin-top: 15px; }
-        .btn-close { flex: 1; background: #233554; color: #fff; }
-    </style>
+    .btn-save:active, .btn-tt:active, .bell-btn:active {
+      transform: scale(0.97);
+    }
+
+    .action-grid {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 12px 5px;
+      font-size: 0.8rem;
+      border-radius: 15px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-wa { background: #128C7E; }
+    .btn-call { background: #007bff; }
+    .btn-sms { background: #f39c12; color: #000; }
+    .btn-email { background: #e74c3c; }
+
+    .dropdown { position: relative; width: 100%; }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: rgba(255, 255, 255, 0.95);
+      width: 100%;
+      border-radius: 18px;
+      z-index: 9000;
+      bottom: 120%;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      overflow: hidden;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-content a {
+      color: #111;
+      padding: 14px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      transition: 0.2s;
+    }
+
+    .dropdown-content a:active { background: var(--primary); }
+    .show { display: block !important; }
+
+    .social-button-container {
+      width: 92%;
+      max-width: 380px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .location-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(45deg, #4285F4, #34A853);
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 20px rgba(66, 133, 244, 0.2);
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .grid-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      color: white;
+      font-size: 0.6rem;
+      border-radius: 15px;
+      padding: 10px 5px;
+      background: var(--glass);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: 0.3s;
+    }
+
+    .grid-btn img, .location-btn img { width: 22px; height: 22px; }
+    .grid-btn:active { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+
+    .tt-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .tt-container {
+      width: 100%;
+      max-width: 400px;
+      background: #0a192f;
+      border-radius: 30px;
+      border: 1px solid var(--primary);
+      padding: 25px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 0 50px rgba(80, 227, 194, 0.2);
+    }
+
+    .close-tt {
+      float: right;
+      background: var(--primary);
+      border: none;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #0a192f;
+    }
+
+    .tt-day-group { margin-bottom: 20px; }
+
+    .tt-day-name {
+      color: var(--gold);
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: block;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding-bottom: 5px;
+    }
+
+    .tt-class {
+      background: rgba(255,255,255,0.05);
+      padding: 12px;
+      border-radius: 15px;
+      margin-bottom: 8px;
+      border-left: 4px solid var(--primary);
+      font-size: 0.85rem;
+    }
+
+    .status-toast {
+      position: fixed;
+      bottom: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      color: #333;
+      padding: 15px 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      z-index: 20000;
+      width: 90%;
+      max-width: 360px;
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      display: flex;
+      align-items: center;
+    }
+
+    .status-toast.active { bottom: 30px; }
+
+    .toast-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .toast-details h4 {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .toast-details p {
+      margin: 5px 0 0;
+      font-size: 13px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .live-dot {
+      height: 8px;
+      width: 8px;
+      background-color: #50e3c2;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 10px #50e3c2;
+      animation: pulse-live 1.5s infinite;
+    }
+
+    @keyframes pulse-live {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(80, 227, 194, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(80, 227, 194, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(80, 227, 194, 0); }
+    }
+
+    body { background: #050a14; }
+
+    .bg-animations {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: moveOrb 20s infinite alternate ease-in-out;
+    }
+
+    .orb-1 { width: 300px; height: 300px; background: #50e3c2; top: -50px; left: -50px; }
+    .orb-2 { width: 400px; height: 400px; background: #007bff; bottom: -100px; right: -50px; animation-duration: 25s; animation-delay: -5s; }
+    .orb-3 { width: 250px; height: 250px; background: #ffcc00; top: 40%; left: 60%; animation-duration: 15s; animation-delay: -2s; }
+
+    @keyframes moveOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, 50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      backdrop-filter: blur(30px) !important;
+    }
+  </style>
 </head>
 <body>
 
-<div id="pwa-installer" style="display:none; position:fixed; top:10px; width:90%; max-width:360px; background:rgba(0,0,0,0.9); padding:15px; border-radius:15px; z-index:9999; border:1px solid var(--primary); left:50%; transform:translateX(-50%); text-align:center;">
+  <div id="pwa-installer" style="display:none; position:fixed; top:10px; width:90%; max-width:360px; background:rgba(0,0,0,0.9); padding:15px; border-radius:15px; z-index:9999; border:1px solid var(--primary); left:50%; transform:translateX(-50%); text-align:center;">
     <span id="pwa-text" style="font-size:0.85rem; display:block; margin-bottom:10px;">📲 ADM App එක Install කරගන්න</span>
     <button id="btn-install-main" style="background:var(--primary); color:#0a192f; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; width:100%;">Install Now</button>
-</div>
+  </div>
 
-<div class="bg-animations">
+  <div class="bg-animations">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
-</div>
+  </div>
 
-<div class="top-bar">
+  <div class="top-bar">
     <div class="lang-switch">
-        <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
-        <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
-        <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
+      <button id="btn-si" class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
+      <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">English</button>
+      <button id="btn-ta" class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
     </div>
-</div>
 
-<div class="card">
-    <div style="color: var(--primary); font-size: 0.6rem; letter-spacing: 3px; font-weight: 800; margin-bottom: 12px;">ADM HIGHER EDUCATION</div>
+    <button class="bell-btn" onclick="enableNotifications()" title="Enable notifications">🔔</button>
+  </div>
+
+  <div class="card">
+    <div style="color: var(--primary); font-size: 0.6rem; letter-spacing: 3px; font-weight: 800; margin-bottom: 12px;">
+      ADM HIGHER EDUCATION
+    </div>
 
     <div id="live-class-container" style="display: none; margin-bottom: 10px;">
-        <div style="display: inline-flex; align-items: center; background: rgba(0, 255, 127, 0.1); border: 1px solid #50e3c2; padding: 5px 12px; border-radius: 20px; gap: 8px;">
-            <span class="live-dot"></span>
-            <span id="live-class-text" style="color: #50e3c2; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase;"></span>
-        </div>
+      <div style="display: inline-flex; align-items: center; background: rgba(0, 255, 127, 0.1); border: 1px solid #50e3c2; padding: 5px 12px; border-radius: 20px; gap: 8px;">
+        <span class="live-dot"></span>
+        <span id="live-class-text" style="color: #50e3c2; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase;"></span>
+      </div>
     </div>
 
     <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.jpeg" class="p-img" alt="Profile">
@@ -199,500 +462,471 @@
     <div id="txt-role" style="color: var(--gold); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px;">Organizer / Manager</div>
 
     <div class="info-box">
-        <span id="lbl-addr">📍 Negombo Road, Narammala</span><br>
-        <span id="lbl-phone">📞 071 065 8051</span><br>
-        <span id="lbl-email">📧 janithdidula025@gmail.com</span>
+      <span id="lbl-addr">📍 Negombo Road, Narammala</span><br>
+      <span id="lbl-phone">📞 071 065 8051</span><br>
+      <span id="lbl-email">📧 janithdidula025@gmail.com</span>
     </div>
 
     <button id="mainSaveBtn" onclick="saveVCard()" class="btn-save">👤 SAVE CONTACT</button>
-    <button class="btn-notify" onclick="openNotificationModal()">🔔 SEND NOTIFICATION</button>
 
     <div id="actionGrid" class="action-grid">
-        <div class="dropdown">
-            <button class="btn-action btn-wa" onclick="toggleMenu('waMenu')">WhatsApp</button>
-            <div id="waMenu" class="dropdown-content">
-                <a href="https://wa.me/94710658051" target="_blank">071 065 8051</a>
-                <a href="https://wa.me/94763614792" target="_blank">076 361 4792</a>
-            </div>
+      <div class="dropdown">
+        <button class="btn-action btn-wa" onclick="toggleMenu('waMenu')">WhatsApp</button>
+        <div id="waMenu" class="dropdown-content">
+          <a href="https://wa.me/94710658051" target="_blank">071 065 8051</a>
+          <a href="https://wa.me/94763614792" target="_blank">076 361 4792</a>
         </div>
-        <div class="dropdown">
-            <button class="btn-action btn-call" id="btn-call-txt" onclick="toggleMenu('callMenu')">Call</button>
-            <div id="callMenu" class="dropdown-content">
-                <a href="tel:0710658051">071 065 8051</a>
-                <a href="tel:0763614792">076 361 4792</a>
-            </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn-action btn-call" id="btn-call-txt" onclick="toggleMenu('callMenu')">Call</button>
+        <div id="callMenu" class="dropdown-content">
+          <a href="tel:0710658051">071 065 8051</a>
+          <a href="tel:0763614792">076 361 4792</a>
         </div>
-        <div class="dropdown">
-            <button class="btn-action btn-sms" id="btn-sms-txt" onclick="toggleMenu('smsMenu')">SMS</button>
-            <div id="smsMenu" class="dropdown-content">
-                <a href="sms:0710658051">071 065 8051</a>
-                <a href="sms:0763614792">076 361 4792</a>
-            </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn-action btn-sms" id="btn-sms-txt" onclick="toggleMenu('smsMenu')">SMS</button>
+        <div id="smsMenu" class="dropdown-content">
+          <a href="sms:0710658051">071 065 8051</a>
+          <a href="sms:0763614792">076 361 4792</a>
         </div>
-        <button class="btn-action btn-email" id="btn-email-txt" onclick="window.location.href='mailto:janithdidula025@gmail.com'">Email</button>
+      </div>
+
+      <button class="btn-action btn-email" id="btn-email-txt" onclick="window.location.href='mailto:janithdidula025@gmail.com'">Email</button>
     </div>
 
     <button onclick="openTimetable()" class="btn-tt">📅 <span id="btn-tt-txt">View Timetable</span></button>
-</div>
+  </div>
 
-<div id="ttOverlay" class="tt-overlay">
+  <div id="ttOverlay" class="tt-overlay">
     <div class="tt-container">
-        <button class="close-tt" onclick="closeTimetable()">×</button>
-        <h3 id="tt-title" style="color: var(--primary); margin-top: 0;">Weekly Timetable</h3>
-        <div id="tt-list"></div>
+      <button class="close-tt" onclick="closeTimetable()">×</button>
+      <h3 id="tt-title" style="color: var(--primary); margin-top: 0;">Weekly Timetable</h3>
+      <div id="tt-list"></div>
     </div>
-</div>
+  </div>
 
-<div class="social-button-container">
+  <div class="social-button-container">
     <p id="social-title" class="section-title">CONNECT WITH US</p>
     <a id="loc-btn" href="https://maps.app.goo.gl/oqcwyunNTEzB69WF7" class="location-btn">
-        <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="Loc">
-        <span id="loc-txt">GET DIRECTIONS (MAPS)</span>
+      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" alt="Loc">
+      <span id="loc-txt">GET DIRECTIONS (MAPS)</span>
     </a>
 
     <div class="social-grid">
-        <a href="#" id="fb-link" class="grid-btn">
-            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="FB">
-            <span>Facebook</span>
-        </a>
-        <a href="#" id="yt-link" class="grid-btn">
-            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YT">
-            <span>YouTube</span>
-        </a>
-        <a href="#" id="tt-link" class="grid-btn">
-            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TT">
-            <span>TikTok</span>
-        </a>
-        <a href="#" id="ig-link" class="grid-btn">
-            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="IG">
-            <span>Instagram</span>
-        </a>
+      <a href="#" id="fb-link" class="grid-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="FB">
+        <span>Facebook</span>
+      </a>
+      <a href="#" id="yt-link" class="grid-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YT">
+        <span>YouTube</span>
+      </a>
+      <a href="#" id="tt-link" class="grid-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TT">
+        <span>TikTok</span>
+      </a>
+      <a href="#" id="ig-link" class="grid-btn">
+        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="IG">
+        <span>Instagram</span>
+      </a>
     </div>
-</div>
+  </div>
 
-<div id="footer-credit" style="margin-top: 15px; font-size: 0.55rem; opacity: 0.5; letter-spacing: 1px;">CREATED BY JANITH DIDULA</div>
+  <div id="footer-credit" style="margin-top: 15px; font-size: 0.55rem; opacity: 0.5; letter-spacing: 1px;">CREATED BY JANITH DIDULA</div>
 
-<div id="statusToast" class="status-toast">
+  <div id="statusToast" class="status-toast">
     <div class="toast-content">
-        <span class="toast-icon"></span>
-        <div class="toast-details">
-            <h4 id="toast-title"></h4>
-            <p id="toast-msg"></p>
-        </div>
+      <span class="toast-icon"></span>
+      <div class="toast-details">
+        <h4 id="toast-title"></h4>
+        <p id="toast-msg"></p>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- Notification Modal -->
-<div id="notifModal">
-    <div class="notif-box">
-        <h3 class="notif-title">Send Notification</h3>
-        <input id="notif-title-input" type="text" placeholder="Notification Title">
-        <textarea id="notif-body-input" placeholder="Type your message..."></textarea>
-        <div class="notif-actions">
-            <button onclick="sendNotification()" class="btn-notify" style="flex:1; margin-top:0;">Send</button>
-            <button onclick="closeNotificationModal()" class="btn btn-close">Close</button>
-        </div>
-    </div>
-</div>
-
-<script>
+  <script>
     let currentLang = 'en';
+
     const translations = {
-        si: {
-            name: "ජනිත් දිදුල",
-            role: "සංවිධායක / කළමනාකරු",
-            save: "👤 CONTACT එක SAVE කරන්න",
-            ttBtn: "කාලසටහන බලන්න",
-            ttTitle: "සතිපතා කාලසටහන",
-            addr: "📍 මීගමුව පාර, නාරම්මල",
-            socialTitle: "අප හා සම්බන්ධ වන්න",
-            locTxt: "ආයතනයට පැමිණෙන මග (Maps)",
-            credit: "නිර්මාණය: ජනිත් දිදුල | v2.2",
-            call: "ඇමතුම්",
-            sms: "පණිවිඩ",
-            email: "ඊමේල්",
-            toastTitle: "ආයතන තත්ත්වය",
-            toastMsg: "තොරතුරු පරීක්ෂා කරමින්...",
-            days: ["සඳුදා", "අඟහරුවාදා", "බදාදා", "බ්‍රහස්පතින්දා", "සිකුරාදා", "සෙනසුරාදා", "ඉරිදා"]
-        },
-        en: {
-            name: "Janith Didula",
-            role: "Organizer / Manager",
-            save: "👤 SAVE CONTACT",
-            ttBtn: "View Timetable",
-            ttTitle: "Weekly Timetable",
-            addr: "📍 Negombo Road, Narammala",
-            socialTitle: "CONNECT WITH US",
-            locTxt: "GET DIRECTIONS (MAPS)",
-            credit: "CREATED BY JANITH DIDULA | v2.2",
-            call: "Call",
-            sms: "SMS",
-            email: "Email",
-            toastTitle: "Institute Status",
-            toastMsg: "Checking status...",
-            days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-        },
-        ta: {
-            name: "ஜனித் திதுல",
-            role: "ஒருங்கிணைப்பாளர் / மேலாளர்",
-            save: "👤 தொடர்பைச் சேமிக்கவும்",
-            ttBtn: "கால அட்டவணை",
-            ttTitle: "வாராந்திர கால அட்டவணை",
-            addr: "📍 நீர்கொழும்பு வீதி, நாரம்மல",
-            socialTitle: "எங்களுடன் இணையுங்கள்",
-            locTxt: "வரைபடம் (Maps)",
-            credit: "உருவாக்கம்: ஜனித் திதுல | v2.2",
-            call: "அழைப்பு",
-            sms: "செய்தி",
-            email: "மின்னஞ்சல்",
-            toastTitle: "நிறுவன நிலை",
-            toastMsg: "நிலைமையை சரிபார்க்கிறது...",
-            days: ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"]
-        }
+      si: {
+        name: "ජනිත් දිදුල",
+        role: "සංවිධායක / කළමනාකරු",
+        save: "👤 CONTACT එක SAVE කරන්න",
+        ttBtn: "කාලසටහන බලන්න",
+        ttTitle: "සතිපතා කාලසටහන",
+        addr: "📍 මීගමුව පාර, නාරම්මල",
+        socialTitle: "අප හා සම්බන්ධ වන්න",
+        locTxt: "ආයතනයට පැමිණෙන මග (Maps)",
+        credit: "නිර්මාණය: ජනිත් දිදුල | v2.2",
+        call: "ඇමතුම්",
+        sms: "පණිවිඩ",
+        email: "ඊමේල්",
+        toastTitle: "ආයතන තත්ත්වය",
+        toastMsg: "තොරතුරු පරීක්ෂා කරමින්...",
+        days: ["සඳුදා", "අඟහරුවාදා", "බදාදා", "බ්‍රහස්පතින්දා", "සිකුරාදා", "සෙනසුරාදා", "ඉරිදා"],
+        pushOn: "🔔 දැනුම්දීම් සක්‍රීය කළා",
+        pushOff: "❌ දැනුම්දීම් අනුමැතිය ලැබුණේ නැහැ",
+        pushUnsupported: "මෙම browser එක push support නොකරයි"
+      },
+      en: {
+        name: "Janith Didula",
+        role: "Organizer / Manager",
+        save: "👤 SAVE CONTACT",
+        ttBtn: "View Timetable",
+        ttTitle: "Weekly Timetable",
+        addr: "📍 Negombo Road, Narammala",
+        socialTitle: "CONNECT WITH US",
+        locTxt: "GET DIRECTIONS (MAPS)",
+        credit: "CREATED BY JANITH DIDULA | v2.2",
+        call: "Call",
+        sms: "SMS",
+        email: "Email",
+        toastTitle: "Institute Status",
+        toastMsg: "Checking status...",
+        days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        pushOn: "🔔 Notifications enabled",
+        pushOff: "❌ Notification permission not granted",
+        pushUnsupported: "This browser does not support push"
+      },
+      ta: {
+        name: "ஜனித் திதுல",
+        role: "ஒருங்கிணைப்பாளர் / மேலாளர்",
+        save: "👤 தொடர்பைச் சேமிக்கவும்",
+        ttBtn: "கால அட்டவணை",
+        ttTitle: "வாராந்திர கால அட்டவணை",
+        addr: "📍 நீர்கொழும்பு வீதி, நாரம்மல",
+        socialTitle: "எங்களுடன் இணையுங்கள்",
+        locTxt: "வரைபடம் (Maps)",
+        credit: "உருவாக்கம்: ஜனித் திதுல | v2.2",
+        call: "அழைப்பு",
+        sms: "செய்தி",
+        email: "மின்னஞ்சல்",
+        toastTitle: "நிறுவன நிலை",
+        toastMsg: "நிலைமையை சரிபார்க்கிறது...",
+        days: ["திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி", "ஞாயிறு"],
+        pushOn: "🔔 அறிவிப்புகள் இயக்கப்பட்டது",
+        pushOff: "❌ அறிவிப்பு அனுமதி வழங்கப்படவில்லை",
+        pushUnsupported: "இந்த browser push support செய்யவில்லை"
+      }
     };
 
     const timetable = [
-        { day: 0, classes: [
-            { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
-            { time: "10:00 AM - 04:30 PM", si: "බෞද්ධ ශිෂ්ටාචාරය (BC) - සෙව්වන්දි මිස්", en: "Buddhist Civilization (BC) - Sewwandi Miss", ta: "புத்த நாகரிகம் (BC) - செவ்வந்தி மிஸ்" }
-        ]},
-        { day: 1, classes: [
-            { time: "02:30 PM - 05:30 PM", si: "2027 A/L රසායන විද්‍යාව - තරිඳු නිමේෂ්", en: "2027 A/L Chemistry - Tharindu Nimesh", ta: "2027 A/L இரசாயனவியல் - தரிந்து நிமேஷ்" },
-            { time: "03:00 PM - 05:00 PM", si: "2027 A/L ජපන් භාෂාව - රන්දීපා කුරුප්පුආරච්චි", en: "2027 A/L Japanese - Randipa Kuruppuarachchi", ta: "2027 A/L ஜப்பானிய மொழி - ரந்தீபா குருப்புஆராச்சி" }
-        ]},
-        { day: 2, classes: [
-            { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
-            { time: "03:00 PM - 05:00 PM", si: "2028 A/L & 10 ශ්‍රේණිය ජපන් භාෂාව - රන්දීපා", en: "2028 A/L & Grade 10 Japanese - Randipa", ta: "2028 A/L & தரம் 10 ஜப்பானிய மொழி - ரந்தீபா" },
-            { time: "05:00 PM - 07:00 PM", si: "11 ශ්‍රේණිය ජපන් භාෂාව - රන්දීපා කුරුප්පුආරච්චි", en: "Grade 11 Japanese - Randipa Kuruppuarachchi", ta: "தரம் 11 ஜப்பானிய மொழி - ரந்தீபா" }
-        ]},
-        { day: 3, classes: [
-            { time: "02:00 PM - 04:00 PM", si: "2028 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2028 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2028 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" }
-        ]},
-        { day: 4, classes: [
-            { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
-            { time: "02:00 PM - 04:00 PM", si: "2026 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2026 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2026 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" },
-            { time: "04:00 PM - 06:00 PM", si: "2027 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2027 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2027 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" }
-        ]},
-        { day: 5, classes: [
-            { time: "08:00 AM - 12:00 PM", si: "ඉතිහාසය (10,11) - අසංක හේවාමද්දුමගේ", en: "History (10,11) - Asanka Hewamaddumage", ta: "வரலாறு (10,11) - அசங்க ஹேவாமத்துமகே" },
-            { time: "08:30 AM - 12:30 PM", si: "ඉංග්‍රීසි (10,11) - සංජය මනෝජ්", en: "English (10,11) - Sanjaya Manoj", ta: "ஆங்கிலம் (10,11) - சஞ்சய மனோஜ்" },
-            { time: "01:00 PM - 05:30 PM", si: "විද්‍යාව (10,11) - තරිඳු නිමේෂ්", en: "Science (10,11) - Tharindu Nimesh", ta: "விஞ்ஞானம் (10,11) - தரிந்து நிமேஷ்" },
-            { time: "01:00 PM - 05:30 PM", si: "ගණිතය (10,11) - අචිර බාලසූරිය", en: "Maths (10,11) - Achira Balasooriya", ta: "கணிதம் (10,11) - அச்சிர பாலசூரிய" },
-            { time: "08:30 AM - 01:00 PM", si: "සංයුක්ත ගණිතය (2026 Revision) - සඳසිරි සර්", en: "Combined Maths (2026 Rev) - Sandasiri Sir", ta: "இணைந்த கணிதம் (2026 Rev) - சந்தசிறி சார்" },
-            { time: "09:00 AM - 12:00 PM", si: "2027 A/L ආර්ථික විද්‍යාව - කසුන් තිවංක", en: "2027 A/L Economics - Kasun Thivanka", ta: "2027 A/L பொருளியல் - கசுன் திவங்க" }
-        ]},
-        { day: 6, classes: [
-            { time: "08:30 AM - 12:00 PM", si: "2028 A/L දේශපාලන විද්‍යාව - ප්‍රියන්තා පුෂ්පකුමාරි", en: "2028 A/L Political Science - Priyantha Miss", ta: "2028 A/L அரசியல் அறிவியல் - பிரியந்தா மிஸ்" },
-            { time: "07:30 AM - 12:00 PM", si: "ICT (2026/2027) - ධනුෂ්ක බී. ජයතිලක", en: "ICT (2026/2027) - Dhanushka B. Jayathilake", ta: "ICT (2026/2027) - தனுஷ்க பி. ஜயதிலக" },
-            { time: "08:00 AM - 05:00 PM", si: "ගිණුම්කරණය සහ BS (2027/2028) - සචිත් ධර්මසේන", en: "Accounting & BS (2027/2028) - Sachith Dharmasena", ta: "கணக்கியல் & BS (2027/2028) - சசித் தர்மசேன" }
-        ]}
+      { day: 0, classes: [
+        { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
+        { time: "10:00 AM - 04:30 PM", si: "බෞද්ධ ශිෂ්ටාචාරය (BC) - සෙව්වන්දි මිස්", en: "Buddhist Civilization (BC) - Sewwandi Miss", ta: "புத்த நாகரிகம் (BC) - செவ்வந்தி மிஸ்" }
+      ]},
+      { day: 1, classes: [
+        { time: "02:30 PM - 05:30 PM", si: "2027 A/L රසායන විද්‍යාව - තරිඳු නිමේෂ්", en: "2027 A/L Chemistry - Tharindu Nimesh", ta: "2027 A/L இரசாயனவியல் - தரிந்து நிமேஷ்" },
+        { time: "03:00 PM - 05:00 PM", si: "2027 A/L ජපන් භාෂාව - රන්දීපා කුරුප්පුආරච්චි", en: "2027 A/L Japanese - Randipa Kuruppuarachchi", ta: "2027 A/L ஜப்பானிய மொழி - ரந்தீபா குருப்புஆராச்சி" }
+      ]},
+      { day: 2, classes: [
+        { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
+        { time: "03:00 PM - 05:00 PM", si: "2028 A/L & 10 ශ්‍රේණිය ජපන් භාෂාව - රන්දීපා", en: "2028 A/L & Grade 10 Japanese - Randipa", ta: "2028 A/L & தரம் 10 ஜப்பானிய மொழி - ரந்தீபா" },
+        { time: "05:00 PM - 07:00 PM", si: "11 ශ්‍රේණිය ජපන් භාෂාව - රන්දීපා කුරුප්පුආරච්චි", en: "Grade 11 Japanese - Randipa Kuruppuarachchi", ta: "தரம் 11 ஜப்பானிய மொழி - ரந்தீபா" }
+      ]},
+      { day: 3, classes: [
+        { time: "02:00 PM - 04:00 PM", si: "2028 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2028 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2028 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" }
+      ]},
+      { day: 4, classes: [
+        { time: "08:30 AM - 01:00 PM", si: "After A/L & O/L Spoken English - ඕෂන් ජයරත්න", en: "After A/L & O/L Spoken English - Oshan Jayarathna", ta: "After A/L & O/L Spoken English - ஓஷன் ஜயரத்ன" },
+        { time: "02:00 PM - 04:00 PM", si: "2026 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2026 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2026 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" },
+        { time: "04:00 PM - 06:00 PM", si: "2027 A/L ඉංජිනේරු තාක්ෂණවේදය (ET) - ජීවන් බණ්ඩාර", en: "2027 A/L Engineering Tech (ET) - Jeevan Bandara", ta: "2027 A/L பொறியியல் தொழில்நுட்பம் - ஜீவன் பண்டார" }
+      ]},
+      { day: 5, classes: [
+        { time: "08:00 AM - 12:00 PM", si: "ඉතිහාසය (10,11) - අසංක හේවාමද්දුමගේ", en: "History (10,11) - Asanka Hewamaddumage", ta: "வரலாறு (10,11) - அசங்க ஹேவாமத்துமகே" },
+        { time: "08:30 AM - 12:30 PM", si: "ඉංග්‍රීසි (10,11) - සංජය මනෝජ්", en: "English (10,11) - Sanjaya Manoj", ta: "ஆங்கிலம் (10,11) - சஞ்சய மனோஜ்" },
+        { time: "01:00 PM - 05:30 PM", si: "විද්‍යාව (10,11) - තරිඳු නිමේෂ්", en: "Science (10,11) - Tharindu Nimesh", ta: "விஞ்ஞானம் (10,11) - தரிந்து நிமேஷ்" },
+        { time: "01:00 PM - 05:30 PM", si: "ගණිතය (10,11) - අචිර බාලසූරිය", en: "Maths (10,11) - Achira Balasooriya", ta: "கணிதம் (10,11) - அச்சிர பாலசூரிய" },
+        { time: "08:30 AM - 01:00 PM", si: "සංයුක්ත ගණිතය (2026 Revision) - සඳසිරි සර්", en: "Combined Maths (2026 Rev) - Sandasiri Sir", ta: "இணைந்த கணிதம் (2026 Rev) - சந்தசிறி சார்" },
+        { time: "09:00 AM - 12:00 PM", si: "2027 A/L ආර්ථික විද්‍යාව - කසුන් තිවංක", en: "2027 A/L Economics - Kasun Thivanka", ta: "2027 A/L பொருளியல் - கசுன் திவங்க" }
+      ]},
+      { day: 6, classes: [
+        { time: "08:30 AM - 12:00 PM", si: "2028 A/L දේශපාලන විද්‍යාව - ප්‍රියන්තා පුෂ්පකුමාරි", en: "2028 A/L Political Science - Priyantha Miss", ta: "2028 A/L அரசியல் அறிவியல் - பிரியந்தா மிஸ்" },
+        { time: "07:30 AM - 12:00 PM", si: "ICT (2026/2027) - ධනුෂ්ක බී. ජයතිලක", en: "ICT (2026/2027) - Dhanushka B. Jayathilake", ta: "ICT (2026/2027) - தனுஷ்க பி. ஜயதிலக" },
+        { time: "08:00 AM - 05:00 PM", si: "ගිණුම්කරණය සහ BS (2027/2028) - සචිත් ධර්මසේන", en: "Accounting & BS (2027/2028) - Sachith Dharmasena", ta: "கணக்கியல் & BS (2027/2028) - சசித் தர்மசேன" }
+      ]}
     ];
 
     function setLanguage(lang) {
-        currentLang = lang;
-        document.getElementById('u-name').innerText = translations[lang].name;
-        document.getElementById('txt-role').innerText = translations[lang].role;
-        document.getElementById('mainSaveBtn').innerText = translations[lang].save;
-        document.getElementById('btn-tt-txt').innerText = translations[lang].ttBtn;
-        document.getElementById('tt-title').innerText = translations[lang].ttTitle;
-        document.getElementById('toast-title').innerText = translations[lang].toastTitle;
-        document.getElementById('toast-msg').innerText = translations[lang].toastMsg;
-        document.getElementById('lbl-addr').innerText = translations[lang].addr;
-        document.getElementById('social-title').innerText = translations[lang].socialTitle;
-        document.getElementById('loc-txt').innerText = translations[lang].locTxt;
-        document.getElementById('footer-credit').innerText = translations[lang].credit;
-        document.getElementById('btn-call-txt').innerText = translations[lang].call;
-        document.getElementById('btn-sms-txt').innerText = translations[lang].sms;
-        document.getElementById('btn-email-txt').innerText = translations[lang].email;
+      currentLang = lang;
+      const t = translations[lang];
 
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(`btn-${lang}`).classList.add('active');
-        setupAppLinks();
+      document.getElementById('u-name').innerText = t.name;
+      document.getElementById('txt-role').innerText = t.role;
+      document.getElementById('mainSaveBtn').innerText = t.save;
+      document.getElementById('btn-tt-txt').innerText = t.ttBtn;
+      document.getElementById('tt-title').innerText = t.ttTitle;
+      document.getElementById('toast-title').innerText = t.toastTitle;
+      document.getElementById('toast-msg').innerText = t.toastMsg;
+      document.getElementById('lbl-addr').innerText = t.addr;
+      document.getElementById('social-title').innerText = t.socialTitle;
+      document.getElementById('loc-txt').innerText = t.locTxt;
+      document.getElementById('footer-credit').innerText = t.credit;
+      document.getElementById('btn-call-txt').innerText = t.call;
+      document.getElementById('btn-sms-txt').innerText = t.sms;
+      document.getElementById('btn-email-txt').innerText = t.email;
+
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`btn-${lang}`).classList.add('active');
+
+      setupAppLinks();
+      updateLiveStatus();
     }
 
     function setupAppLinks() {
-        const links = [
-            { id: 'fb-link', app: 'fb://facewebmodal/f?href=https://www.facebook.com/adm.narammala', web: 'https://www.facebook.com/adm.narammala' },
-            { id: 'yt-link', app: 'vnd.youtube://www.youtube.com/@admnarammala8582', web: 'https://youtube.com/@admnarammala8582' },
-            { id: 'ig-link', app: 'instagram://user?username=admnarammala', web: 'https://www.instagram.com/admnarammala' },
-            { id: 'tt-link', app: 'snssdk1233://user/profile/adm.narammala', web: 'https://www.tiktok.com/@adm.narammala' }
-        ];
+      const links = [
+        { id: 'fb-link', app: 'fb://facewebmodal/f?href=https://www.facebook.com/adm.narammala', web: 'https://www.facebook.com/adm.narammala' },
+        { id: 'yt-link', app: 'vnd.youtube://www.youtube.com/@admnarammala8582', web: 'https://youtube.com/@admnarammala8582' },
+        { id: 'ig-link', app: 'instagram://user?username=admnarammala', web: 'https://www.instagram.com/admnarammala' },
+        { id: 'tt-link', app: 'snssdk1233://user/profile/adm.narammala', web: 'https://www.tiktok.com/@adm.narammala' }
+      ];
 
-        links.forEach(link => {
-            const el = document.getElementById(link.id);
-            el.onclick = (e) => {
-                e.preventDefault();
-                const start = Date.now();
-                window.location.href = link.app;
-                setTimeout(() => { if (Date.now() - start < 1500) window.location.href = link.web; }, 1000);
-            };
-        });
+      links.forEach(link => {
+        const el = document.getElementById(link.id);
+        if (!el) return;
+        el.onclick = (e) => {
+          e.preventDefault();
+          const start = Date.now();
+          window.location.href = link.app;
+          setTimeout(() => {
+            if (Date.now() - start < 1500) window.location.href = link.web;
+          }, 1000);
+        };
+      });
     }
 
     function openTimetable() {
-        const list = document.getElementById('tt-list');
-        list.innerHTML = '';
-        timetable.forEach(d => {
-            let dayHtml = `<div class="tt-day-group"><span class="tt-day-name">${translations[currentLang].days[d.day]}</span>`;
-            d.classes.forEach(c => {
-                dayHtml += `<div class="tt-class"><span style="color: var(--gold); font-size: 0.75rem;">🕒 ${c.time}</span><br>${c[currentLang]}</div>`;
-            });
-            dayHtml += `</div>`;
-            list.innerHTML += dayHtml;
+      const list = document.getElementById('tt-list');
+      list.innerHTML = '';
+      timetable.forEach(d => {
+        let dayHtml = `<div class="tt-day-group"><span class="tt-day-name">${translations[currentLang].days[d.day]}</span>`;
+        d.classes.forEach(c => {
+          dayHtml += `<div class="tt-class"><span style="color: var(--gold); font-size: 0.75rem;">🕒 ${c.time}</span><br>${c[currentLang]}</div>`;
         });
-        document.getElementById('ttOverlay').style.display = 'flex';
+        dayHtml += `</div>`;
+        list.innerHTML += dayHtml;
+      });
+      document.getElementById('ttOverlay').style.display = 'flex';
     }
 
-    function closeTimetable() { document.getElementById('ttOverlay').style.display = 'none'; }
+    function closeTimetable() {
+      document.getElementById('ttOverlay').style.display = 'none';
+    }
 
     function toggleMenu(id) {
-        const menu = document.getElementById(id);
-        const isShown = menu.classList.contains('show');
-        document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
-        if (!isShown) menu.classList.add('show');
+      const menu = document.getElementById(id);
+      const isShown = menu.classList.contains('show');
+      document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
+      if (!isShown) menu.classList.add('show');
     }
 
     function saveVCard() {
-        const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL;TYPE=CELL:0710658051\nEND:VCARD";
-        const vblob = new Blob([vcard], { type: 'text/vcard' });
-        const vurl = URL.createObjectURL(vblob);
-        const a = document.createElement('a');
-        a.href = vurl;
-        a.download = 'Janith_ADM.vcf';
-        a.click();
+      const vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL;TYPE=CELL:0710658051\nEND:VCARD";
+      const vblob = new Blob([vcard], { type: 'text/vcard' });
+      const vurl = URL.createObjectURL(vblob);
+      const a = document.createElement('a');
+      a.href = vurl;
+      a.download = 'Janith_ADM.vcf';
+      a.click();
 
-        localStorage.setItem('contact_saved', 'true');
-        document.getElementById('mainSaveBtn').style.display = 'none';
-        document.getElementById('actionGrid').style.display = 'grid';
+      localStorage.setItem('contact_saved', 'true');
+      document.getElementById('mainSaveBtn').style.display = 'none';
+      document.getElementById('actionGrid').style.display = 'grid';
     }
 
-    function openNotificationModal() {
-        document.getElementById('notifModal').style.display = 'flex';
+    function showToast(text) {
+      const toast = document.getElementById('statusToast');
+      const msg = document.getElementById('toast-msg');
+      msg.innerText = text;
+      toast.classList.add('active');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => toast.classList.remove('active'), 2500);
     }
 
-    function closeNotificationModal() {
-        document.getElementById('notifModal').style.display = 'none';
-    }
+    async function enableNotifications() {
+      try {
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+          await OneSignal.init({
+            appId: 'YOUR_ONESIGNAL_APP_ID'
+          });
 
-    async function sendNotification() {
-        const title = document.getElementById('notif-title-input').value.trim();
-        const body = document.getElementById('notif-body-input').value.trim();
-
-        if (!title || !body) {
-            alert('මාතෘකාව සහ පණිවිඩය ඇතුළත් කරන්න!');
+          if (!OneSignal.Notifications.isPushSupported()) {
+            showToast(translations[currentLang].pushUnsupported);
             return;
-        }
+          }
 
-        try {
-            const res = await fetch('https://api.onesignal.com/notifications?c=push', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Key YOUR_ONESIGNAL_REST_API_KEY'
-                },
-                body: JSON.stringify({
-                    app_id: 'YOUR_ONESIGNAL_APP_ID',
-                    target_channel: 'push',
-                    included_segments: ['Subscribed Users'],
-                    headings: { en: title },
-                    contents: { en: body }
-                })
-            });
-
-            const data = await res.json();
-            console.log(data);
-
-            if (!res.ok) {
-                alert('Notification send failed');
-                return;
-            }
-
-            alert('Notification sent successfully!');
-            closeNotificationModal();
-            document.getElementById('notif-title-input').value = '';
-            document.getElementById('notif-body-input').value = '';
-        } catch (err) {
-            console.error(err);
-            alert('Error sending notification');
-        }
-    }
-
-    window.addEventListener('click', function(e) {
-        if (!e.target.matches('.btn-action')) {
-            document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
-        }
-    });
-
-    function setupPWAInstall() {
-        let deferredPrompt;
-        const pwaContainer = document.getElementById('pwa-installer');
-        const pwaBtn = document.getElementById('btn-install-main');
-
-        if (window.matchMedia('(display-mode: standalone)').matches) return;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (pwaContainer) pwaContainer.style.display = 'block';
+          const permission = await OneSignal.Notifications.requestPermission();
+          if (permission) {
+            showToast(translations[currentLang].pushOn);
+          } else {
+            showToast(translations[currentLang].pushOff);
+          }
         });
-
-        if (pwaBtn) {
-            pwaBtn.addEventListener('click', async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        if (pwaContainer) pwaContainer.style.display = 'none';
-                    }
-                    deferredPrompt = null;
-                }
-            });
-        }
-
-        window.addEventListener('appinstalled', () => {
-            if (pwaContainer) pwaContainer.style.display = 'none';
-        });
+      } catch (err) {
+        console.error(err);
+        showToast(translations[currentLang].pushOff);
+      }
     }
 
     function isFullMoon(date) {
-        const baseDate = new Date(1900, 0, 1);
-        const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
-        const lunarCycle = 29.530588853;
-        const daysSinceNewMoon = (diffDays - 0.2) % lunarCycle;
-        return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
+      const baseDate = new Date(1900, 0, 1);
+      const diffDays = (date - baseDate) / (1000 * 60 * 60 * 24);
+      const lunarCycle = 29.530588853;
+      const daysSinceNewMoon = (diffDays - 0.2) % lunarCycle;
+      return (daysSinceNewMoon >= 14.2 && daysSinceNewMoon <= 15.8);
     }
 
     function formatTime(h) {
-        const hour = Math.floor(h);
-        const min = (h - hour) * 60;
-        return `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+      const hour = Math.floor(h);
+      const min = Math.round((h - hour) * 60);
+      return `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+    }
+
+    function showProfessionalPopup(title, message) {
+      document.getElementById('toast-title').innerText = title;
+      document.getElementById('toast-msg').innerHTML = message;
+      const toast = document.getElementById('statusToast');
+      toast.classList.add('active');
+      setTimeout(() => toast.classList.remove('active'), 7000);
     }
 
     function checkInstituteStatus() {
-        const now = new Date();
-        const dayOfWeek = now.getDay();
-        const currentTime = now.getHours() + (now.getMinutes() / 60);
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const currentTime = now.getHours() + (now.getMinutes() / 60);
 
-        const weeklySchedule = {
-            0: { open: 8.0, close: 17.0, name: "ඉරිදා", en: "Sunday", ta: "ஞாயிறு" },
-            1: { open: 8.5, close: 17.0, name: "සඳුදා", en: "Monday", ta: "திங்கள்" },
-            2: { open: 8.5, close: 17.0, name: "අඟහරුවාදා", en: "Tuesday", ta: "செவ்வாய்" },
-            3: { open: 8.5, close: 17.0, name: "බදාදා", en: "Wednesday", ta: "புதன்" },
-            4: { open: 8.5, close: 17.0, name: "බ්‍රහස්පතින්දා", en: "Thursday", ta: "வியாழன்" },
-            5: { open: 8.5, close: 17.0, name: "සිකුරාදා", en: "Friday", ta: "வெள்ளி" },
-            6: { open: 8.0, close: 18.0, name: "සෙනසුරාදා", en: "Saturday", ta: "சனி" }
-        };
+      const weeklySchedule = {
+        0: { open: 8.0, close: 17.0, name: "ඉරිදා", en: "Sunday", ta: "ஞாயிறு" },
+        1: { open: 8.5, close: 17.0, name: "සඳුදා", en: "Monday", ta: "திங்கள்" },
+        2: { open: 8.5, close: 17.0, name: "අඟහරුවාදා", en: "Tuesday", ta: "செவ்வாய்" },
+        3: { open: 8.5, close: 17.0, name: "බදාදා", en: "Wednesday", ta: "புதன்" },
+        4: { open: 8.5, close: 17.0, name: "බ්‍රහස්පතින්දා", en: "Thursday", ta: "வியாழன்" },
+        5: { open: 8.5, close: 17.0, name: "සිකුරාදා", en: "Friday", ta: "வெள்ளி" },
+        6: { open: 8.0, close: 18.0, name: "සෙනසුරාදා", en: "Saturday", ta: "சனி" }
+      };
 
-        const today = weeklySchedule[dayOfWeek];
-        let title, message, isClosed;
+      const today = weeklySchedule[dayOfWeek];
+      let title, message;
 
-        if (isFullMoon(now)) {
-            title = "අද පොහෝ දිනයකි | Poya Day";
-            message = "අද පසළොස්වක පොහෝ දිනය බැවින් ආයතනය වසා තබනු ලැබේ.<br>" +
-                      "Institute is closed today due to Full Moon Poya Day.<br>" +
-                      "இன்று பௌர்ணமி என்பதால் நிறுவனம் மூடப்பட்டுள்ளது.";
-            isClosed = true;
-        } else if (currentTime >= today.open && currentTime < today.close) {
-            title = "ආයතනය විවෘතයි | Open Now";
-            message = `අද ${today.name} දින ආයතනය විවෘතව ඇත.<br>` +
-                      `The Institute is open today (${today.en}).<br>` +
-                      `இன்று நிறுவனம் திறக்கப்பட்டுள்ளது (${today.ta}).<br>` +
-                      `<b>${formatTime(today.open)} AM - ${formatTime(today.close - 12)} PM</b>`;
-            isClosed = false;
-        } else {
-            title = "ආයතනය වසා ඇත | Closed Now";
-            message = `අද ${today.name} දින ආයතනය වසා ඇත.<br>` +
-                      `The Institute is closed today (${today.en}).<br>` +
-                      `இன்று நிறுவனம் மூடப்பட்டுள்ளது (${today.ta}).<br>` +
-                      `Opening: ${formatTime(today.open)} AM - ${formatTime(today.close - 12)} PM`;
-            isClosed = true;
-        }
+      if (isFullMoon(now)) {
+        title = "අද පොහෝ දිනයකි | Poya Day";
+        message = "අද පසළොස්වක පොහෝ දිනය බැවින් ආයතනය වසා තබනු ලැබේ.<br>Institute is closed today due to Full Moon Poya Day.<br>இன்று பௌர்ணமி என்பதால் நிறுவனம் மூடப்பட்டுள்ளது.";
+      } else if (currentTime >= today.open && currentTime < today.close) {
+        title = "ආයතනය විවෘතයි | Open Now";
+        message = `අද ${today.name} දින ආයතනය විවෘතව ඇත.<br>The Institute is open today (${today.en}).<br>இன்று நிறுவனம் திறக்கப்பட்டுள்ளது (${today.ta}).<br><b>${formatTime(today.open)} AM - ${formatTime(today.close - 12)} PM</b>`;
+      } else {
+        title = "ආයතනය වසා ඇත | Closed Now";
+        message = `අද ${today.name} දින ආයතනය වසා ඇත.<br>The Institute is closed today (${today.en}).<br>இன்று நிறுவனம் மூடப்பட்டுள்ளது (${today.ta}).<br>Opening: ${formatTime(today.open)} AM - ${formatTime(today.close - 12)} PM`;
+      }
 
-        showProfessionalPopup(title, message, isClosed);
-    }
-
-    function showProfessionalPopup(title, message, isClosed) {
-        document.getElementById('toast-title').innerText = title;
-        document.getElementById('toast-msg').innerHTML = message;
-        const toast = document.getElementById('statusToast');
-        toast.classList.add('active');
-        setTimeout(() => toast.classList.remove('active'), 7000);
+      showProfessionalPopup(title, message);
     }
 
     function updateLiveStatus() {
-        const now = new Date();
-        const currentDay = now.getDay();
-        const currentTimeStr = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
+      const now = new Date();
+      const currentDay = now.getDay();
+      const currentTimeStr = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit' });
 
-        function parseTime(timeStr) {
-            const [time, modifier] = timeStr.split(' ');
-            let [hours, minutes] = time.split(':');
-            if (hours === '12') hours = '00';
-            if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
-            return parseInt(hours, 10) + (parseInt(minutes, 10) / 60);
-        }
+      function parseTime(timeStr) {
+        const [time, modifier] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (hours === '12') hours = '00';
+        if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
+        return parseInt(hours, 10) + (parseInt(minutes, 10) / 60);
+      }
 
-        const currentDecimalTime = parseTime(currentTimeStr);
-        const dayData = timetable.find(d => d.day === currentDay);
-        let activeClass = null;
+      const currentDecimalTime = parseTime(currentTimeStr);
+      const dayData = timetable.find(d => d.day === currentDay);
+      let activeClass = null;
 
-        if (dayData) {
-            activeClass = dayData.classes.find(c => {
-                const [startStr, endStr] = c.time.split(' - ');
-                return currentDecimalTime >= parseTime(startStr) && currentDecimalTime <= parseTime(endStr);
-            });
-        }
-
-        const container = document.getElementById('live-class-container');
-        const textSpan = document.getElementById('live-class-text');
-
-        if (activeClass) {
-            container.style.display = 'block';
-            const statusPrefix = currentLang === 'si' ? 'දැන් පැවැත්වේ: ' : (currentLang === 'ta' ? 'இப்போது: ' : 'LIVE: ');
-            textSpan.innerHTML = statusPrefix + activeClass[currentLang];
-        } else {
-            container.style.display = 'none';
-        }
-    }
-
-    async function initOneSignal() {
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: 'YOUR_ONESIGNAL_APP_ID',
-                allowLocalhostAsSecureOrigin: false,
-            });
+      if (dayData) {
+        activeClass = dayData.classes.find(c => {
+          const [startStr, endStr] = c.time.split(' - ');
+          return currentDecimalTime >= parseTime(startStr) && currentDecimalTime <= parseTime(endStr);
         });
+      }
+
+      const container = document.getElementById('live-class-container');
+      const textSpan = document.getElementById('live-class-text');
+
+      if (activeClass) {
+        container.style.display = 'block';
+        const statusPrefix = currentLang === 'si' ? 'දැන් පැවැත්වේ: ' : (currentLang === 'ta' ? 'இப்போது: ' : 'LIVE: ');
+        textSpan.innerHTML = statusPrefix + activeClass[currentLang];
+      } else {
+        container.style.display = 'none';
+      }
     }
 
-    async function registerOneSignalWorker() {
-        if ('serviceWorker' in navigator) {
-            try {
-                await navigator.serviceWorker.register('/OneSignalSDKWorker.js');
-            } catch (e) {
-                console.error('Service worker registration failed:', e);
+    function setupPWAInstall() {
+      let deferredPrompt;
+      const pwaContainer = document.getElementById('pwa-installer');
+      const pwaBtn = document.getElementById('btn-install-main');
+
+      if (window.matchMedia('(display-mode: standalone)').matches) return;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (pwaContainer) pwaContainer.style.display = 'block';
+      });
+
+      if (pwaBtn) {
+        pwaBtn.addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+              if (pwaContainer) pwaContainer.style.display = 'none';
             }
-        }
+            deferredPrompt = null;
+          }
+        });
+      }
+
+      window.addEventListener('appinstalled', () => {
+        if (pwaContainer) pwaContainer.style.display = 'none';
+      });
     }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          await navigator.serviceWorker.register('/OneSignalSDKWorker.js');
+        } catch (err) {
+          console.error('Service worker registration failed:', err);
+        }
+      });
+    }
+
+    window.addEventListener('click', function(e) {
+      if (!e.target.matches('.btn-action')) {
+        document.querySelectorAll('.dropdown-content').forEach(m => m.classList.remove('show'));
+      }
+    });
 
     window.onload = async () => {
-        setLanguage('en');
-        setupAppLinks();
-        setupPWAInstall();
-        updateLiveStatus();
-        setInterval(updateLiveStatus, 60000);
-
-        if (localStorage.getItem('contact_saved') === 'true') {
-            document.getElementById('mainSaveBtn').style.display = 'none';
-            document.getElementById('actionGrid').style.display = 'grid';
-        } else {
-            document.getElementById('mainSaveBtn').style.display = 'block';
-            document.getElementById('actionGrid').style.display = 'none';
-        }
-
-        await registerOneSignalWorker();
-        await initOneSignal();
+      setLanguage('en');
+      setupAppLinks();
+      setupPWAInstall();
+      updateLiveStatus();
+      setInterval(updateLiveStatus, 60000);
+      await new Promise(resolve => setTimeout(resolve, 0));
     };
-</script>
+  </script>
+
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: 'YOUR_ONESIGNAL_APP_ID'
+      });
+    });
+  </script>
+
 </body>
 </html>
