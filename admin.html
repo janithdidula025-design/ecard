@@ -1,325 +1,509 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADM Admin Panel</title>
-    
-    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImFkbWluLmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ADM Admin Panel</title>
 
-    <style>
-        /* CSS Variables for Consistency */
-        :root { 
-            --accent: #64ffda; 
-            --accent-glow: rgba(100, 255, 218, 0.3);
-            --bg-dark: #020c1b; 
-            --card-bg: rgba(17, 34, 64, 0.7); 
-            --text-main: #ccd6f6; 
-            --text-bright: #ffffff;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
-        
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiQURNIEFkbWluIiwic2hvcnRfbmFtZSI6IkFETSBBZG1pbiIsInN0YXJ0X3VybCI6ImFkbWluLmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3ciOiIjMGExOTJmIiwidGhlbWVfY29sb3ciOiIjNjRmZmRhIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vamFuaXRoZGlkdWxhMDI1LWRlc2lnbi9lY2FyZC9tYWluL2xvZ28ucG5nIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3BuZyIsInB1cnBvc2UiOiJhbnkgbWFza2FibGUifV19">
 
-        html, body { 
-            height: 100%; margin: 0; padding: 0; overflow: hidden;
-            background: radial-gradient(circle at top right, #112240, #020c1b);
-            color: var(--text-main);
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
-        }
+  <style>
+    :root {
+      --accent: #64ffda;
+      --accent-glow: rgba(100, 255, 218, 0.3);
+      --bg-dark: #020c1b;
+      --card-bg: rgba(17, 34, 64, 0.7);
+      --text-main: #ccd6f6;
+      --text-bright: #ffffff;
+      --glass: rgba(255, 255, 255, 0.05);
+    }
 
-        body { display: flex; flex-direction: column; align-items: center; padding: env(safe-area-inset-top) 15px 20px 15px; }
-        
-        /* Premium Install Prompt */
-        #install-prompt { 
-            display: none; position: fixed; bottom: 20px; left: 15px; right: 15px;
-            background: var(--accent); color: #020c1b; padding: 15px; 
-            border-radius: 20px; z-index: 10000; justify-content: space-between; 
-            align-items: center; font-weight: 800; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #install-prompt button { 
-            background: #020c1b; color: var(--accent); border: none; 
-            padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 900; 
-        }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        /* Language Switcher */
-        .lang-bar { display: flex; gap: 8px; margin: 15px 0; background: var(--glass); padding: 5px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); }
-        .lang-btn { 
-            background: transparent; border: none; color: var(--text-main); 
-            padding: 8px 16px; border-radius: 50px; cursor: pointer; font-size: 0.75rem; 
-            transition: 0.3s; font-weight: 600;
-        }
-        .lang-btn.active { background: var(--accent); color: #020c1b; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at top right, #112240, #020c1b);
+      color: var(--text-main);
+      font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    }
 
-        /* Header Section */
-        .header { text-align: center; margin-bottom: 20px; animation: fadeIn 1s ease; }
-        .profile-ring { 
-            width: 90px; height: 90px; border-radius: 50%; padding: 3px;
-            background: linear-gradient(45deg, var(--accent), transparent);
-            margin: 0 auto 10px;
-        }
-        .profile-ring img { 
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
-            background: var(--bg-dark); border: 2px solid var(--bg-dark);
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: env(safe-area-inset-top) 15px 20px 15px;
+    }
 
-        h2 { margin: 0; font-size: 1.5rem; color: var(--text-bright); letter-spacing: 2px; }
-        .subtitle { color: var(--accent); font-size: 0.7rem; letter-spacing: 4px; font-weight: 700; opacity: 0.8; text-transform: uppercase; }
+    #install-prompt {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 15px;
+      right: 15px;
+      background: var(--accent);
+      color: #020c1b;
+      padding: 15px;
+      border-radius: 20px;
+      z-index: 10000;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
-        /* Main Scrollable Area */
-        .content-area {
-            width: 100%; max-width: 400px; overflow-y: auto;
-            display: flex; flex-direction: column; gap: 20px;
-            padding-bottom: 40px; scrollbar-width: none;
-        }
-        .content-area::-webkit-scrollbar { display: none; }
+    #install-prompt button {
+      background: #020c1b;
+      color: var(--accent);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 900;
+    }
 
-        /* Glass Cards */
-        .card { 
-            background: var(--card-bg); border-radius: 30px; padding: 25px;
-            border: 1px solid rgba(100, 255, 218, 0.1);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            transition: 0.3s;
-        }
-        
-        .label { color: var(--accent); font-size: 0.75rem; font-weight: 700; margin-bottom: 15px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+    .lang-bar {
+      display: flex;
+      gap: 8px;
+      margin: 15px 0;
+      background: var(--glass);
+      padding: 5px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
 
-        input, textarea { 
-            width: 100%; background: rgba(2, 12, 27, 0.5); border: 1.5px solid #233554; 
-            border-radius: 18px; color: var(--accent); padding: 15px;
-            outline: none; transition: 0.3s; font-family: inherit; font-size: 1rem;
-        }
-        input[type="tel"] { font-size: 2.2rem; font-weight: 800; text-align: center; letter-spacing: 3px; }
-        textarea { height: 100px; text-align: left; resize: none; margin-top: 10px; }
-        
-        input:focus, textarea:focus { border-color: var(--accent); background: rgba(2, 12, 27, 0.8); box-shadow: 0 0 15px var(--accent-glow); }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: 0.3s;
+      font-weight: 600;
+    }
 
-        /* Action Buttons */
-        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
-        .btn { 
-            width: 100%; padding: 18px; border-radius: 18px; border: none;
-            font-weight: 800; cursor: pointer; font-size: 0.85rem; 
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            color: white; transition: 0.3s; text-transform: uppercase;
-        }
-        .btn-wa { background: #25D366; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3); }
-        .btn-sms { background: #1d9bf0; box-shadow: 0 5px 20px rgba(29, 155, 240, 0.3); }
-        .btn-push { background: linear-gradient(90deg, #ff4b2b, #ff416c); margin-top: 10px; }
-        
-        .btn:active { transform: scale(0.95); opacity: 0.8; }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #020c1b;
+    }
 
-        .footer { margin-top: auto; padding: 20px; font-size: 0.75rem; opacity: 0.5; letter-spacing: 1px; }
-        .footer b { color: var(--accent); }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease;
+    }
 
-        /* Animations */
-        @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .profile-ring {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(45deg, var(--accent), transparent);
+      margin: 0 auto 10px;
+    }
 
-        #notifModal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.65);
-    z-index:9999;
-    padding:20px;
-    align-items:center;
-    justify-content:center;
-}
+    .profile-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-dark);
+      border: 2px solid var(--bg-dark);
+    }
 
-.notif-box{
-    width:100%;
-    max-width:420px;
-    background:#112240;
-    border-radius:24px;
-    padding:20px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.5);
-    border:1px solid rgba(100,255,218,0.15);
-}
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--text-bright);
+      letter-spacing: 2px;
+    }
 
-.notif-title{
-    margin:0 0 15px 0;
-    color:#fff;
-}
+    .subtitle {
+      color: var(--accent);
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      font-weight: 700;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
 
-.notif-actions{
-    display:flex;
-    gap:10px;
-    margin-top:15px;
-}
+    .content-area {
+      width: 100%;
+      max-width: 400px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding-bottom: 40px;
+      scrollbar-width: none;
+    }
 
-.btn-close{
-    flex:1;
-    background:#233554;
-}
+    .content-area::-webkit-scrollbar { display: none; }
 
-    </style>
+    .card {
+      background: var(--card-bg);
+      border-radius: 30px;
+      padding: 25px;
+      border: 1px solid rgba(100, 255, 218, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+
+    .label {
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: rgba(2, 12, 27, 0.5);
+      border: 1.5px solid #233554;
+      border-radius: 18px;
+      color: var(--accent);
+      padding: 15px;
+      outline: none;
+      transition: 0.3s;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      background: rgba(2, 12, 27, 0.8);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    input[type="tel"] {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 3px;
+    }
+
+    textarea {
+      height: 100px;
+      text-align: left;
+      resize: none;
+      margin-top: 10px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 18px;
+      border-radius: 18px;
+      border: none;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: white;
+      transition: 0.3s;
+      text-transform: uppercase;
+    }
+
+    .btn-wa {
+      background: #25D366;
+      box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    .btn-sms {
+      background: #1d9bf0;
+      box-shadow: 0 5px 20px rgba(29, 155, 240, 0.3);
+    }
+
+    .btn-push {
+      background: linear-gradient(90deg, #ff4b2b, #ff416c);
+      margin-top: 10px;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+      opacity: 0.8;
+    }
+
+    .footer {
+      margin-top: auto;
+      padding: 20px;
+      font-size: 0.75rem;
+      opacity: 0.5;
+      letter-spacing: 1px;
+    }
+
+    .footer b { color: var(--accent); }
+
+    #notifModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 9999;
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .notif-box {
+      width: 100%;
+      max-width: 420px;
+      background: #112240;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border: 1px solid rgba(100,255,218,0.15);
+    }
+
+    .notif-title {
+      margin: 0 0 15px 0;
+      color: #fff;
+    }
+
+    .notif-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn-close {
+      flex: 1;
+      background: #233554;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); }
+      to { transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
 
-    <div id="install-prompt">
-        <span id="txt-install">📲 ADM Admin App එක එක් කරන්න?</span>
-        <button id="btn-install">INSTALL</button>
+  <div id="install-prompt">
+    <span id="txt-install">📲 ADM Admin App එක එක් කරන්න?</span>
+    <button id="btn-install">INSTALL</button>
+  </div>
+
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="changeLang('si')">සිංහල</button>
+    <button class="lang-btn" onclick="changeLang('ta')">தமிழ்</button>
+    <button class="lang-btn" onclick="changeLang('en')">English</button>
+  </div>
+
+  <div class="header">
+    <div class="profile-ring">
+      <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" alt="ADM">
+    </div>
+    <h2 id="txt-title">ADM CENTRAL</h2>
+    <div id="txt-subtitle" class="subtitle">MANAGEMENT SYSTEM</div>
+  </div>
+
+  <div class="content-area">
+    <div class="card">
+      <span class="label">Quick Dispatch</span>
+      <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
+      <div class="btn-group">
+        <button class="btn btn-wa" id="btn-wa" onclick="execute('wa')">WhatsApp Link</button>
+        <button class="btn btn-sms" id="btn-sms" onclick="execute('sms')">Direct SMS</button>
+      </div>
     </div>
 
-    <div class="lang-bar">
-        <button class="lang-btn active" onclick="changeLang('si')">සිංහල</button>
-        <button class="lang-btn" onclick="changeLang('ta')">தமிழ்</button>
-        <button class="lang-btn" onclick="changeLang('en')">English</button>
-    </div>
-
-    <div class="header">
-        <div class="profile-ring">
-            <img src="https://raw.githubusercontent.com/janithdidula025-design/ecard/main/logo.png" alt="ADM">
-        </div>
-        <h2 id="txt-title">ADM CENTRAL</h2>
-        <div id="txt-subtitle" class="subtitle">MANAGEMENT SYSTEM</div>
-    </div>
-
-    <div class="content-area">
-        <div class="card">
-            <span class="label">Quick Dispatch</span>
-            <input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-            <div class="btn-group">
-                <button class="btn btn-wa" id="btn-wa" onclick="execute('wa')">
-                    WhatsApp Link
-                </button>
-                <button class="btn btn-sms" id="btn-sms" onclick="execute('sms')">
-                    Direct SMS
-                </button>
-            </div>
-        </div>
-       <div class="card">
-    <span class="label">Broadcast Notification</span>
-    <button class="btn btn-push" onclick="openNotificationModal()">
+    <div class="card">
+      <span class="label">Broadcast Notification</span>
+      <button class="btn btn-push" onclick="openNotificationModal()">
         🔔 Send Notification
-    </button>
-           <div id="notifModal">
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">
+    POWERED BY <b>JANITH DIDULA</b>
+  </div>
+
+  <!-- Notification Modal -->
+  <div id="notifModal">
     <div class="notif-box">
+      <h3 class="notif-title">Send Notification</h3>
 
-        <h3 class="notif-title">Send Notification</h3>
+      <input id="notif-title" type="text" placeholder="Notification Title">
+      <textarea id="notif-body" placeholder="Type your message..."></textarea>
 
-        <input id="notif-title"
-               type="text"
-               placeholder="Notification Title">
-
-        <textarea id="notif-body"
-                  placeholder="Type your message..."></textarea>
-
-        <div class="notif-actions">
-            <button onclick="sendNotification()"
-                    class="btn btn-push">
-                Send
-            </button>
-
-            <button onclick="closeNotificationModal()"
-                    class="btn btn-close">
-                Close
-            </button>
-        </div>
-
+      <div class="notif-actions">
+        <button onclick="sendNotification()" class="btn btn-push">Send</button>
+        <button onclick="closeNotificationModal()" class="btn btn-close">Close</button>
+      </div>
     </div>
-</div>
-</div>
-    <div class="footer">
-        POWERED BY <b>JANITH DIDULA</b>
-    </div>
+  </div>
 
-    <script>
-        const translations = {
-            si: { title: "ADM CENTRAL", subtitle: "MANAGEMENT SYSTEM", phonePh: "07XXXXXXXX", btnWa: "WhatsApp Link", btnSms: "Direct SMS", install: "📲 ADM App එක එක් කරන්න?", alertNum: "කරුණාකර නිවැරදි අංකයක් ඇතුළත් කරන්න!", alertPush: "මාතෘකාව සහ පණිවිඩය ඇතුළත් කරන්න!" },
-            ta: { title: "ADM CENTRAL", subtitle: "மேலாண்மை அமைப்பு", phonePh: "07XXXXXXXX", btnWa: "வாட்ஸ்அப்", btnSms: "எஸ்எம்எஸ்", install: "📲 ADM பயன்பாட்டைச் சேர்க்கவா?", alertNum: "சரியான எண்ணை ඇතුළත් කරන්න!", alertPush: "செய்தியை உள்ளிடவும்!" },
-            en: { title: "ADM CENTRAL", subtitle: "MANAGEMENT SYSTEM", phonePh: "07XXXXXXXX", btnWa: "WhatsApp Link", btnSms: "Direct SMS", install: "📲 Add ADM App?", alertNum: "Invalid Number!", alertPush: "Fill all fields!" }
-        };
+  <script>
+    const translations = {
+      si: {
+        title: "ADM CENTRAL",
+        subtitle: "MANAGEMENT SYSTEM",
+        phonePh: "07XXXXXXXX",
+        btnWa: "WhatsApp Link",
+        btnSms: "Direct SMS",
+        install: "📲 ADM App එක එක් කරන්න?",
+        alertNum: "කරුණාකර නිවැරදි අංකයක් ඇතුළත් කරන්න!",
+        alertPush: "මාතෘකාව සහ පණිවිඩය ඇතුළත් කරන්න!"
+      },
+      ta: {
+        title: "ADM CENTRAL",
+        subtitle: "மேலாண்மை அமைப்பு",
+        phonePh: "07XXXXXXXX",
+        btnWa: "வாட்ஸ்அப்",
+        btnSms: "எஸ்எம்எஸ்",
+        install: "📲 ADM பயன்பாட்டைச் சேர்க்கவா?",
+        alertNum: "சரியான எண்ணை உள்ளிடவும்!",
+        alertPush: "செய்தியை உள்ளிடவும்!"
+      },
+      en: {
+        title: "ADM CENTRAL",
+        subtitle: "MANAGEMENT SYSTEM",
+        phonePh: "07XXXXXXXX",
+        btnWa: "WhatsApp Link",
+        btnSms: "Direct SMS",
+        install: "📲 Add ADM App?",
+        alertNum: "Invalid Number!",
+        alertPush: "Fill all fields!"
+      }
+    };
 
-        let currentLang = 'en';
+    let currentLang = 'si';
 
-        function changeLang(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            document.getElementById('txt-title').innerText = t.title;
-            document.getElementById('txt-subtitle').innerText = t.subtitle;
-            document.getElementById('phone').placeholder = t.phonePh;
-            document.getElementById('btn-wa').innerText = t.btnWa;
-            document.getElementById('btn-sms').innerText = t.btnSms;
-            document.getElementById('txt-install').innerText = t.install;
-            
-            document.querySelectorAll('.lang-btn').forEach(b => {
-                b.classList.remove('active');
-                if(b.innerText.toLowerCase().includes(lang === 'si' ? 'සිං' : lang === 'ta' ? 'த' : 'eng')) {
-                    b.classList.add('active');
-                }
-            });
-        }
+    function changeLang(lang) {
+      currentLang = lang;
+      const t = translations[lang];
 
-        function execute(type) {
-            let num = document.getElementById('phone').value.trim();
-            num = num.replace(/\s+/g, '');
-            if (num.startsWith('+94')) num = '0' + num.substring(3);
-            if (num.startsWith('94')) num = '0' + num.substring(2);
+      document.getElementById('txt-title').innerText = t.title;
+      document.getElementById('txt-subtitle').innerText = t.subtitle;
+      document.getElementById('phone').placeholder = t.phonePh;
+      document.getElementById('btn-wa').innerText = t.btnWa;
+      document.getElementById('btn-sms').innerText = t.btnSms;
+      document.getElementById('txt-install').innerText = t.install;
 
-            if (num.length < 10) return alert(translations[currentLang].alertNum);
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      if (lang === 'si') document.querySelectorAll('.lang-btn')[0].classList.add('active');
+      if (lang === 'ta') document.querySelectorAll('.lang-btn')[1].classList.add('active');
+      if (lang === 'en') document.querySelectorAll('.lang-btn')[2].classList.add('active');
+    }
 
-            const link = "https://janithdidula025-design.github.io/ecard/index.html";
-            const msgBody = `ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`;
+    function execute(type) {
+      let num = document.getElementById('phone').value.trim();
+      num = num.replace(/\s+/g, '');
 
-            if (type === 'wa') {
-                window.location.href = `whatsapp://send?phone=94${num.substring(1)}&text=${encodeURIComponent(msgBody)}`;
-            } else {
-                const sep = (navigator.userAgent.match(/iPhone|iPad|iPod/i)) ? '&' : '?';
-                window.location.href = `sms:${num}${sep}body=${encodeURIComponent(msgBody)}`;
-            }
-        
-        // PWA logic
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('install-prompt').style.display = 'flex';
-        });
+      if (num.startsWith('+94')) num = '0' + num.substring(3);
+      if (num.startsWith('94')) num = '0' + num.substring(2);
 
-        document.getElementById('btn-install').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt = null;
-                document.getElementById('install-prompt').style.display = 'none';
-            }
-        });
-        
+      if (num.length < 10) {
+        alert(translations[currentLang].alertNum);
+        return;
+      }
+
+      const link = "https://janithdidula025-design.github.io/ecard/index.html";
+      const msgBody = `ඔබේ ADM Digital Student Card එක මෙතැනින් ලබාගන්න: ${link}`;
+
+      if (type === 'wa') {
+        window.location.href = `whatsapp://send?phone=94${num.substring(1)}&text=${encodeURIComponent(msgBody)}`;
+      } else {
+        const sep = (navigator.userAgent.match(/iPhone|iPad|iPod/i)) ? '&' : '?';
+        window.location.href = `sms:${num}${sep}body=${encodeURIComponent(msgBody)}`;
+      }
+    }
+
     function openNotificationModal() {
-        document.getElementById("notifModal").style.display = "flex";
+      document.getElementById("notifModal").style.display = "flex";
     }
 
     function closeNotificationModal() {
-        document.getElementById("notifModal").style.display = "none";
+      document.getElementById("notifModal").style.display = "none";
     }
 
     async function sendNotification() {
-        const title = document.getElementById("notif-title").value.trim();
-        const body = document.getElementById("notif-body").value.trim();
+      const title = document.getElementById("notif-title").value.trim();
+      const body = document.getElementById("notif-body").value.trim();
 
-        if (!title || !body) {
-            alert("මාතෘකාව සහ පණිවිඩය ඇතුළත් කරන්න!");
-            return;
+      if (!title || !body) {
+        alert(translations[currentLang].alertPush);
+        return;
+      }
+
+      try {
+        const res = await fetch("https://api.onesignal.com/notifications?c=push", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "key YOUR_ONESIGNAL_REST_API_KEY"
+          },
+          body: JSON.stringify({
+            app_id: "YOUR_ONESIGNAL_APP_ID",
+            target_channel: "push",
+            included_segments: ["Subscribed Users"],
+            headings: { en: title },
+            contents: { en: body }
+          })
+        });
+
+        const data = await res.json();
+        console.log("OneSignal response:", data);
+
+        if (!res.ok) {
+          alert("Notification send failed");
+          return;
         }
 
-        // මෙතනින් OneSignal / Supabase function එකට call එක දාන්න
-        console.log("Notification:", title, body);
-
-        alert("Notification ready to send!");
+        alert("Notification sent successfully!");
         closeNotificationModal();
 
         document.getElementById("notif-title").value = "";
         document.getElementById("notif-body").value = "";
+      } catch (err) {
+        console.error(err);
+        alert("Error sending notification");
+      }
     }
-            function openNotificationModal(){
-    document.getElementById("notifModal").style.display="flex";
-}
 
-function closeNotificationModal(){
-    document.getElementById("notifModal").style.display="none";
-}
-</script>
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('install-prompt').style.display = 'flex';
+    });
+
+    document.getElementById('btn-install').addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt = null;
+        document.getElementById('install-prompt').style.display = 'none';
+      }
+    });
+
+    changeLang('si');
+  </script>
 </body>
 </html>
