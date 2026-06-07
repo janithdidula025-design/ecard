@@ -1,4 +1,4 @@
-const CACHE_NAME = 'adm-ecard-v' + Date.now();
+const CACHE_NAME = 'adm-ecard-v1' + Date.now();
 const ASSETS = [
   './',
   './index.html',
