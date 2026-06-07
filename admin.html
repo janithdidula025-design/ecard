@@ -117,6 +117,43 @@
         @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        #notifModal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.65);
+    z-index:9999;
+    padding:20px;
+    align-items:center;
+    justify-content:center;
+}
+
+.notif-box{
+    width:100%;
+    max-width:420px;
+    background:#112240;
+    border-radius:24px;
+    padding:20px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5);
+    border:1px solid rgba(100,255,218,0.15);
+}
+
+.notif-title{
+    margin:0 0 15px 0;
+    color:#fff;
+}
+
+.notif-actions{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.btn-close{
+    flex:1;
+    background:#233554;
+}
+
     </style>
 </head>
 <body>
@@ -153,16 +190,38 @@
                 </button>
             </div>
         </div>
-        
-        <div class="card">
-            <span class="label">Broadcast Notification</span>
-            <textarea id="notif-body" placeholder="සිසුන් සඳහා වූ විශේෂ පණිවිඩය මෙතන ලියන්න..."></textarea>
-            <button class="btn btn-push" onclick="sendNotification()">
-                Send to All Students
+       <div class="card">
+    <span class="label">Broadcast Notification</span>
+    <button class="btn btn-push" onclick="openNotificationModal()">
+        🔔 Send Notification
+    </button>
+           <div id="notifModal">
+    <div class="notif-box">
+
+        <h3 class="notif-title">Send Notification</h3>
+
+        <input id="notif-title"
+               type="text"
+               placeholder="Notification Title">
+
+        <textarea id="notif-body"
+                  placeholder="Type your message..."></textarea>
+
+        <div class="notif-actions">
+            <button onclick="sendNotification()"
+                    class="btn btn-push">
+                Send
+            </button>
+
+            <button onclick="closeNotificationModal()"
+                    class="btn btn-close">
+                Close
             </button>
         </div>
-    </div>
 
+    </div>
+</div>
+</div>
     <div class="footer">
         POWERED BY <b>JANITH DIDULA</b>
     </div>
@@ -174,7 +233,7 @@
             en: { title: "ADM CENTRAL", subtitle: "MANAGEMENT SYSTEM", phonePh: "07XXXXXXXX", btnWa: "WhatsApp Link", btnSms: "Direct SMS", install: "📲 Add ADM App?", alertNum: "Invalid Number!", alertPush: "Fill all fields!" }
         };
 
-        let currentLang = 'si';
+        let currentLang = 'en';
 
         function changeLang(lang) {
             currentLang = lang;
@@ -211,17 +270,7 @@
                 const sep = (navigator.userAgent.match(/iPhone|iPad|iPod/i)) ? '&' : '?';
                 window.location.href = `sms:${num}${sep}body=${encodeURIComponent(msgBody)}`;
             }
-        }
-
-        function sendNotification() {
-            const title = document.getElementById('notif-title').value;
-            const body = document.getElementById('notif-body').value;
-            if (!title || !body) return alert(translations[currentLang].alertPush);
-            
-            alert("Sending: " + title);
-            // Firebase push logic goes here
-        }
-
+        
         // PWA logic
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -237,36 +286,40 @@
                 document.getElementById('install-prompt').style.display = 'none';
             }
         });
-    </script>
+        
+    function openNotificationModal() {
+        document.getElementById("notifModal").style.display = "flex";
+    }
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging.js";
+    function closeNotificationModal() {
+        document.getElementById("notifModal").style.display = "none";
+    }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZRZecMIMxOO9SmnaJctRf1x-DxFId340",
-            authDomain: "ecard-c8f61.firebaseapp.com",
-            projectId: "ecard-c8f61",
-            storageBucket: "ecard-c8f61.firebasestorage.app",
-            messagingSenderId: "204555084801",
-            appId: "1:204555084801:web:906ad95ddf279c4a6e0c00"
-        };
+    async function sendNotification() {
+        const title = document.getElementById("notif-title").value.trim();
+        const body = document.getElementById("notif-body").value.trim();
 
-        const app = initializeApp(firebaseConfig);
-        const messaging = getMessaging(app);
-
-        async function requestPermission() {
-            try {
-                const permission = await Notification.requestPermission();
-                if (permission === 'granted') {
-                    const token = await getToken(messaging, { 
-                        vapidKey: 'BAnTLc-JQDvEggqLq5KmhKIBdfGS--0bMX4O8FpM5jkxevrTtSLGhY_EQVg5QPkGEr1htEFOQqj670lRf_szhA8' 
-                    });
-                }
-            } catch (err) { console.log(err); }
+        if (!title || !body) {
+            alert("මාතෘකාව සහ පණිවිඩය ඇතුළත් කරන්න!");
+            return;
         }
 
-        window.onload = requestPermission;
-    </script>
+        // මෙතනින් OneSignal / Supabase function එකට call එක දාන්න
+        console.log("Notification:", title, body);
+
+        alert("Notification ready to send!");
+        closeNotificationModal();
+
+        document.getElementById("notif-title").value = "";
+        document.getElementById("notif-body").value = "";
+    }
+            function openNotificationModal(){
+    document.getElementById("notifModal").style.display="flex";
+}
+
+function closeNotificationModal(){
+    document.getElementById("notifModal").style.display="none";
+}
+</script>
 </body>
 </html>
